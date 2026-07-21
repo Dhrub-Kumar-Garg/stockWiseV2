@@ -1,0 +1,258 @@
+[
+  {
+    "id": "tsmom",
+    "name": "Time-series momentum",
+    "setup_tag": "momentum",
+    "markets": [
+      "crypto",
+      "us",
+      "india"
+    ],
+    "text": "Long when the 28-day trend is up (price > 200-SMA); short when down. Fast-resolving version for active trading.",
+    "status": "candidate",
+    "baseLev": 12,
+    "stopPct": 0.05,
+    "targetPct": 0.1,
+    "learned": {
+      "n": 0,
+      "expectancy_R": 0,
+      "win_rate": 0,
+      "kelly": 0.12,
+      "confidence": 0.2
+    }
+  },
+  {
+    "id": "donchian",
+    "name": "Donchian breakout",
+    "setup_tag": "breakout",
+    "markets": [
+      "crypto",
+      "us",
+      "india"
+    ],
+    "text": "Long a 20-day high breakout above the 200-SMA; short the 20-day breakdown below it. Turtle-style trend following.",
+    "status": "candidate",
+    "baseLev": 12,
+    "stopPct": 0.05,
+    "targetPct": 0.08,
+    "learned": {
+      "n": 0,
+      "expectancy_R": 0,
+      "win_rate": 0,
+      "kelly": 0.12,
+      "confidence": 0.2
+    }
+  },
+  {
+    "id": "rsi2dip",
+    "name": "RSI-2 dip (Connors)",
+    "setup_tag": "mean-reversion",
+    "markets": [
+      "crypto",
+      "us",
+      "india"
+    ],
+    "text": "Buy 2-day oversold ONLY in an uptrend (RSI2<10 & price>200-SMA); short overbought in a downtrend.",
+    "status": "candidate",
+    "baseLev": 10,
+    "stopPct": 0.05,
+    "targetPct": 0.06,
+    "learned": {
+      "n": 0,
+      "expectancy_R": 0,
+      "win_rate": 0,
+      "kelly": 0.12,
+      "confidence": 0.2
+    }
+  },
+  {
+    "id": "mom_trend",
+    "name": "Momentum + trend",
+    "setup_tag": "trend",
+    "markets": [
+      "crypto",
+      "us",
+      "india"
+    ],
+    "text": "Long strong 28-day momentum above the 200-SMA; ride the trailing exit.",
+    "status": "candidate",
+    "baseLev": 10,
+    "stopPct": 0.05,
+    "targetPct": 0.08,
+    "learned": {
+      "n": 0,
+      "expectancy_R": 0,
+      "win_rate": 0,
+      "kelly": 0.12,
+      "confidence": 0.2
+    }
+  },
+  {
+    "id": "orb",
+    "name": "Opening-range breakout",
+    "setup_tag": "orb",
+    "markets": [
+      "us"
+    ],
+    "text": "Trade the break of the first 30m session range at the US open (live-only).",
+    "status": "candidate",
+    "baseLev": 5,
+    "stopPct": 0.016,
+    "targetPct": 0.028,
+    "learned": {
+      "n": 0,
+      "expectancy_R": 0,
+      "win_rate": 0,
+      "kelly": 0.12,
+      "confidence": 0.2
+    }
+  },
+  {
+    "id": "ibreakout",
+    "name": "Intraday breakout (discovered)",
+    "setup_tag": "breakout-15m",
+    "markets": [
+      "crypto"
+    ],
+    "text": "15-minute breakout of the prior ~12h range (48 bars). Tight 1.5% stop, 8% target. Forward-test only.",
+    "status": "candidate",
+    "baseLev": 15,
+    "stopPct": 0.015,
+    "targetPct": 0.08,
+    "intraday": true,
+    "learned": {
+      "n": 0,
+      "expectancy_R": 0,
+      "win_rate": 0,
+      "kelly": 0.12,
+      "confidence": 0.2
+    }
+  },
+  {
+    "id": "adaptive_regime",
+    "name": "Adaptive regime switch",
+    "setup_tag": "regime-adaptive",
+    "markets": [
+      "crypto",
+      "us",
+      "india"
+    ],
+    "text": "Meta-strategy: trend-follow in high-vol, mean-revert in low-vol, sit out in the middle.",
+    "status": "candidate",
+    "baseLev": 10,
+    "stopPct": 0.06,
+    "targetPct": 0.1,
+    "learned": {
+      "n": 0,
+      "expectancy_R": 0,
+      "win_rate": 0,
+      "kelly": 0.12,
+      "confidence": 0.2
+    }
+  },
+  {
+    "id": "oi_diverge",
+    "name": "OI divergence",
+    "setup_tag": "flow-oi",
+    "markets": [
+      "crypto"
+    ],
+    "text": "Detect weak vs confirmed moves using open interest vs price divergence.",
+    "status": "candidate",
+    "baseLev": 10,
+    "stopPct": 0.05,
+    "targetPct": 0.08,
+    "learned": {
+      "n": 0,
+      "expectancy_R": 0,
+      "win_rate": 0,
+      "kelly": 0.12,
+      "confidence": 0.2
+    }
+  },
+  {
+    "id": "orderflow",
+    "name": "Order flow edge (proxy)",
+    "setup_tag": "flow-proxy",
+    "markets": [
+      "crypto"
+    ],
+    "text": "Trade crowd positioning using funding rate + OI delta as proxy for order flow.",
+    "status": "candidate",
+    "baseLev": 8,
+    "stopPct": 0.04,
+    "targetPct": 0.06,
+    "learned": {
+      "n": 0,
+      "expectancy_R": 0,
+      "win_rate": 0,
+      "kelly": 0.12,
+      "confidence": 0.2
+    }
+  },
+  {
+    "id": "atr_expand",
+    "name": "ATR expansion breakout",
+    "setup_tag": "vol-breakout",
+    "markets": [
+      "crypto",
+      "us",
+      "india"
+    ],
+    "text": "Breakout confirmed by volatility expansion (ATR ratio > 1.3).",
+    "status": "candidate",
+    "baseLev": 10,
+    "stopPct": 0.05,
+    "targetPct": 0.1,
+    "learned": {
+      "n": 0,
+      "expectancy_R": 0,
+      "win_rate": 0,
+      "kelly": 0.12,
+      "confidence": 0.2
+    }
+  },
+  {
+    "id": "vwap_revert",
+    "name": "VWAP mean reversion",
+    "setup_tag": "mean-rev-vwap",
+    "markets": [
+      "crypto"
+    ],
+    "text": "Fade extended moves from session VWAP ± 2σ. Crypto intraday only.",
+    "status": "candidate",
+    "baseLev": 8,
+    "stopPct": 0.04,
+    "targetPct": 0.05,
+    "intraday": true,
+    "learned": {
+      "n": 0,
+      "expectancy_R": 0,
+      "win_rate": 0,
+      "kelly": 0.12,
+      "confidence": 0.2
+    }
+  },
+  {
+    "id": "vol_expand",
+    "name": "Volatility expansion (BB squeeze)",
+    "setup_tag": "squeeze",
+    "markets": [
+      "crypto",
+      "us",
+      "india"
+    ],
+    "text": "Trade the Bollinger squeeze release: bandwidth in bottom 20th pctile then expands >15%.",
+    "status": "candidate",
+    "baseLev": 12,
+    "stopPct": 0.05,
+    "targetPct": 0.08,
+    "learned": {
+      "n": 0,
+      "expectancy_R": 0,
+      "win_rate": 0,
+      "kelly": 0.12,
+      "confidence": 0.2
+    }
+  }
+]

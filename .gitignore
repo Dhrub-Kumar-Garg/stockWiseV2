@@ -1,0 +1,6 @@
+node_modules
+.next
+config.json
+data/*
+!data/.gitkeep
+!data/strategies.json
