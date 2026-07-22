@@ -10,6 +10,15 @@ apt-get update
 apt-get upgrade -y
 apt-get install -y curl ufw iptables-persistent
 
+# Create a 2GB swap file to prevent Out of Memory errors on 1GB RAM Free Tier instances
+if [ ! -f /swapfile ]; then
+    echo "Creating 2GB swap file..."
+    fallocate -l 2G /swapfile
+    chmod 600 /swapfile
+    mkswap /swapfile
+    swapon /swapfile
+    echo '/swapfile none swap sw 0 0' | tee -a /etc/fstab
+fi
 # 2. Install Node.js 22.x
 if ! command -v node &> /dev/null
 then
