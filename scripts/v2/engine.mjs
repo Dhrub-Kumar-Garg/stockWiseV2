@@ -34,6 +34,7 @@ import {
   notify, notifyOpen, notifyClose, notifyEpisodeEnd,
   notifyStartup, checkCommands,
 } from "./telegram.mjs";
+import { runAnalyst, readAnalystDecision } from "./analyst.mjs";
 
 const ONCE = process.argv.includes("--once");
 
@@ -43,6 +44,7 @@ const _hist    = {};          // key → close array
 const _histTs  = {};          // key → fetch timestamp
 let   _fxRate  = 83;          // USD/INR fallback
 let   _lastBrainTs = 0;
+let   _lastAnalystTs = 0;      // AI analyst timer
 
 // ── Helpers ────────────────────────────────────────────────────────────────
 
@@ -317,6 +319,12 @@ function doClose(state, symbol, markPrice, reasonTag, cfg) {
 
   state.realizedPnlEpisode = (state.realizedPnlEpisode || 0) + netPnl;
 
+  // Track recent trade results for the circuit breaker
+  if (!state.recentTradeResults) state.recentTradeResults = [];
+  state.recentTradeResults.push(netPnl);
+  if (state.recentTradeResults.length > 20) state.recentTradeResults.shift();
+  state.lastTradeCloseTs = now();
+
   const tradeId = pos.openMeta?.trade_id || `${symbol}_${pos.openedAt}`;
 
   // Journal post
@@ -480,6 +488,7 @@ function publishSignals(state, eq, cfg, worldDigest) {
     recentEpisodes:    recentEps,
     brain,
     world:             worldDigest || null,
+    analyst:           readAnalystDecision(),
   };
 
   writeJSON(V2.signals, sig);
@@ -672,6 +681,15 @@ async function cycle(state, cfg) {
   let worldDigest = null;
   try { worldDigest = await collectWorld(state, cfg); }
   catch (err) { log(`World poll error: ${err.message}`); }
+
+  // ── AI ANALYST (every 15 minutes) ──
+  const analystIntervalMs = (cfg.v2?.analyst?.intervalMinutes || 15) * 60_000;
+  if (now() - _lastAnalystTs >= analystIntervalMs) {
+    try {
+      await runAnalyst(state, worldDigest, cfg);
+      _lastAnalystTs = now();
+    } catch (err) { log(`Analyst error: ${err.message}`); }
+  }
 
   // Cache OI + funding snapshots for OI Divergence / Order Flow strategies
   if (worldDigest?.crypto) {

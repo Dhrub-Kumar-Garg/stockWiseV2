@@ -1,60 +1,71 @@
-// scripts/v2/strategies.mjs — Deterministic strategy library (zero AI tokens)
+// scripts/v2/strategies.mjs — Deterministic strategy library
 // Reads enriched quotes, emits open/close orders with next-tick fills.
 // No looking into the future. No faking signals.
+// V3: Strategies are tagged into pools (trend/revert) and routed by the AI analyst.
 
 import { V2, readJSON, writeJSON, now, clamp } from "./store.mjs";
 import {
   rsi, sma, atr, bollingerBands, percentileRank,
   logReturns, donchianChannel, stdev, mean,
 } from "../lib.mjs";
+import { readAnalystDecision } from "./analyst.mjs";
 
 // ── Seed strategy definitions ──────────────────────────────────────────────
 
 const SEED_STRATEGIES = [
-  { id: "tsmom", name: "Time-series momentum", setup_tag: "momentum", markets: ["crypto", "us", "india"],
-    text: "Long when the 28-day trend is up (price > 200-SMA); short when down. Fast-resolving version for active trading.",
-    status: "candidate", baseLev: 12, stopPct: 0.05, targetPct: 0.10 },
-  { id: "donchian", name: "Donchian breakout", setup_tag: "breakout", markets: ["crypto", "us", "india"],
-    text: "Long a 20-day high breakout above the 200-SMA; short the 20-day breakdown below it. Turtle-style trend following.",
-    status: "candidate", baseLev: 12, stopPct: 0.05, targetPct: 0.08 },
-  { id: "rsi2dip", name: "RSI-2 dip (Connors)", setup_tag: "mean-reversion", markets: ["crypto", "us", "india"],
-    text: "Buy 2-day oversold ONLY in an uptrend (RSI2<10 & price>200-SMA); short overbought in a downtrend.",
-    status: "candidate", baseLev: 10, stopPct: 0.05, targetPct: 0.06 },
-  { id: "mom_trend", name: "Momentum + trend", setup_tag: "trend", markets: ["crypto", "us", "india"],
-    text: "Long strong 28-day momentum above the 200-SMA; ride the trailing exit.",
-    status: "candidate", baseLev: 10, stopPct: 0.05, targetPct: 0.08 },
-  { id: "orb", name: "Opening-range breakout", setup_tag: "orb", markets: ["us"],
-    text: "Trade the break of the first 30m session range at the US open (live-only).",
-    status: "candidate", baseLev: 5, stopPct: 0.016, targetPct: 0.028 },
-  { id: "ibreakout", name: "Intraday breakout (discovered)", setup_tag: "breakout-15m", markets: ["crypto"],
-    text: "15-minute breakout of the prior ~12h range (48 bars). Tight 1.5% stop, 8% target. Forward-test only.",
-    status: "candidate", baseLev: 15, stopPct: 0.015, targetPct: 0.08, intraday: true },
-
-  // ── V2.1 strategies ──────────────────────────────────────────────────────
-  { id: "adaptive_regime", name: "Adaptive regime switch", setup_tag: "regime-adaptive",
+  // ── TREND POOL: Activated when AI analyst says mode=TREND ──────────────
+  { id: "tsmom", name: "Time-series momentum", setup_tag: "momentum", pool: "trend",
     markets: ["crypto", "us", "india"],
-    text: "Meta-strategy: trend-follow in high-vol, mean-revert in low-vol, sit out in the middle.",
-    status: "candidate", baseLev: 10, stopPct: 0.06, targetPct: 0.10 },
-  { id: "oi_diverge", name: "OI divergence", setup_tag: "flow-oi",
+    text: "Long when the 28-day trend is up (price > 200-SMA); short when down.",
+    status: "candidate", baseLev: 5, stopPct: 0.04, targetPct: 0.12 },
+  { id: "donchian", name: "Donchian breakout", setup_tag: "breakout", pool: "trend",
+    markets: ["crypto", "us", "india"],
+    text: "Long a 20-day high breakout above the 200-SMA; short the 20-day breakdown below it.",
+    status: "candidate", baseLev: 5, stopPct: 0.04, targetPct: 0.10 },
+  { id: "mom_trend", name: "Momentum + trend", setup_tag: "trend", pool: "trend",
+    markets: ["crypto", "us", "india"],
+    text: "Long strong 28-day momentum above the 200-SMA; ride the trailing exit.",
+    status: "candidate", baseLev: 4, stopPct: 0.04, targetPct: 0.10 },
+  { id: "orb", name: "Opening-range breakout", setup_tag: "orb", pool: "trend",
+    markets: ["us"],
+    text: "Trade the break of the first 30m session range at the US open (live-only).",
+    status: "candidate", baseLev: 5, stopPct: 0.016, targetPct: 0.04 },
+  { id: "ibreakout", name: "Intraday breakout (discovered)", setup_tag: "breakout-15m", pool: "trend",
     markets: ["crypto"],
-    text: "Detect weak vs confirmed moves using open interest vs price divergence.",
-    status: "candidate", baseLev: 10, stopPct: 0.05, targetPct: 0.08 },
-  { id: "orderflow", name: "Order flow edge (proxy)", setup_tag: "flow-proxy",
-    markets: ["crypto"],
-    text: "Trade crowd positioning using funding rate + OI delta as proxy for order flow.",
-    status: "candidate", baseLev: 8, stopPct: 0.04, targetPct: 0.06 },
-  { id: "atr_expand", name: "ATR expansion breakout", setup_tag: "vol-breakout",
+    text: "15-minute breakout of the prior ~12h range (48 bars). Tight stop, wide target.",
+    status: "candidate", baseLev: 5, stopPct: 0.015, targetPct: 0.08, intraday: true },
+  { id: "atr_expand", name: "ATR expansion breakout", setup_tag: "vol-breakout", pool: "trend",
     markets: ["crypto", "us", "india"],
     text: "Breakout confirmed by volatility expansion (ATR ratio > 1.3).",
-    status: "candidate", baseLev: 10, stopPct: 0.05, targetPct: 0.10 },
-  { id: "vwap_revert", name: "VWAP mean reversion", setup_tag: "mean-rev-vwap",
-    markets: ["crypto"],
-    text: "Fade extended moves from session VWAP ± 2σ. Crypto intraday only.",
-    status: "candidate", baseLev: 8, stopPct: 0.04, targetPct: 0.05, intraday: true },
-  { id: "vol_expand", name: "Volatility expansion (BB squeeze)", setup_tag: "squeeze",
+    status: "candidate", baseLev: 4, stopPct: 0.04, targetPct: 0.12 },
+  { id: "vol_expand", name: "Volatility expansion (BB squeeze)", setup_tag: "squeeze", pool: "trend",
     markets: ["crypto", "us", "india"],
     text: "Trade the Bollinger squeeze release: bandwidth in bottom 20th pctile then expands >15%.",
-    status: "candidate", baseLev: 12, stopPct: 0.05, targetPct: 0.08 },
+    status: "candidate", baseLev: 5, stopPct: 0.04, targetPct: 0.10 },
+
+  // ── REVERT POOL: Activated when AI analyst says mode=REVERT ────────────
+  { id: "rsi2dip", name: "RSI-2 dip (Connors)", setup_tag: "mean-reversion", pool: "revert",
+    markets: ["crypto", "us", "india"],
+    text: "Buy 2-day oversold ONLY in an uptrend (RSI2<10 & price>200-SMA); short overbought in a downtrend.",
+    status: "candidate", baseLev: 3, stopPct: 0.02, targetPct: 0.05 },
+  { id: "vwap_revert", name: "VWAP mean reversion", setup_tag: "mean-rev-vwap", pool: "revert",
+    markets: ["crypto"],
+    text: "Fade extended moves from session VWAP ± 2σ. Crypto intraday only.",
+    status: "candidate", baseLev: 3, stopPct: 0.02, targetPct: 0.04, intraday: true },
+  { id: "orderflow", name: "Order flow edge (proxy)", setup_tag: "flow-proxy", pool: "revert",
+    markets: ["crypto"],
+    text: "Trade crowd positioning using funding rate + OI delta as proxy for order flow.",
+    status: "candidate", baseLev: 3, stopPct: 0.02, targetPct: 0.05 },
+
+  // ── BOTH POOLS: Run in TREND or REVERT mode ───────────────────────────
+  { id: "adaptive_regime", name: "Adaptive regime switch", setup_tag: "regime-adaptive", pool: "both",
+    markets: ["crypto", "us", "india"],
+    text: "Meta-strategy: trend-follow in high-vol, mean-revert in low-vol, sit out in the middle.",
+    status: "candidate", baseLev: 4, stopPct: 0.04, targetPct: 0.10 },
+  { id: "oi_diverge", name: "OI divergence", setup_tag: "flow-oi", pool: "both",
+    markets: ["crypto"],
+    text: "Detect weak vs confirmed moves using open interest vs price divergence.",
+    status: "candidate", baseLev: 4, stopPct: 0.03, targetPct: 0.08 },
 ];
 
 const DEFAULT_LEARNED = { n: 0, expectancy_R: 0, win_rate: 0, kelly: 0.12, confidence: 0.2 };
@@ -79,14 +90,36 @@ export function ensureStrategies() {
 
   // Merge any NEW seeds that don't exist yet
   const existingIds = new Set(strategies.map((s) => s.id));
-  let added = false;
+  let changed = false;
   for (const seed of SEED_STRATEGIES) {
     if (!existingIds.has(seed.id)) {
       strategies.push({ ...seed, learned: { ...DEFAULT_LEARNED } });
-      added = true;
+      changed = true;
     }
   }
-  if (added) writeJSON(V2.strategies, strategies);
+
+  // V3: Merge pool, stopPct, targetPct, baseLev from seeds into existing strategies
+  // This ensures saved strategies get the new pool tags and updated risk-reward ratios.
+  for (const strat of strategies) {
+    const seed = SEED_STRATEGIES.find((s) => s.id === strat.id);
+    if (!seed) continue;
+    if (strat.pool !== seed.pool || strat.stopPct !== seed.stopPct ||
+        strat.targetPct !== seed.targetPct || strat.baseLev !== seed.baseLev) {
+      strat.pool      = seed.pool;
+      strat.stopPct   = seed.stopPct;
+      strat.targetPct = seed.targetPct;
+      strat.baseLev   = seed.baseLev;
+      changed = true;
+    }
+  }
+
+  // Remove strategies that no longer exist in SEED_STRATEGIES
+  const seedIds = new Set(SEED_STRATEGIES.map((s) => s.id));
+  const before = strategies.length;
+  strategies = strategies.filter((s) => seedIds.has(s.id));
+  if (strategies.length !== before) changed = true;
+
+  if (changed) writeJSON(V2.strategies, strategies);
 
   return strategies;
 }
@@ -748,6 +781,29 @@ export function runStrategies(state, eq, cfg, histCache) {
   const openCount = Object.keys(state.positions).length;
   let newOpens = 0;
 
+  // ── AI ANALYST MODE ROUTING ──────────────────────────────────────────────
+  const analyst = readAnalystDecision();
+  const aiMode = (analyst.mode || "SLEEP").toUpperCase();
+  const aiBias = (analyst.direction_bias || "NEUTRAL").toUpperCase();
+
+  // SLEEP mode: no new trades at all
+  if (aiMode === "SLEEP") return orders;
+
+  // Determine which strategy pool to activate
+  const activePool = aiMode === "TREND" ? "trend" : aiMode === "REVERT" ? "revert" : null;
+  if (!activePool) return orders;
+
+  // ── LOSS-STREAK BREAKER: Pause after 3 consecutive losses ──
+  const recentTrades = (state.recentTradeResults || []).slice(-5);
+  const revTrades = [...recentTrades].reverse();
+  const firstWinIdx = revTrades.findIndex(r => r >= 0);
+  const lossStreak = firstWinIdx === -1 ? revTrades.length : firstWinIdx;
+  if (lossStreak >= 3) {
+    const lastTradeTs = state.lastTradeCloseTs || 0;
+    const cooldownHours = Math.min(lossStreak, 6); // 3 losses = 3hr pause, max 6hr
+    if ((nowTs - lastTradeTs) < cooldownHours * 3600_000) return orders;
+  }
+
   const watchlist = cfg.watchlist || [];
 
   for (const item of watchlist) {
@@ -773,7 +829,7 @@ export function runStrategies(state, eq, cfg, histCache) {
     // Non-crypto markets must be in regular session
     if (market !== "crypto" && q.marketState !== "REGULAR") continue;
 
-    // ── Confluence filter: collect ALL signals, require 2+ same-direction ──
+    // ── Confluence filter: collect signals from ACTIVE POOL only ──
     const longSignals = [];
     const shortSignals = [];
 
@@ -781,11 +837,19 @@ export function runStrategies(state, eq, cfg, histCache) {
       if (strat.status === "retired") continue;
       if (!strat.markets.includes(market)) continue;
 
+      // V3: Only run strategies in the active pool (or "both" pool)
+      const pool = strat.pool || "trend";
+      if (pool !== "both" && pool !== activePool) continue;
+
       const sigFn = SIGNAL_FN[strat.id];
       if (!sigFn) continue;
 
       const sig = sigFn(q, strat);
       if (!sig) continue;
+
+      // V3: Direction bias from AI analyst — skip signals against the bias
+      if (aiBias === "LONG" && sig.side === "short") continue;
+      if (aiBias === "SHORT" && sig.side === "long") continue;
 
       const stratConf = strat.learned?.confidence ?? 0.2;
       const score = sig.confidence * (0.5 + stratConf);

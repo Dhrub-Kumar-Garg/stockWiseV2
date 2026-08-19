@@ -40,11 +40,25 @@ function stripUSD(sym: string): string {
 // ════════════════════════════════════════════════════════════════════════════
 
 function EquityChart({ data, startCap }: { data: any[]; startCap: number }) {
+  const [range, setRange] = useState<"1D" | "3D" | "1W" | "1M" | "ALL">("1D");
+
   if (!data || data.length < 2) return null;
 
   const start = startCap || 100;
+
+  // Filter data by time range
+  const nowMs = Date.now();
+  const rangeMs: Record<string, number> = {
+    "1D": 24 * 60 * 60 * 1000,
+    "3D": 3 * 24 * 60 * 60 * 1000,
+    "1W": 7 * 24 * 60 * 60 * 1000,
+    "1M": 30 * 24 * 60 * 60 * 1000,
+    "ALL": Infinity,
+  };
+  const cutoff = range === "ALL" ? 0 : nowMs - rangeMs[range];
+
   const points = data
-    .filter((d: any) => d.equity != null && isFinite(d.equity))
+    .filter((d: any) => d.equity != null && isFinite(d.equity) && (d.ts || 0) >= cutoff)
     .map((d: any) => ({
       ts: d.ts,
       equity: d.equity,
@@ -71,9 +85,17 @@ function EquityChart({ data, startCap }: { data: any[]; startCap: number }) {
     return `${d.getDate()}/${d.getMonth() + 1} ${fmtTime(ts)}`;
   };
 
+  // Show date on X axis for ranges > 1D
+  const fmtXAxis = range === "1D" ? fmtTime : (ts: number) => {
+    const d = new Date(ts);
+    return `${d.getDate()}/${d.getMonth() + 1}`;
+  };
+
   const lastEq = points[points.length - 1].equity;
   const pnl = lastEq - start;
   const isUp = pnl >= 0;
+
+  const ranges: Array<"1D" | "3D" | "1W" | "1M" | "ALL"> = ["1D", "3D", "1W", "1M", "ALL"];
 
   return (
     <div>
@@ -86,8 +108,20 @@ function EquityChart({ data, startCap }: { data: any[]; startCap: number }) {
           <span className="inline-block w-2.5 h-2.5 rounded-sm" style={{ background: "rgba(229,86,111,0.25)" }} />
           Loss zone
         </span>
-        <span className="ml-auto">
-          Start {usd(start, 0)}
+        <span className="ml-auto flex items-center gap-1">
+          {ranges.map((r) => (
+            <button
+              key={r}
+              onClick={() => setRange(r)}
+              className={`px-2 py-0.5 rounded-full text-[10px] font-medium transition-all ${
+                range === r
+                  ? "bg-sakura text-white shadow-sm"
+                  : "bg-cream2 text-inksoft hover:bg-sakurasoft"
+              }`}
+            >
+              {r}
+            </button>
+          ))}
         </span>
       </div>
       <div style={{ width: "100%", height: 140 }}>
@@ -105,7 +139,7 @@ function EquityChart({ data, startCap }: { data: any[]; startCap: number }) {
             </defs>
             <XAxis
               dataKey="ts"
-              tickFormatter={fmtTime}
+              tickFormatter={fmtXAxis}
               tick={{ fontSize: 9, fill: "var(--color-inksoft)" }}
               axisLine={false}
               tickLine={false}
@@ -332,6 +366,36 @@ function OverviewTab({ sig, episodes, equity: eqCurve, world }: any) {
         </div>
         <GoalBar goal={sig.goal} equity={sig.equity || 0} startCap={sig.startingCapital || 100} />
       </div>
+
+      {/* The Bot + Positions + World row */}
+      {/* AI Analyst Card */}
+      {sig.analyst && (
+        <div className="card p-5">
+          <div className="flex items-center gap-2 mb-3">
+            <span className="text-lg">🧠</span>
+            <span className="text-xs font-medium">AI Market Analyst</span>
+            <span className={`ml-auto text-[10px] px-2.5 py-1 rounded-full font-bold tracking-wider uppercase ${
+              sig.analyst.mode === "TREND" ? "bg-up/15 text-upink border border-up/30" :
+              sig.analyst.mode === "REVERT" ? "bg-lavsoft/40 text-lav border border-lavsoft" :
+              "bg-down/10 text-downink border border-down/20"
+            }`}>{sig.analyst.mode || "SLEEP"}</span>
+          </div>
+          <div className="flex gap-3 text-xs text-inksoft mb-3">
+            <span>Bias: <span className={`font-medium ${
+              sig.analyst.direction_bias === "LONG" ? "text-upink" :
+              sig.analyst.direction_bias === "SHORT" ? "text-downink" :
+              "text-inksoft"
+            }`}>{sig.analyst.direction_bias || "NEUTRAL"}</span></span>
+            <span>Aggression: <span className="font-medium text-ink">{((sig.analyst.aggression || 0) * 100).toFixed(0)}%</span></span>
+            {sig.analyst.ts && <span className="ml-auto">{timeAgo(sig.analyst.ts)}</span>}
+          </div>
+          {sig.analyst.reasoning && (
+            <p className="text-[11px] text-inksoft leading-relaxed bg-cream2/50 rounded-lg px-3 py-2">
+              {sig.analyst.reasoning}
+            </p>
+          )}
+        </div>
+      )}
 
       {/* The Bot + Positions + World row */}
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-5">

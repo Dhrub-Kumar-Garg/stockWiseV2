@@ -72,9 +72,9 @@ export async function GET() {
   const tradesRaw   = readJsonl(path.join(DATA, "trades.v2.jsonl"), 60);
   const trades      = tradesRaw.reverse();
 
-  // Equity curve — downsample to max 320 points for the chart
+  // Equity curve — downsample to max 2000 points (supports 1D/3D/1W/1M filters)
   const equityRaw = readJsonl(path.join(DATA, "equity.v2.jsonl"));
-  const equity    = downsample(equityRaw, 320);
+  const equity    = downsample(equityRaw, 2000);
 
   const body = {
     v2: {
