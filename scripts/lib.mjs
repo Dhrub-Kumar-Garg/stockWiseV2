@@ -319,6 +319,30 @@ export function mean(a) {
   return a.reduce((s, v) => s + v, 0) / a.length;
 }
 
+export function covariance(a, b) {
+  if (a.length !== b.length || a.length === 0) return 0;
+  const ma = mean(a);
+  const mb = mean(b);
+  let cov = 0;
+  for (let i = 0; i < a.length; i++) {
+    cov += (a[i] - ma) * (b[i] - mb);
+  }
+  return cov / a.length;
+}
+
+export function correlation(a, b) {
+  const cov = covariance(a, b);
+  const stdevA = stdev(a);
+  const stdevB = stdev(b);
+  if (stdevA === 0 || stdevB === 0) return 0;
+  return cov / (stdevA * stdevB);
+}
+
+export function zscore(value, meanVal, stdevVal) {
+  if (stdevVal === 0) return 0;
+  return (value - meanVal) / stdevVal;
+}
+
 /** Sample standard deviation. */
 export function stdev(a) {
   if (a.length < 2) return 0;

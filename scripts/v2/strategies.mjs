@@ -12,7 +12,7 @@ import { readAnalystDecision } from "./analyst.mjs";
 
 // ── Seed strategy definitions ──────────────────────────────────────────────
 
-const SEED_STRATEGIES = [
+export const SEED_STRATEGIES = [
   // ── TREND POOL: Activated when AI analyst says mode=TREND ──────────────
   { id: "tsmom", name: "Time-series momentum", setup_tag: "momentum", pool: "trend",
     markets: ["crypto", "us", "india"],
@@ -58,6 +58,10 @@ const SEED_STRATEGIES = [
     status: "candidate", baseLev: 3, stopPct: 0.02, targetPct: 0.05 },
 
   // ── BOTH POOLS: Run in TREND or REVERT mode ───────────────────────────
+  { id: "pairs_trade", name: "Statistical Arbitrage (BTC/ETH)", setup_tag: "stat-arb", pool: "both",
+    markets: ["crypto"],
+    text: "Trade the mean reversion of the spread between BTC and ETH using z-scores.",
+    status: "candidate", baseLev: 3, stopPct: 0.03, targetPct: 0.06 },
   { id: "adaptive_regime", name: "Adaptive regime switch", setup_tag: "regime-adaptive", pool: "both",
     markets: ["crypto", "us", "india"],
     text: "Meta-strategy: trend-follow in high-vol, mean-revert in low-vol, sit out in the middle.",
@@ -606,8 +610,51 @@ function sigVolExpansion(q, strat) {
   return null;
 }
 
+function sigPairsTrade(q, strat, eq) {
+  if (q.market !== "crypto" || q.symbol !== "BTC-USD") return null;
+  const ethQ = eq["ETH-USD"];
+  if (!ethQ || !ethQ.closes || ethQ.closes.length < 50 || q.closes.length < 50) return null;
+
+  // Calculate log spread: ln(BTC) - ln(ETH)
+  const spread = [];
+  const lookback = 50;
+  const btcC = q.closes.slice(-lookback);
+  const ethC = ethQ.closes.slice(-lookback);
+  
+  for (let i = 0; i < lookback; i++) {
+    spread.push(Math.log(btcC[i]) - Math.log(ethC[i]));
+  }
+
+  // Calculate z-score of the current spread
+  const currentSpread = spread[spread.length - 1];
+  const meanSpread = spread.reduce((a, b) => a + b, 0) / lookback;
+  const variance = spread.reduce((s, v) => s + (v - meanSpread) ** 2, 0) / lookback;
+  const stdev = Math.sqrt(variance);
+  const zScore = stdev === 0 ? 0 : (currentSpread - meanSpread) / stdev;
+
+  // If BTC is relatively undervalued (zScore < -2.0) -> Buy BTC
+  if (zScore < -2.0) {
+    return {
+      side: "long", baseLev: strat.baseLev,
+      stopPct: strat.stopPct, targetPct: strat.targetPct,
+      confidence: 0.65,
+      reason: `PairsTrade: BTC undervalued vs ETH (z-score ${zScore.toFixed(2)})`,
+    };
+  }
+  // If BTC is relatively overvalued (zScore > 2.0) -> Short BTC
+  if (zScore > 2.0) {
+    return {
+      side: "short", baseLev: strat.baseLev,
+      stopPct: strat.stopPct, targetPct: strat.targetPct,
+      confidence: 0.65,
+      reason: `PairsTrade: BTC overvalued vs ETH (z-score ${zScore.toFixed(2)})`,
+    };
+  }
+  return null;
+}
+
 // Strategy ID → signal function dispatch
-const SIGNAL_FN = {
+export const SIGNAL_FN = {
   tsmom: sigTsmom,
   donchian: sigDonchian,
   rsi2dip: sigRsi2dip,
@@ -620,6 +667,7 @@ const SIGNAL_FN = {
   atr_expand: sigAtrExpansion,
   vwap_revert: sigVwapRevert,
   vol_expand: sigVolExpansion,
+  pairs_trade: sigPairsTrade,
 };
 
 // ── Exit logic ─────────────────────────────────────────────────────────────
@@ -844,7 +892,7 @@ export function runStrategies(state, eq, cfg, histCache) {
       const sigFn = SIGNAL_FN[strat.id];
       if (!sigFn) continue;
 
-      const sig = sigFn(q, strat);
+      const sig = sigFn(q, strat, eq);
       if (!sig) continue;
 
       // V3: Direction bias from AI analyst — skip signals against the bias
