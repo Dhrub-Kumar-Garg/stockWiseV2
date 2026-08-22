@@ -632,12 +632,16 @@ function sigPairsTrade(q, strat, eq) {
   const stdev = Math.sqrt(variance);
   const zScore = stdev === 0 ? 0 : (currentSpread - meanSpread) / stdev;
 
+  // Calculate dynamic confidence based on z-score magnitude
+  // A zScore of 2.0 -> 0.5 confidence. A zScore of 4.0 -> 1.0 confidence.
+  const dynamicConfidence = Math.min(1.0, Math.abs(zScore) / 4.0);
+
   // If BTC is relatively undervalued (zScore < -2.0) -> Buy BTC
   if (zScore < -2.0) {
     return {
       side: "long", baseLev: strat.baseLev,
       stopPct: strat.stopPct, targetPct: strat.targetPct,
-      confidence: 0.65,
+      confidence: dynamicConfidence,
       reason: `PairsTrade: BTC undervalued vs ETH (z-score ${zScore.toFixed(2)})`,
     };
   }
@@ -646,7 +650,7 @@ function sigPairsTrade(q, strat, eq) {
     return {
       side: "short", baseLev: strat.baseLev,
       stopPct: strat.stopPct, targetPct: strat.targetPct,
-      confidence: 0.65,
+      confidence: dynamicConfidence,
       reason: `PairsTrade: BTC overvalued vs ETH (z-score ${zScore.toFixed(2)})`,
     };
   }
@@ -676,7 +680,7 @@ export const SIGNAL_FN = {
  * Check if an open position should exit based on its strategy rules.
  * Returns { exit: true, reason } or null.
  */
-export function strategyExit(pos, q, regime) {
+export function strategyExit(pos, q, eq, regime) {
   const stratId = pos.strategy_id || pos.openMeta?.strategy_id;
   const c = q?.closes;
   if (!c || !c.length) return null;
@@ -793,6 +797,33 @@ export function strategyExit(pos, q, regime) {
       if (pos.side === "short" && price >= bb.middle) {
         return { exit: true, reason: `BB squeeze exit short: price ${price.toFixed(2)} >= middle band ${bb.middle.toFixed(2)}` };
       }
+  // ── pairs_trade: exit when z-score reverts to 0 (mean reversion) ──
+  if (stratId === "pairs_trade" && q.market === "crypto" && q.symbol === "BTC-USD" && eq) {
+    const ethQ = eq["ETH-USD"];
+    if (ethQ && ethQ.closes && ethQ.closes.length >= 50 && c.length >= 50) {
+      const lookback = 50;
+      const btcC = c.slice(-lookback);
+      const ethC = ethQ.closes.slice(-lookback);
+      
+      const spread = [];
+      for (let i = 0; i < lookback; i++) {
+        spread.push(Math.log(btcC[i]) - Math.log(ethC[i]));
+      }
+      
+      const currentSpread = spread[spread.length - 1];
+      const meanSpread = spread.reduce((a, b) => a + b, 0) / lookback;
+      const variance = spread.reduce((s, v) => s + (v - meanSpread) ** 2, 0) / lookback;
+      const stdev = Math.sqrt(variance);
+      const zScore = stdev === 0 ? 0 : (currentSpread - meanSpread) / stdev;
+      
+      // If we are LONG BTC vs ETH, we entered when zScore < -2.0. We exit when it crosses 0 (or goes above it).
+      if (pos.side === "long" && zScore >= 0) {
+        return { exit: true, reason: `PairsTrade exit long: z-score reverted to ${zScore.toFixed(2)} (>= 0)` };
+      }
+      // If we are SHORT BTC vs ETH, we entered when zScore > 2.0. We exit when it crosses 0 (or goes below it).
+      if (pos.side === "short" && zScore <= 0) {
+        return { exit: true, reason: `PairsTrade exit short: z-score reverted to ${zScore.toFixed(2)} (<= 0)` };
+      }
     }
   }
 
@@ -819,7 +850,7 @@ export function runStrategies(state, eq, cfg, histCache) {
   for (const [symbol, pos] of Object.entries(state.positions)) {
     const q = eq[symbol];
     if (!q || !q.closes?.length) continue;
-    const result = strategyExit(pos, q, state.regime);
+    const result = strategyExit(pos, q, eq, state.regime);
     if (result) {
       orders.push({ op: "close", symbol, reason: result.reason });
     }

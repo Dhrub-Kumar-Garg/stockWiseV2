@@ -34,6 +34,14 @@ export function sizeOrder(state, o, eq, cfg) {
     } else {
       base = o.sizePct != null ? o.sizePct : (state.aggression.kellyFraction ?? 0.25) * 0.5;
     }
+    
+    // Scale size by dynamic confidence (if the strategy provided one, like Pairs Trading)
+    if (o.confidence) {
+      // Confidence is 0.0 to 1.0. Scale the base linearly, but keep a floor of 0.2x.
+      const confidenceScale = Math.max(0.2, o.confidence);
+      base *= confidenceScale;
+    }
+
     marginUsd = base * state.equity;
 
     const volTargetDaily = (V.aggression.volTargetAnnual ?? 0.8) / Math.sqrt(365);
