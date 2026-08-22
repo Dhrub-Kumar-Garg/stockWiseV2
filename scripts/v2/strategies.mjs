@@ -797,6 +797,9 @@ export function strategyExit(pos, q, eq, regime) {
       if (pos.side === "short" && price >= bb.middle) {
         return { exit: true, reason: `BB squeeze exit short: price ${price.toFixed(2)} >= middle band ${bb.middle.toFixed(2)}` };
       }
+    }
+  }
+
   // ── pairs_trade: exit when z-score reverts to 0 (mean reversion) ──
   if (stratId === "pairs_trade" && q.market === "crypto" && q.symbol === "BTC-USD" && eq) {
     const ethQ = eq["ETH-USD"];
