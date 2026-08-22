@@ -35,11 +35,23 @@ import {
   notifyStartup, checkCommands,
 } from "./telegram.mjs";
 import { runAnalyst, readAnalystDecision } from "./analyst.mjs";
+import { CryptoFeed } from "./ws_feed.mjs";
 
 const ONCE = process.argv.includes("--once");
 
 // ── Caches (persist across cycles) ─────────────────────────────────────────
 const _quotes  = {};          // sym → last good quote + stale flag
+
+// Initialize WebSocket Feed to dynamically update _quotes
+if (!ONCE) {
+  const feed = new CryptoFeed(["BTC-USD", "ETH-USD"], (symbol, price) => {
+    if (!_quotes[symbol]) _quotes[symbol] = { ok: true, stale: false, fetchedAt: now() };
+    _quotes[symbol].price = price;
+    _quotes[symbol].fetchedAt = now();
+    _quotes[symbol].stale = false;
+  });
+  feed.connect();
+}
 const _hist    = {};          // key → close array
 const _histTs  = {};          // key → fetch timestamp
 let   _fxRate  = 83;          // USD/INR fallback
