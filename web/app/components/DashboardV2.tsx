@@ -73,16 +73,19 @@ function EquityChart({ data, startCap }: { data: any[]; startCap: number }) {
   const domainMin = Math.min(minEq, start) * 0.995;
   const domainMax = Math.max(maxEq, start) * 1.005;
 
+  const firstTs = points[0]?.ts || 0;
+
   const fmtTime = (ts: number) => {
-    const d = new Date(ts);
-    const h = d.getHours().toString().padStart(2, "0");
-    const m = d.getMinutes().toString().padStart(2, "0");
+    // Show elapsed time relative to the start of the graph (00:00)
+    const elapsedMs = Math.max(0, ts - firstTs);
+    const totalMinutes = Math.floor(elapsedMs / 60000);
+    const h = Math.floor(totalMinutes / 60).toString().padStart(2, "0");
+    const m = (totalMinutes % 60).toString().padStart(2, "0");
     return `${h}:${m}`;
   };
 
   const fmtDate = (ts: number) => {
-    const d = new Date(ts);
-    return `${d.getDate()}/${d.getMonth() + 1} ${fmtTime(ts)}`;
+    return fmtTime(ts); // For episodes, relative elapsed time is best
   };
 
   // Show date on X axis for ranges > 1D
