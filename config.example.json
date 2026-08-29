@@ -87,7 +87,7 @@
     "strategies": {
       "loopSeconds": 30,
       "brainLoopMinutes": 8,
-      "maxConcurrentPositions": 3,
+      "maxConcurrentPositions": 5,
       "minNotionalUsd": 2
     }
   }

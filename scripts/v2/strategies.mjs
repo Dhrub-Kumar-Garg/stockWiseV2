@@ -610,49 +610,62 @@ function sigVolExpansion(q, strat) {
   return null;
 }
 
-function sigPairsTrade(q, strat, eq) {
-  if (q.market !== "crypto" || q.symbol !== "BTC-USD") return null;
-  const ethQ = eq["ETH-USD"];
-  if (!ethQ || !ethQ.closes || ethQ.closes.length < 50 || q.closes.length < 50) return null;
-
-  // Calculate log spread: ln(BTC) - ln(ETH)
+// ── Generic z-score spread calculator for any two assets ──
+function calcSpreadZScore(closesA, closesB, lookback = 50) {
+  if (!closesA || !closesB || closesA.length < lookback || closesB.length < lookback) return null;
+  const a = closesA.slice(-lookback);
+  const b = closesB.slice(-lookback);
   const spread = [];
-  const lookback = 50;
-  const btcC = q.closes.slice(-lookback);
-  const ethC = ethQ.closes.slice(-lookback);
-  
-  for (let i = 0; i < lookback; i++) {
-    spread.push(Math.log(btcC[i]) - Math.log(ethC[i]));
-  }
+  for (let i = 0; i < lookback; i++) spread.push(Math.log(a[i]) - Math.log(b[i]));
+  const current = spread[spread.length - 1];
+  const avg = spread.reduce((s, v) => s + v, 0) / lookback;
+  const v = spread.reduce((s, x) => s + (x - avg) ** 2, 0) / lookback;
+  const sd = Math.sqrt(v);
+  return sd === 0 ? 0 : (current - avg) / sd;
+}
 
-  // Calculate z-score of the current spread
-  const currentSpread = spread[spread.length - 1];
-  const meanSpread = spread.reduce((a, b) => a + b, 0) / lookback;
-  const variance = spread.reduce((s, v) => s + (v - meanSpread) ** 2, 0) / lookback;
-  const stdev = Math.sqrt(variance);
-  const zScore = stdev === 0 ? 0 : (currentSpread - meanSpread) / stdev;
+// ── Pairs definitions: [symbolA, symbolB, pairLabel] ──
+const PAIRS = [
+  ["BTC-USD", "ETH-USD", "BTC/ETH"],
+  ["SOL-USD", "ETH-USD", "SOL/ETH"],
+  ["BTC-USD", "SOL-USD", "BTC/SOL"],
+];
 
-  // Calculate dynamic confidence based on z-score magnitude
-  // A zScore of 2.0 -> 0.5 confidence. A zScore of 4.0 -> 1.0 confidence.
-  const dynamicConfidence = Math.min(1.0, Math.abs(zScore) / 4.0);
+function sigPairsTrade(q, strat, eq) {
+  if (q.market !== "crypto") return null;
 
-  // If BTC is relatively undervalued (zScore < -2.0) -> Buy BTC
-  if (zScore < -2.0) {
-    return {
-      side: "long", baseLev: strat.baseLev,
-      stopPct: strat.stopPct, targetPct: strat.targetPct,
-      confidence: dynamicConfidence,
-      reason: `PairsTrade: BTC undervalued vs ETH (z-score ${zScore.toFixed(2)})`,
-    };
-  }
-  // If BTC is relatively overvalued (zScore > 2.0) -> Short BTC
-  if (zScore > 2.0) {
-    return {
-      side: "short", baseLev: strat.baseLev,
-      stopPct: strat.stopPct, targetPct: strat.targetPct,
-      confidence: dynamicConfidence,
-      reason: `PairsTrade: BTC overvalued vs ETH (z-score ${zScore.toFixed(2)})`,
-    };
+  // Find the first pair where this symbol is the base (symbolA)
+  for (const [symA, symB, label] of PAIRS) {
+    if (q.symbol !== symA) continue;
+    const otherQ = eq[symB];
+    if (!otherQ || !otherQ.closes) continue;
+
+    const zScore = calcSpreadZScore(q.closes, otherQ.closes, 50);
+    if (zScore === null) continue;
+
+    // Dynamic confidence: |z| / 3.0 (lower divisor = more confident at moderate z)
+    const dynamicConfidence = Math.min(1.0, Math.abs(zScore) / 3.0);
+
+    // RSI confirmation: only enter if RSI supports the direction
+    const r = q.closes.length >= 14 ? rsi(q.closes, 14) : 50;
+
+    // Entry threshold: 1.5 (was 2.0 — too conservative)
+    if (zScore < -1.5 && r < 40) {
+      return {
+        side: "long", baseLev: strat.baseLev,
+        stopPct: strat.stopPct, targetPct: strat.targetPct,
+        confidence: dynamicConfidence,
+        reason: `PairsTrade: ${symA} undervalued vs ${symB} (z=${zScore.toFixed(2)}, RSI=${r.toFixed(0)})`,
+      };
+    }
+    if (zScore > 1.5 && r > 60) {
+      return {
+        side: "short", baseLev: strat.baseLev,
+        stopPct: strat.stopPct, targetPct: strat.targetPct,
+        confidence: dynamicConfidence,
+        reason: `PairsTrade: ${symA} overvalued vs ${symB} (z=${zScore.toFixed(2)}, RSI=${r.toFixed(0)})`,
+      };
+    }
   }
   return null;
 }
@@ -865,25 +878,30 @@ export function runStrategies(state, eq, cfg, histCache) {
 
   // ── AI ANALYST MODE ROUTING ──────────────────────────────────────────────
   const analyst = readAnalystDecision();
-  const aiMode = (analyst.mode || "SLEEP").toUpperCase();
+  const aiMode = (analyst.mode || "REVERT").toUpperCase();  // Default to REVERT, not SLEEP
   const aiBias = (analyst.direction_bias || "NEUTRAL").toUpperCase();
+  const aiAggression = analyst.aggression || 0.4;
 
-  // SLEEP mode: no new trades at all
-  if (aiMode === "SLEEP") return orders;
+  // SLEEP mode: still allow stat-arb (pairs_trade) with reduced sizing
+  const isSleepMode = aiMode === "SLEEP";
 
   // Determine which strategy pool to activate
-  const activePool = aiMode === "TREND" ? "trend" : aiMode === "REVERT" ? "revert" : null;
-  if (!activePool) return orders;
+  const activePool = aiMode === "TREND" ? "trend" : "revert"; // REVERT is the safe default
 
-  // ── LOSS-STREAK BREAKER: Pause after 3 consecutive losses ──
-  const recentTrades = (state.recentTradeResults || []).slice(-5);
+  // ── NEWS SENTIMENT FILTER ────────────────────────────────────────────────
+  // Read world data to adjust confidence based on news mood
+  const worldData = readJSON(V2.world, null);
+  const newsMood = worldData?.newsMood?.mean_s ?? 0;
+  const fearGreed = worldData?.fearGreedCrypto?.value ?? 50;
+
+  // ── LOSS-STREAK BREAKER: Pause 30 min after 4 consecutive losses ──
+  const recentTrades = (state.recentTradeResults || []).slice(-6);
   const revTrades = [...recentTrades].reverse();
   const firstWinIdx = revTrades.findIndex(r => r >= 0);
   const lossStreak = firstWinIdx === -1 ? revTrades.length : firstWinIdx;
-  if (lossStreak >= 3) {
+  if (lossStreak >= 4) {
     const lastTradeTs = state.lastTradeCloseTs || 0;
-    const cooldownHours = Math.min(lossStreak, 6); // 3 losses = 3hr pause, max 6hr
-    if ((nowTs - lastTradeTs) < cooldownHours * 3600_000) return orders;
+    if ((nowTs - lastTradeTs) < 30 * 60_000) return orders;  // 30 min cooldown
   }
 
   const watchlist = cfg.watchlist || [];
@@ -919,9 +937,12 @@ export function runStrategies(state, eq, cfg, histCache) {
       if (strat.status === "retired") continue;
       if (!strat.markets.includes(market)) continue;
 
+      // In SLEEP mode, only allow stat-arb (pairs_trade) strategies
+      if (isSleepMode && strat.id !== "pairs_trade") continue;
+
       // V3: Only run strategies in the active pool (or "both" pool)
       const pool = strat.pool || "trend";
-      if (pool !== "both" && pool !== activePool) continue;
+      if (!isSleepMode && pool !== "both" && pool !== activePool) continue;
 
       const sigFn = SIGNAL_FN[strat.id];
       if (!sigFn) continue;
@@ -933,24 +954,51 @@ export function runStrategies(state, eq, cfg, histCache) {
       if (aiBias === "LONG" && sig.side === "short") continue;
       if (aiBias === "SHORT" && sig.side === "long") continue;
 
+      // ── NEWS SENTIMENT ADJUSTMENT ──
+      let adjustedConfidence = sig.confidence;
+      if (sig.side === "long") {
+        if (newsMood < -0.3) adjustedConfidence *= 0.7;  // bearish news = reduce long confidence
+        if (newsMood > 0.3)  adjustedConfidence *= 1.2;  // bullish news = boost long confidence
+        if (fearGreed < 25)  adjustedConfidence *= 1.3;  // extreme fear = contrarian buy boost
+        if (fearGreed > 80)  adjustedConfidence *= 0.5;  // extreme greed = risky to go long
+      }
+      if (sig.side === "short") {
+        if (newsMood > 0.3)  adjustedConfidence *= 0.7;  // bullish news = reduce short confidence
+        if (newsMood < -0.3) adjustedConfidence *= 1.2;  // bearish news = boost short confidence
+        if (fearGreed > 80)  adjustedConfidence *= 1.3;  // extreme greed = contrarian short boost
+        if (fearGreed < 25)  adjustedConfidence *= 0.5;  // extreme fear = risky to go short
+      }
+      adjustedConfidence = clamp(adjustedConfidence, 0.05, 1.0);
+
+      // In SLEEP mode, reduce confidence further
+      if (isSleepMode) adjustedConfidence *= 0.5;
+
       const stratConf = strat.learned?.confidence ?? 0.2;
-      const score = sig.confidence * (0.5 + stratConf);
-      const entry = { strat, sig, score };
+      const score = adjustedConfidence * (0.5 + stratConf);
+      const entry = { strat, sig: { ...sig, confidence: adjustedConfidence }, score };
 
       if (sig.side === "long")  longSignals.push(entry);
       if (sig.side === "short") shortSignals.push(entry);
     }
 
-    // Pick the side with 2+ confirmations (prefer the side with more)
+    // V4: Allow single-signal entries for high-confidence setups (>= 0.6)
+    // Still prefer 2+ confluence when available
     let chosenSignals = null;
     if (longSignals.length >= 2 && longSignals.length >= shortSignals.length) {
       chosenSignals = longSignals;
     } else if (shortSignals.length >= 2) {
       chosenSignals = shortSignals;
+    } else {
+      // Single-signal entry: only for high-confidence signals
+      const bestLong = longSignals.length ? longSignals.sort((a, b) => b.score - a.score)[0] : null;
+      const bestShort = shortSignals.length ? shortSignals.sort((a, b) => b.score - a.score)[0] : null;
+      const best = (bestLong && bestShort)
+        ? (bestLong.score >= bestShort.score ? bestLong : bestShort)
+        : (bestLong || bestShort);
+      if (best && best.sig.confidence >= 0.6) chosenSignals = [best];
     }
 
-    if (chosenSignals && chosenSignals.length >= 2) {
-      // Use the highest-confidence signal's parameters
+    if (chosenSignals && chosenSignals.length >= 1) {
       chosenSignals.sort((a, b) => b.score - a.score);
       const best = chosenSignals[0];
       const confirmIds = chosenSignals.map(s => s.strat.id).join("+");

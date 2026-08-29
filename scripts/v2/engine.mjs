@@ -44,7 +44,7 @@ const _quotes  = {};          // sym → last good quote + stale flag
 
 // Initialize WebSocket Feed to dynamically update _quotes
 if (!ONCE) {
-  const feed = new CryptoFeed(["BTC-USD", "ETH-USD"], (symbol, price) => {
+  const feed = new CryptoFeed(["BTC-USD", "ETH-USD", "SOL-USD", "XRP-USD", "DOGE-USD"], (symbol, price) => {
     if (!_quotes[symbol]) _quotes[symbol] = { ok: true, stale: false, fetchedAt: now() };
     _quotes[symbol].price = price;
     _quotes[symbol].fetchedAt = now();
