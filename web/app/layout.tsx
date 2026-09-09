@@ -27,6 +27,8 @@ export default function RootLayout({
         />
       </head>
       <body suppressHydrationWarning>
+        {/* Skip-to-main-content: WCAG 2.4.1 — visible on keyboard focus */}
+        <a href="#main-content" className="skip-link">Skip to main content</a>
         {/* Warm gradient sky + glowing sun — behind everything */}
         <div className="sky" />
         <div className="sun" />

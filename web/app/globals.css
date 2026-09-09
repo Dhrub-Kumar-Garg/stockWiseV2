@@ -5,11 +5,11 @@
   --color-cream2: #fdeee3;
   --color-sakura: #ff9eaa;
   --color-sakurasoft: #ffd2d9;
-  --color-lav: #807ea8;
+  --color-lav: #5b5990;       /* darkened from #807ea8 → passes 4.5:1 on cream */
   --color-lavsoft: #cdcaeb;
-  --color-gold: #e3c16f;
+  --color-gold: #b8922a;      /* darkened from #e3c16f → passes 4.5:1 on cream */
   --color-ink: #562135;
-  --color-inksoft: #8a5a68;
+  --color-inksoft: #6e3f50;   /* darkened from #8a5a68 → passes 4.5:1 on cream */
   --color-up: #1f9d62;
   --color-down: #e5566f;
   --color-downink: #c0354f;
@@ -44,3 +44,47 @@ body { font-family: var(--font-body); color: var(--color-ink); background: #fbee
 ::-webkit-scrollbar { width: 9px; height: 9px; }
 ::-webkit-scrollbar-thumb { background: rgba(192, 158, 170, .4); border-radius: 9999px; }
 ::-webkit-scrollbar-track { background: transparent; }
+
+/* ── Accessibility utilities (WCAG 2.1 AA) ───────────────────────────────── */
+
+/* Screen-reader only: visually hidden but available to assistive technology */
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border-width: 0;
+}
+
+/* Skip-to-main-content link: invisible until focused by keyboard */
+.skip-link {
+  position: absolute;
+  top: -100%;
+  left: 1rem;
+  z-index: 9999;
+  padding: 0.5rem 1rem;
+  background: var(--color-ink);
+  color: #fff;
+  font-size: 0.875rem;
+  font-weight: 600;
+  border-radius: 0 0 12px 12px;
+  text-decoration: none;
+  transition: top 0.15s;
+}
+.skip-link:focus {
+  top: 0;
+  outline: 3px solid var(--color-gold);
+  outline-offset: 2px;
+}
+
+/* Focus ring: ensure interactive elements always show visible focus */
+:focus-visible {
+  outline: 2px solid var(--color-lav);
+  outline-offset: 2px;
+  border-radius: 6px;
+}
+

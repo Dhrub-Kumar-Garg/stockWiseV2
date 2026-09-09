@@ -111,11 +111,12 @@ function EquityChart({ data, startCap }: { data: any[]; startCap: number }) {
           <span className="inline-block w-2.5 h-2.5 rounded-sm" style={{ background: "rgba(229,86,111,0.25)" }} />
           Loss zone
         </span>
-        <span className="ml-auto flex items-center gap-1">
+        <span className="ml-auto flex items-center gap-1" role="group" aria-label="Chart time range">
           {ranges.map((r) => (
             <button
               key={r}
               onClick={() => setRange(r)}
+              aria-pressed={range === r}
               className={`px-2 py-0.5 rounded-full text-[10px] font-medium transition-all ${
                 range === r
                   ? "bg-sakura text-white shadow-sm"
@@ -127,7 +128,11 @@ function EquityChart({ data, startCap }: { data: any[]; startCap: number }) {
           ))}
         </span>
       </div>
-      <div style={{ width: "100%", height: 140 }}>
+      <div
+        style={{ width: "100%", height: 140 }}
+        role="img"
+        aria-label={`Account equity chart. Current equity ${usd(points[points.length - 1]?.equity)}, ${isUp ? "up" : "down"} ${pct(Math.abs(pnl / start))} from starting capital.`}
+      >
         <ResponsiveContainer width="100%" height="100%">
           <AreaChart data={points} margin={{ top: 4, right: 4, bottom: 0, left: 0 }}>
             <defs>
@@ -227,10 +232,17 @@ function GoalBar({ goal, equity, startCap }: { goal: any; equity: number; startC
         <span>{longDeadline ? "no deadline, fast as it can" : `${Math.floor(hoursLeft)}h left`}</span>
       </div>
       <div className="w-full h-3 rounded-full bg-cream2 overflow-hidden">
-        <div className="h-full rounded-full transition-all duration-700"
-          style={{ width: `${prog * 100}%`, background: "linear-gradient(90deg, var(--color-sakura), var(--color-gold), var(--color-up))" }} />
+        <div
+          role="progressbar"
+          aria-valuenow={Math.round(prog * 100)}
+          aria-valuemin={0}
+          aria-valuemax={100}
+          aria-label={`Goal progress: ${(prog * 100).toFixed(1)}% towards ${usd(target, 0)}`}
+          className="h-full rounded-full transition-all duration-700"
+          style={{ width: `${prog * 100}%`, background: "linear-gradient(90deg, var(--color-sakura), var(--color-gold), var(--color-up))" }}
+        />
       </div>
-      <div className="text-right text-xs text-inksoft mt-1">{(prog * 100).toFixed(1)}%</div>
+      <div className="text-right text-xs text-inksoft mt-1" aria-hidden="true">{(prog * 100).toFixed(1)}%</div>
     </div>
   );
 }
@@ -332,9 +344,13 @@ function OverviewTab({ sig, episodes, equity: eqCurve, world }: any) {
       <div className="card-quiet p-4">
         {lastEp ? (
           <div className="flex flex-wrap items-center gap-2 text-sm">
-            <span className="text-lg">{lastEp.blownUp ? "💀" : lastEp.endReason === "goal" ? "🎯" : "✨"}</span>
+            <span className="text-lg" aria-hidden="true">{lastEp.blownUp ? "💀" : lastEp.endReason === "goal" ? "🎯" : "✨"}</span>
+            <span className="sr-only">{lastEp.blownUp ? "Blown up:" : lastEp.endReason === "goal" ? "Goal reached:" : "Completed:"}</span>
             <span className="font-medium">Run {lastEp.episodeNum}</span>
-            <span className={tone(lastEp.returnPct)}>{pct(lastEp.returnPct)}</span>
+            <span className={tone(lastEp.returnPct)}>
+              <span className="sr-only">{lastEp.returnPct >= 0 ? "Profit" : "Loss"}:</span>
+              {pct(lastEp.returnPct)}
+            </span>
             <span className="text-inksoft">· {timeAgo(lastEp.endedAt)}</span>
             <span className="text-inksoft ml-auto text-xs">
               Gen {lastEp.generation ?? "?"} · {sig.aggression?.leverageCap}x · Kelly {((sig.aggression?.kellyFraction ?? 0) * 100).toFixed(0)}%
@@ -342,7 +358,7 @@ function OverviewTab({ sig, episodes, equity: eqCurve, world }: any) {
           </div>
         ) : (
           <div className="flex items-center gap-2 text-sm text-inksoft">
-            <span className="text-lg">🌱</span>
+            <span className="text-lg" aria-hidden="true">🌱</span>
             <span>Run 1 in progress — the bot is learning from scratch.</span>
           </div>
         )}
@@ -352,10 +368,13 @@ function OverviewTab({ sig, episodes, equity: eqCurve, world }: any) {
       <div className="card p-6">
         <div className="flex flex-wrap justify-between items-start gap-4">
           <div>
-            <p className="text-xs text-inksoft mb-1">Account Equity · Episode {sig.episodeNum ?? "?"}</p>
-            <p className="font-display text-5xl font-bold tnum">{usd(sig.equity)}</p>
+            <p className="text-xs text-inksoft mb-1" id="equity-label">Account Equity · Episode {sig.episodeNum ?? "?"}</p>
+            <p className="font-display text-5xl font-bold tnum" aria-labelledby="equity-label">{usd(sig.equity)}</p>
             <p className="mt-1 text-sm">
-              <span className={tone(sig.totalPnl)}>{signed(sig.totalPnl)} ({pct(sig.totalPnlPct)})</span>
+              <span className={tone(sig.totalPnl)}>
+                <span className="sr-only">{(sig.totalPnl ?? 0) >= 0 ? "Profit" : "Loss"}:</span>
+                {signed(sig.totalPnl)} ({pct(sig.totalPnlPct)})
+              </span>
               <span className="text-inksoft"> this run · from {usd(sig.startingCapital, 0)}</span>
             </p>
           </div>
@@ -405,7 +424,11 @@ function OverviewTab({ sig, episodes, equity: eqCurve, world }: any) {
         {/* The Bot */}
         <div className="card p-5 space-y-3">
           <div className="flex items-center gap-2 mb-1">
-            <span className="w-2.5 h-2.5 rounded-full bg-up live-dot" />
+            <span
+              className="w-2.5 h-2.5 rounded-full bg-up live-dot"
+              role="status"
+              aria-label="Bot is live and running"
+            />
             <span className="text-xs font-medium">The Bot</span>
           </div>
           <div className="flex items-center gap-3">
@@ -537,17 +560,28 @@ function EpisodesTab({ episodes, sig }: any) {
       {/* Bar timeline */}
       {hasEnough ? (
         <div className="card p-5 mb-5 overflow-x-auto">
-          <div className="flex items-end gap-1.5 min-w-[400px] h-28">
+          <div
+            className="flex items-end gap-1.5 min-w-[400px] h-28"
+            role="img"
+            aria-label={`Episode returns bar chart. ${eps.length} episodes shown.`}
+          >
             {eps.map((e: any, i: number) => {
               const h = Math.max(8, (Math.abs(e.returnPct || 0) / maxAbs) * 90);
               const blew = e.blownUp;
               const won = e.endReason === "goal";
               const clr = blew ? "bg-down" : won ? "bg-up" : "bg-gold";
+              const returnLabel = `Run ${e.episodeNum}: ${(e.returnPct * 100).toFixed(1)}% ${blew ? "blow-up" : won ? "goal reached" : "time limit"}`;
               return (
                 <div key={i} className="flex flex-col items-center flex-1 gap-0.5">
-                  {blew && <span className="text-[9px]">💀</span>}
-                  <div className={`w-full rounded-t-md ${clr} transition-all`} style={{ height: `${h}%` }} title={`Run ${e.episodeNum}: ${(e.returnPct * 100).toFixed(1)}%`} />
-                  <span className="text-[8px] text-inksoft">{e.episodeNum}</span>
+                  {blew && <span className="text-[9px]" aria-hidden="true">💀</span>}
+                  <div
+                    className={`w-full rounded-t-md ${clr} transition-all`}
+                    style={{ height: `${h}%` }}
+                    title={returnLabel}
+                    aria-label={returnLabel}
+                    role="presentation"
+                  />
+                  <span className="text-[8px] text-inksoft" aria-hidden="true">{e.episodeNum}</span>
                 </div>
               );
             })}
@@ -566,12 +600,18 @@ function EpisodesTab({ episodes, sig }: any) {
           <p className="text-xs font-medium mb-3">Finished Runs</p>
           <div className="space-y-2 max-h-96 overflow-y-auto">
             {[...eps].reverse().map((e: any) => (
-              <div key={e.episodeNum} className="card-quiet p-3 flex flex-wrap items-center gap-x-4 gap-y-1 text-xs">
+              <div key={e.episodeNum} className="card-quiet p-3 flex flex-wrap items-center gap-x-4 gap-y-1 text-xs" role="listitem">
                 <span className="font-medium">Run {e.episodeNum}</span>
-                <span className="capitalize">{e.endReason === "blowup" ? "💀 blow-up" : e.endReason === "goal" ? "🎯 goal" : "⏱ time"}</span>
+                <span className="capitalize">
+                  <span aria-hidden="true">{e.endReason === "blowup" ? "💀" : e.endReason === "goal" ? "🎯" : "⏱"}</span>
+                  {" "}{e.endReason === "blowup" ? "blow-up" : e.endReason === "goal" ? "goal" : "time"}
+                </span>
                 <span className="text-inksoft">Peak {usd(e.peakEquity)}</span>
                 <span className="text-inksoft">DD {((e.maxDrawdownPct || 0) * 100).toFixed(1)}%</span>
-                <span className={`ml-auto tnum font-medium ${tone(e.returnPct)}`}>{pct(e.returnPct)}</span>
+                <span className={`ml-auto tnum font-medium ${tone(e.returnPct)}`}>
+                  <span className="sr-only">{e.returnPct >= 0 ? "Return:" : "Loss:"}:</span>
+                  {pct(e.returnPct)}
+                </span>
               </div>
             ))}
           </div>
@@ -865,10 +905,17 @@ export default function DashboardV2({ data }: { data: any }) {
   return (
     <div className="max-w-6xl mx-auto px-4 py-6 flex flex-col lg:flex-row gap-6">
       {/* ── Desktop sidebar ──────────────────────────────────────────── */}
-      <aside className="hidden lg:flex flex-col w-56 shrink-0 card p-5 sticky top-6 self-start max-h-[calc(100vh-3rem)]">
+      <aside
+        className="hidden lg:flex flex-col w-56 shrink-0 card p-5 sticky top-6 self-start max-h-[calc(100vh-3rem)]"
+        aria-label="StockWise bot controls and navigation"
+      >
         {/* Badge */}
         <div className="flex items-center gap-3 mb-4">
-          <img src="/avatar.png" alt="Dhrub Garg" className="w-11 h-11 rounded-full object-cover shadow-md border-2 border-white/60" />
+          <img
+            src="/avatar.png"
+            alt="Dhrub Garg, StockWise bot owner"
+            className="w-11 h-11 rounded-full object-cover shadow-md border-2 border-white/60"
+          />
           <div>
             <p className="text-sm font-medium leading-tight">Dhrub Garg</p>
             <p className="text-[10px] text-inksoft">StockWise v2</p>
@@ -876,42 +923,44 @@ export default function DashboardV2({ data }: { data: any }) {
         </div>
 
         {/* Nav */}
-        <nav className="flex flex-col gap-0.5 flex-1">
+        <nav className="flex flex-col gap-0.5 flex-1" aria-label="Dashboard sections">
           {TABS.map((t) => (
             <button key={t.id}
               onClick={() => setTab(t.id)}
+              aria-current={tab === t.id ? "page" : undefined}
               className={`flex items-center gap-2.5 px-3 py-2 rounded-xl text-sm text-left transition-all ${tab === t.id
                   ? "bg-sakurasoft/50 text-ink font-medium shadow-sm"
                   : "text-inksoft hover:bg-white/40 hover:text-ink"
                 }`}>
-              <span className="w-4 text-center text-xs">{t.icon}</span>
+              <span className="w-4 text-center text-xs" aria-hidden="true">{t.icon}</span>
               <span>{t.label}</span>
             </button>
           ))}
         </nav>
 
         {/* Bottom note */}
-        <p className="text-[9px] text-inksoft/70 leading-relaxed mt-4 pt-3 border-t border-white/30">
+        <p className="text-[10px] text-inksoft leading-relaxed mt-4 pt-3 border-t border-white/30">
           Simulation on real live prices. Fake money, real lessons. Honest by design, it can lose everything, it never lies.
         </p>
       </aside>
 
       {/* ── Mobile pill bar ──────────────────────────────────────────── */}
-      <nav className="lg:hidden flex overflow-x-auto gap-2 pb-2 -mx-4 px-4 scrollbar-hide">
+      <nav className="lg:hidden flex overflow-x-auto gap-2 pb-2 -mx-4 px-4 scrollbar-hide" aria-label="Dashboard sections mobile">
         {TABS.map((t) => (
           <button key={t.id}
             onClick={() => setTab(t.id)}
+            aria-current={tab === t.id ? "page" : undefined}
             className={`pill px-4 py-2 text-sm whitespace-nowrap shrink-0 transition-all ${tab === t.id
                 ? "bg-sakurasoft/60 text-ink font-medium shadow-sm"
                 : "text-inksoft hover:bg-white/50"
               }`}>
-            <span className="mr-1.5">{t.icon}</span>{t.label}
+            <span className="mr-1.5" aria-hidden="true">{t.icon}</span>{t.label}
           </button>
         ))}
       </nav>
 
       {/* ── Main content ─────────────────────────────────────────────── */}
-      <main className="flex-1 min-w-0">
+      <main id="main-content" className="flex-1 min-w-0" aria-label="Dashboard content">
         {renderTab()}
       </main>
     </div>
