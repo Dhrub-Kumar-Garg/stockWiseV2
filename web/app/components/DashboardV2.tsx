@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import { usd, pct, signed, tone, price, timeAgo } from "../lib/format";
-import { AreaChart, Area, XAxis, YAxis, Tooltip, ReferenceLine, ResponsiveContainer } from "recharts";
+import { AreaChart, Area, XAxis, YAxis, Tooltip, ReferenceLine, ResponsiveContainer, BarChart, Bar, Cell } from "recharts";
 import { Mascot } from "./visuals";
 
 /* eslint-disable @typescript-eslint/no-explicit-any */
@@ -217,6 +217,137 @@ function EquityChart({ data, startCap }: { data: any[]; startCap: number }) {
   );
 }
 
+// ── PnL Chart ────────────────────────────────────────────────────────────────
+function PnLChart({ data, startCap }: { data: any[]; startCap: number }) {
+  type RangeKey = "1D" | "1W" | "1M" | "3M";
+  const [range, setRange] = useState<RangeKey>("1D");
+
+  const start = startCap || 100;
+  const nowMs = Date.now();
+  const rangeMs: Record<RangeKey, number> = {
+    "1D": 24 * 60 * 60 * 1000,
+    "1W": 7 * 24 * 60 * 60 * 1000,
+    "1M": 30 * 24 * 60 * 60 * 1000,
+    "3M": 90 * 24 * 60 * 60 * 1000,
+  };
+  const cutoff = nowMs - rangeMs[range];
+
+  const filtered = data?.filter((d: any) => d.equity != null && isFinite(d.equity) && (d.ts || 0) >= cutoff) ?? [];
+
+  const noData = (
+    <div className="flex flex-col items-center justify-center h-28 gap-1 text-center">
+      <p className="text-xs text-inksoft">No data for this range yet.</p>
+      <p className="text-[10px] text-inksoft opacity-60">Data will accumulate over time.</p>
+    </div>
+  );
+
+  if (filtered.length < 2) return (
+    <div className="card p-5">
+      <div className="flex items-center justify-between mb-3">
+        <p className="text-xs font-medium">PnL Over Time</p>
+        <span role="group" aria-label="PnL time range" className="flex gap-1">
+          {(["1D", "1W", "1M", "3M"] as RangeKey[]).map((r) => (
+            <button key={r} onClick={() => setRange(r)} aria-pressed={range === r}
+              className={`px-2.5 py-1 rounded-full text-[10px] font-medium transition-all ${range === r ? "bg-sakura text-white shadow-sm" : "bg-cream2 text-inksoft hover:bg-sakurasoft"}`}>
+              {r}
+            </button>
+          ))}
+        </span>
+      </div>
+      {noData}
+    </div>
+  );
+
+  // Bucket into up to 48 bars
+  const NUM_BARS = Math.min(48, filtered.length);
+  const bucketSize = Math.ceil(filtered.length / NUM_BARS);
+  const bars: { label: string; pnl: number }[] = [];
+
+  for (let i = 0; i < filtered.length; i += bucketSize) {
+    const slice = filtered.slice(i, i + bucketSize);
+    const prevEquity = i === 0 ? start : (filtered[i - 1]?.equity ?? start);
+    const lastEquity = slice[slice.length - 1].equity;
+    const pnl = parseFloat((lastEquity - prevEquity).toFixed(4));
+    const ts = slice[slice.length - 1].ts;
+    const d = new Date(ts);
+    let label: string;
+    if (range === "1D") label = `${d.getHours().toString().padStart(2,"0")}:${d.getMinutes().toString().padStart(2,"0")}`;
+    else if (range === "1W") label = ["Sun","Mon","Tue","Wed","Thu","Fri","Sat"][d.getDay()];
+    else label = `${d.getDate()}/${d.getMonth()+1}`;
+    bars.push({ label, pnl });
+  }
+
+  const maxAbs = Math.max(...bars.map(b => Math.abs(b.pnl)), 0.01);
+  const totalPnl = (filtered[filtered.length-1]?.equity ?? start) - start;
+  const isUp = totalPnl >= 0;
+  const ranges: RangeKey[] = ["1D", "1W", "1M", "3M"];
+
+  return (
+    <div className="card p-5">
+      {/* Header */}
+      <div className="flex items-center justify-between mb-4">
+        <div>
+          <p className="text-xs font-medium">PnL Over Time</p>
+          <p className={`text-lg font-display font-bold tnum mt-0.5 ${isUp ? "text-upink" : "text-downink"}`}>
+            {isUp ? "+" : ""}{signed(totalPnl)}
+            <span className="text-xs font-normal text-inksoft ml-2">
+              ({isUp ? "+" : ""}{((totalPnl / start) * 100).toFixed(2)}%)
+            </span>
+          </p>
+        </div>
+        <span role="group" aria-label="PnL time range" className="flex gap-1">
+          {ranges.map((r) => (
+            <button key={r} onClick={() => setRange(r)} aria-pressed={range === r}
+              className={`px-2.5 py-1 rounded-full text-[10px] font-medium transition-all ${range === r ? "bg-sakura text-white shadow-sm" : "bg-cream2 text-inksoft hover:bg-sakurasoft"}`}>
+              {r}
+            </button>
+          ))}
+        </span>
+      </div>
+
+      {/* Bar Chart */}
+      <div style={{ width: "100%", height: 140 }}
+        role="img" aria-label={`PnL bar chart for ${range}. Total: ${isUp ? "+" : ""}${signed(totalPnl)}`}>
+        <ResponsiveContainer width="100%" height="100%">
+          <BarChart data={bars} margin={{ top: 4, right: 4, bottom: 0, left: 0 }} barCategoryGap="10%">
+            <XAxis dataKey="label" tick={{ fontSize: 8, fill: "var(--color-inksoft)" }}
+              axisLine={false} tickLine={false} interval={Math.max(0, Math.floor(bars.length / 6))} />
+            <YAxis domain={[-maxAbs * 1.15, maxAbs * 1.15]}
+              tick={{ fontSize: 8, fill: "var(--color-inksoft)" }} axisLine={false} tickLine={false}
+              tickFormatter={(v: number) => `${v >= 0 ? "+" : ""}$${v.toFixed(1)}`} width={44} />
+            <ReferenceLine y={0} stroke="var(--color-inksoft)" strokeOpacity={0.4} strokeDasharray="4 3" />
+            <Tooltip content={({ active, payload }: any) => {
+              if (!active || !payload?.[0]) return null;
+              const d = payload[0].payload;
+              return (
+                <div className="card-quiet px-3 py-2 text-xs shadow-lg">
+                  <p className="text-inksoft mb-0.5">{d.label}</p>
+                  <p className={`font-medium tnum ${d.pnl >= 0 ? "text-upink" : "text-downink"}`}>
+                    {d.pnl >= 0 ? "+" : ""}${d.pnl.toFixed(4)}
+                  </p>
+                </div>
+              );
+            }} />
+            <Bar dataKey="pnl" radius={[3, 3, 0, 0]} isAnimationActive={false}>
+              {bars.map((b, i) => (
+                <Cell key={i} fill={b.pnl >= 0 ? "var(--color-up)" : "var(--color-down)"} fillOpacity={0.8} />
+              ))}
+            </Bar>
+          </BarChart>
+        </ResponsiveContainer>
+      </div>
+
+      {/* Summary row */}
+      <div className="flex flex-wrap gap-4 mt-3 text-[10px] text-inksoft border-t border-white/30 pt-3">
+        <span>Green bars: <span className="text-upink font-medium">{bars.filter(b => b.pnl > 0).length}</span></span>
+        <span>Red bars: <span className="text-downink font-medium">{bars.filter(b => b.pnl < 0).length}</span></span>
+        <span className="ml-auto">Best: <span className="text-upink font-medium tnum">+${Math.max(...bars.map(b => b.pnl)).toFixed(4)}</span></span>
+        <span>Worst: <span className="text-downink font-medium tnum">${Math.min(...bars.map(b => b.pnl)).toFixed(4)}</span></span>
+      </div>
+    </div>
+  );
+}
+
 function GoalBar({ goal, equity, startCap }: { goal: any; equity: number; startCap: number }) {
   if (!goal) return null;
   const target = goal.target || 500;
@@ -388,6 +519,9 @@ function OverviewTab({ sig, episodes, equity: eqCurve, world }: any) {
         </div>
         <GoalBar goal={sig.goal} equity={sig.equity || 0} startCap={sig.startingCapital || 100} />
       </div>
+
+      {/* PnL Chart */}
+      <PnLChart data={eqCurve || []} startCap={sig.startingCapital || 100} />
 
       {/* The Bot + Positions + World row */}
       {/* AI Analyst Card */}
