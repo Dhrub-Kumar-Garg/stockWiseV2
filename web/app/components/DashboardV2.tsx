@@ -44,7 +44,7 @@ function EquityChart({ data, startCap }: { data: any[]; startCap: number }) {
 
   if (!data || data.length < 2) return null;
 
-  const start = startCap || 100;
+  const start = range === "ALL" ? 100 : (startCap || 100);
 
   // Filter data by time range
   const nowMs = Date.now();
@@ -73,23 +73,24 @@ function EquityChart({ data, startCap }: { data: any[]; startCap: number }) {
   const domainMin = Math.min(minEq, start) * 0.995;
   const domainMax = Math.max(maxEq, start) * 1.005;
 
-  const firstTs = points[0]?.ts || 0;
 
   const fmtTime = (ts: number) => {
-    // Show elapsed time relative to the start of the graph (00:00)
-    const elapsedMs = Math.max(0, ts - firstTs);
-    const totalMinutes = Math.floor(elapsedMs / 60000);
-    const h = Math.floor(totalMinutes / 60).toString().padStart(2, "0");
-    const m = (totalMinutes % 60).toString().padStart(2, "0");
+    const d = new Date(ts);
+    const h = d.getHours().toString().padStart(2, "0");
+    const m = d.getMinutes().toString().padStart(2, "0");
     return `${h}:${m}`;
   };
 
   const fmtDate = (ts: number) => {
-    return fmtTime(ts); // For episodes, relative elapsed time is best
+    const d = new Date(ts);
+    const day = d.getDate().toString().padStart(2, "0");
+    const mon = (d.getMonth() + 1).toString().padStart(2, "0");
+    return `${day}/${mon} ${fmtTime(ts)}`;
   };
 
-  // Show date on X axis for ranges > 1D
-  const fmtXAxis = range === "1D" ? fmtTime : (ts: number) => {
+  // Show local clock time on X axis for 1D, date for ranges > 1D
+  const fmtXAxis = (ts: number) => {
+    if (range === "1D") return fmtTime(ts);
     const d = new Date(ts);
     return `${d.getDate()}/${d.getMonth() + 1}`;
   };
@@ -501,12 +502,19 @@ function OverviewTab({ sig, episodes, equity: eqCurve, world }: any) {
           <div>
             <p className="text-xs text-inksoft mb-1" id="equity-label">Account Equity · Episode {sig.episodeNum ?? "?"}</p>
             <p className="font-display text-5xl font-bold tnum" aria-labelledby="equity-label">{usd(sig.equity)}</p>
-            <p className="mt-1 text-sm">
+            <p className="mt-1 text-sm flex flex-wrap items-center gap-x-2">
               <span className={tone(sig.totalPnl)}>
                 <span className="sr-only">{(sig.totalPnl ?? 0) >= 0 ? "Profit" : "Loss"}:</span>
                 {signed(sig.totalPnl)} ({pct(sig.totalPnlPct)})
               </span>
-              <span className="text-inksoft"> this run · from {usd(sig.startingCapital, 0)}</span>
+              <span className="text-inksoft">this run · from {usd(sig.startingCapital, 0)}</span>
+              {((sig.lifetime?.initialCapital && sig.startingCapital !== sig.lifetime.initialCapital) || (sig.episodeNum && sig.episodeNum > 1)) && (
+                <span className="text-xs text-inksoft">
+                  · All-time: <span className={`font-medium ${tone(sig.equity - (sig.lifetime?.initialCapital || 100))}`}>
+                    {signed(sig.equity - (sig.lifetime?.initialCapital || 100))} ({pct((sig.equity - (sig.lifetime?.initialCapital || 100)) / (sig.lifetime?.initialCapital || 100))})
+                  </span>
+                </span>
+              )}
             </p>
           </div>
           <div className="text-right text-sm space-y-0.5">

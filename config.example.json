@@ -46,6 +46,7 @@
     "immutableCore": "honesty",
     "episode": {
       "autoResetOnBlowup": true,
+      "carryOverCapital": true,
       "maxHoursPerEpisode": 24,
       "blowupEquity": 0,
       "goal": { "target": 500, "deadlineHours": 24 }

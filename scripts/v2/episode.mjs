@@ -59,6 +59,7 @@ export function freshV2State(cfg) {
       bestEpisodeReturnPct: 0,
       bestEquityEver: capital,
       careerStartedAt: ts,
+      initialCapital: capital,
     },
 
     lastWorldDeepTs: 0,
@@ -164,11 +165,17 @@ export function finalizeEpisode(state, reason, extra = {}) {
 
 /**
  * Reset for the next run.
- * Capital, positions, and drawdown reset.
+ * If carryOverCapital is enabled (default true) and the bot didn't blow up,
+ * the ending equity becomes the starting capital for the new episode
+ * so profits compound seamlessly (e.g. $100 -> $101.20 -> $102...).
  * Generation, aggression, and all learning files PERSIST.
  */
 export function nextEpisode(state, cfg) {
-  const capital = cfg.v2.startingCapital;
+  const carryOver = cfg.v2?.episode?.carryOverCapital !== false;
+  const isBlowup = state.blownUp || state.equity <= (cfg.v2?.episode?.blowupEquity ?? 0);
+  const capital = (!isBlowup && carryOver && state.equity > 0)
+    ? round(state.equity, 2)
+    : cfg.v2.startingCapital;
   const ts = now();
 
   state.episodeNum += 1;
@@ -187,10 +194,11 @@ export function nextEpisode(state, cfg) {
   state.riskState = "normal";
   state.blownUp = false;
 
+  const initCap = state.lifetime?.initialCapital || cfg.v2.startingCapital || capital;
   state.goal = {
     target: cfg.v2.episode.goal.target,
     deadlineHours: cfg.v2.episode.goal.deadlineHours,
-    startEquity: capital,
+    startEquity: initCap,
     startedAt: ts,
   };
 
