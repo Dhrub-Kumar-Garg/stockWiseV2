@@ -1,7 +1,7 @@
 // scripts/v2/episode.mjs — Episode lifecycle: start → run → reset → learn
 // The bot runs in rounds. Capital resets; learning never does.
 
-import { now, iso, writeJSON, appendJSONL, V2 } from "./store.mjs";
+import { now, iso, writeJSON, appendJSONL, V2, round } from "./store.mjs";
 
 // ── Fresh state ────────────────────────────────────────────────────────────
 

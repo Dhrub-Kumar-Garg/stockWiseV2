@@ -782,7 +782,7 @@ function EvolutionTab({ generations }: any) {
             <div key={i} className="card p-5">
               <div className="flex flex-wrap items-center gap-2 mb-2">
                 <span className="font-display text-lg font-semibold">Gen {g.generation}</span>
-                <span className="text-xs text-inksoft">after run #{g.afterEpisode}</span>
+                <span className="text-xs text-inksoft">after run #{g.afterEpisode ?? g.episodeNum}</span>
               </div>
               <div className="flex gap-4 text-xs text-inksoft mb-2">
                 <span>Leverage <span className="font-medium text-ink">{g.leverageCap}x</span></span>
