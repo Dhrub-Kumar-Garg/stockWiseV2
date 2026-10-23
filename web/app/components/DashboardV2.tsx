@@ -44,7 +44,7 @@ function EquityChart({ data, startCap }: { data: any[]; startCap: number }) {
 
   if (!data || data.length < 2) return null;
 
-  const start = range === "ALL" ? 100 : (startCap || 100);
+  const start = 100;
 
   // Filter data by time range
   const nowMs = Date.now();
@@ -223,7 +223,7 @@ function PnLChart({ data, startCap }: { data: any[]; startCap: number }) {
   type RangeKey = "1D" | "1W" | "1M" | "3M";
   const [range, setRange] = useState<RangeKey>("1D");
 
-  const start = startCap || 100;
+  const start = range === "1D" ? (startCap || 100) : 100;
   const nowMs = Date.now();
   const rangeMs: Record<RangeKey, number> = {
     "1D": 24 * 60 * 60 * 1000,
