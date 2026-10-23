@@ -223,7 +223,7 @@ function PnLChart({ data, startCap }: { data: any[]; startCap: number }) {
   type RangeKey = "1D" | "1W" | "1M" | "3M";
   const [range, setRange] = useState<RangeKey>("1D");
 
-  const start = range === "1D" ? (startCap || 100) : 100;
+  const start = 100;
   const nowMs = Date.now();
   const rangeMs: Record<RangeKey, number> = {
     "1D": 24 * 60 * 60 * 1000,
@@ -502,20 +502,27 @@ function OverviewTab({ sig, episodes, equity: eqCurve, world }: any) {
           <div>
             <p className="text-xs text-inksoft mb-1" id="equity-label">Account Equity · Episode {sig.episodeNum ?? "?"}</p>
             <p className="font-display text-5xl font-bold tnum" aria-labelledby="equity-label">{usd(sig.equity)}</p>
-            <p className="mt-1 text-sm flex flex-wrap items-center gap-x-2">
-              <span className={tone(sig.totalPnl)}>
-                <span className="sr-only">{(sig.totalPnl ?? 0) >= 0 ? "Profit" : "Loss"}:</span>
-                {signed(sig.totalPnl)} ({pct(sig.totalPnlPct)})
-              </span>
-              <span className="text-inksoft">this run · from {usd(sig.startingCapital, 0)}</span>
-              {((sig.lifetime?.initialCapital && sig.startingCapital !== sig.lifetime.initialCapital) || (sig.episodeNum && sig.episodeNum > 1)) && (
-                <span className="text-xs text-inksoft">
-                  · All-time: <span className={`font-medium ${tone(sig.equity - (sig.lifetime?.initialCapital || 100))}`}>
-                    {signed(sig.equity - (sig.lifetime?.initialCapital || 100))} ({pct((sig.equity - (sig.lifetime?.initialCapital || 100)) / (sig.lifetime?.initialCapital || 100))})
+            {(() => {
+              const initCap = sig.lifetime?.initialCapital || 100;
+              const allTimePnl = (sig.equity ?? initCap) - initCap;
+              const allTimePnlPct = initCap > 0 ? allTimePnl / initCap : 0;
+              return (
+                <p className="mt-1 text-sm flex flex-wrap items-center gap-x-2">
+                  <span className={`font-semibold ${tone(allTimePnl)}`}>
+                    <span className="sr-only">{allTimePnl >= 0 ? "Profit" : "Loss"}:</span>
+                    {signed(allTimePnl)} ({pct(allTimePnlPct)})
                   </span>
-                </span>
-              )}
-            </p>
+                  <span className="text-inksoft">total (from {usd(initCap, 0)})</span>
+                  {((sig.startingCapital && sig.startingCapital !== initCap) || (sig.episodeNum && sig.episodeNum > 1)) && (
+                    <span className="text-xs text-inksoft">
+                      · Ep {sig.episodeNum ?? ""}: <span className={`font-medium ${tone(sig.totalPnl)}`}>
+                        {signed(sig.totalPnl)} ({pct(sig.totalPnlPct)})
+                      </span> from {usd(sig.startingCapital, 0)}
+                    </span>
+                  )}
+                </p>
+              );
+            })()}
           </div>
           <div className="text-right text-sm space-y-0.5">
             <p className="text-inksoft">Gross leverage <span className="tnum font-medium text-ink">{sig.grossLeverage?.toFixed(1) ?? "0"}x</span></p>
