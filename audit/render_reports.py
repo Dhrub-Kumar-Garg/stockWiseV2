@@ -14,7 +14,7 @@ def inventory():
     paths = subprocess.check_output(['git', 'ls-tree', '-r', '--name-only', BASE_REVISION], cwd=ROOT, text=True).splitlines()
     rows, tree = [], {}
     for name in paths:
-        payload = (ROOT / name).read_bytes()
+        payload = subprocess.check_output(['git', 'show', BASE_REVISION + ':' + name], cwd=ROOT)
         skip = name.endswith('lock.json')
         binary = name.endswith('.png')
         text = None if skip or binary else payload.decode('utf-8-sig')

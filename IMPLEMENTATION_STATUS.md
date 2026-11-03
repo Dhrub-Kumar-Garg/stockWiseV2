@@ -16,7 +16,7 @@ on positive cost-net evidence. Historical audit reports describe the old revisio
 | 6. Timestamp/currency integrity | Complete | Closed OHLC, gaps/duplicates, quote/FX age, currency and event-time pairing tested |
 | 7. One entrypoint and truthful UI | Complete | Both CLI paths mock-only integration; next-observation fill, cashflow P&L, build passed |
 | 8. Durable paper order lifecycle | Complete | SQLite atomic snapshots/events/IDs, writer lease, crash rollback, reservations, safe migration plan |
-| 9. Versioned causal evaluation | Pending | |
+| 9. Versioned causal evaluation | Complete | Frozen historical source, all-cost current runtime replay, adverse-first OHLC, chronological embargo and flat-alpha rejection |
 | 10. Bounded asynchronous feeds | Pending | |
 | 11. Decision traces | Pending | |
 | 12. Structured news | Pending | |

@@ -2,7 +2,7 @@
 import assert from 'node:assert/strict';
 import fs from 'node:fs';
 import path from 'node:path';
-import { sandbox, config, clone, ROOT } from './source_adapter.mjs';
+import { sandbox, config, clone, BASELINE_ROOT as ROOT } from './source_adapter.mjs';
 
 const results = [];
 function check(name, fn) {

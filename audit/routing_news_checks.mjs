@@ -2,7 +2,7 @@
 import assert from 'node:assert/strict';
 import fs from 'node:fs';
 import path from 'node:path';
-import {sandbox, declarations, config, clone, ROOT} from './source_adapter.mjs';
+import {sandbox, declarations, config, clone, BASELINE_ROOT as ROOT} from './source_adapter.mjs';
 import * as score from '../scripts/world/score.mjs';
 
 const output = [];

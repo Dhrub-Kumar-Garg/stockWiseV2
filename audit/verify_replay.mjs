@@ -4,7 +4,7 @@ import assert from 'node:assert/strict';
 import fs from 'node:fs';
 import path from 'node:path';
 import crypto from 'node:crypto';
-import {sandbox, config, clone, declarations, ROOT} from './source_adapter.mjs';
+import {sandbox, config, clone, declarations, ROOT, auditedBytes} from './source_adapter.mjs';
 import {statistics} from './backtest.mjs';
 
 const source = fs.readFileSync(path.join(ROOT, 'audit/backtest.mjs'), 'utf8');
@@ -93,7 +93,7 @@ for (const file of ['backtest.json', 'stress.json']) {
   const report = JSON.parse(fs.readFileSync(path.join(ROOT, 'audit/results', file)));
   check(file + ': source SHA256 content matches (LF/CRLF checkout differences allowed)', () => {
     for (const [name, hash] of Object.entries(report.sourceHashes)) {
-      const raw = fs.readFileSync(path.join(ROOT, name), 'utf8');
+      const raw = auditedBytes(name).toString('utf8');
       const lf = raw.replace(/\r\n/g, '\n');
       const candidates = [raw, lf, lf.replace(/\n/g, '\r\n')].map(text => crypto.createHash('sha256').update(text).digest('hex'));
       assert.ok(candidates.includes(hash), name);

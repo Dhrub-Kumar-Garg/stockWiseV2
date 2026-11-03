@@ -1,8 +1,8 @@
 // Public RSS GETs only. Never contacts Groq, Telegram, deployment or private APIs.
 import fs from 'node:fs';
 import path from 'node:path';
-import {ROOT} from './source_adapter.mjs';
-const source = fs.readFileSync(path.join(ROOT, 'scripts/v2/world.mjs'), 'utf8');
+import {ROOT,BASELINE_ROOT} from './source_adapter.mjs';
+const source = fs.readFileSync(path.join(BASELINE_ROOT, 'scripts/v2/world.mjs'), 'utf8');
 const parseSource = source.slice(source.indexOf('function parseTitles('), source.indexOf('// ── Individual source fetchers'));
 const parseTitles = new Function(parseSource + '\nreturn parseTitles;')();
 const urls = ['https://cointelegraph.com/rss', 'https://decrypt.co/feed', 'https://www.federalreserve.gov/feeds/press_all.xml'];
