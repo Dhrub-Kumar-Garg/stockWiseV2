@@ -1,3 +1,4 @@
+import {SnapshotWorker} from './http.mjs';
 import fs from 'node:fs';
 import path from 'node:path';
 import {fileURLToPath} from 'node:url';
@@ -8,17 +9,24 @@ import {createPaperState,paperTick,signalsFor} from './runtime.mjs';
 import {fetchQuote,fetchFxSnapshot,fetchHistoryBars,indicators} from '../lib.mjs';
 import {toUsd,timestampedReturns} from './market_data.mjs';
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)),'../..');
+const historyCache=new Map();
+async function history(symbol,range,interval,at) {
+  const key=symbol+interval, row=historyCache.get(key), ttl=interval==='1d'?3600000:60000;
+  if(row&&at-row.at<ttl)return row.value;
+  const value=await fetchHistoryBars(symbol,range,interval,at);historyCache.set(key,{at,value});return value;
+}
 export async function collectQuotes(cfg, at = Date.now(), mock = false) {
   if (mock) return Object.fromEntries(cfg.watchlist.map(w => [w.symbol,{symbol:w.symbol,market:w.market,currency:'USD',price:100,
     ok:true,sourceTs:at,receivedAt:at,marketState:'REGULAR',closes:Array(365).fill(100),closesIntraday:Array(480).fill(100),dailyBars:[],returns:[]}]));
-  const fx = await fetchFxSnapshot().catch(()=>null), entries = await Promise.all(cfg.watchlist.map(async w => {
+  const fxPromise=fetchFxSnapshot().catch(()=>null), entries=[], pending=[...cfg.watchlist];
+  await Promise.all(Array.from({length:Math.min(3,pending.length)},async()=>{ while(pending.length) {const w=pending.shift();entries.push(await (async()=>{
     try {
-      const [raw,daily,intraday] = await Promise.all([fetchQuote(w.symbol),fetchHistoryBars(w.symbol,'1y','1d',at),
-        w.market === 'crypto' ? fetchHistoryBars(w.symbol,'5d','15m',at) : []]);
-      const q = toUsd(raw,fx,at), closes = daily.map(b=>b.c/(q.fx || 1));
+      const [raw,daily,intraday] = await Promise.all([fetchQuote(w.symbol),history(w.symbol,'1y','1d',at),
+        w.market === 'crypto' ? history(w.symbol,'5d','15m',at) : []]);
+      const q = toUsd(raw,await fxPromise,Date.now()), closes = daily.map(b=>b.c/(q.fx || 1));
       return [w.symbol,{...q,...indicators(closes),symbol:w.symbol,market:w.market,closes,dailyBars:daily,returns:timestampedReturns(daily),closesIntraday:intraday.map(b=>b.c/(q.fx || 1))}];
     } catch { return [w.symbol,{symbol:w.symbol,ok:false,stale:true}]; }
-  }));
+  })());}}));
   return Object.fromEntries(entries);
 }
 export async function runCLI(args = process.argv.slice(2)) {
@@ -33,16 +41,21 @@ export async function runCLI(args = process.argv.slice(2)) {
   try {
     if (!store.load()) {
       if (fs.existsSync(path.join(ROOT,'data','state.v2.json')) || fs.existsSync(path.join(dir,'state.v3.json'))) throw new Error('Legacy snapshot detected; explicit reconciliation required');
-      store.initialize(createPaperState(cfg),publish(createPaperState(cfg)));
+      const initial=createPaperState(cfg); store.initialize(initial,publish(initial));
     } else if (args.includes('--initialize')) throw new Error('Paper store exists; initialization never overwrites');
     if (args.includes('--initialize')) return;
+    const feed=new SnapshotWorker(()=>collectQuotes(cfg,Date.now(),args.includes('--mock')),{ttlMs:10000});
+    if(args.includes('--once'))await feed.refresh();
+    let nextDecision=0;
     do {
-      const began=Date.now(), quotes=await collectQuotes(cfg,began,args.includes('--mock'));
-      const result=store.transact(state=>paperTick(state,quotes,cfg,{at:Date.now()}),publish);
+      const began=Date.now(); feed.refresh();
+      const snapshot=feed.snapshot(), quotes=snapshot.value || {};
+      const result=store.transact(state=>paperTick(state,quotes,cfg,{at:Date.now(),...(began<nextDecision?{evaluate:()=>[]}:{})}),publish);
+      if(began>=nextDecision)nextDecision=began+cfg.v2.strategies.loopSeconds*1000;
       const state=result.state;
       console.log(JSON.stringify({mode:'paper',cycle:state.cycles,equity:state.equity,risk:state.riskState,health:state.health.status}));
       if (args.includes('--once')) break;
-      await new Promise(resolve=>setTimeout(resolve,Math.max(0,cfg.v2.strategies.loopSeconds*1000-(Date.now()-began))));
+      await new Promise(resolve=>setTimeout(resolve,Math.max(0,1000-(Date.now()-began))));
     } while (true);
   } finally {store.close();}
 }

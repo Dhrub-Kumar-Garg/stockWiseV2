@@ -1,3 +1,4 @@
+import {readPublic} from './v2/http.mjs';
 import {parseYahooBars} from "./v2/market_data.mjs";
 // scripts/lib.mjs — FabInvests shared toolbox
 // Pure Node ESM · zero third-party deps · keyless, free data only.
@@ -84,31 +85,8 @@ const UA =
   "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 " +
   "(KHTML, like Gecko) Chrome/131.0.0.0 Safari/537.36";
 
-async function fetchWithTimeout(url, opts = {}, timeoutMs = 12000) {
-  const ctrl = new AbortController();
-  const timer = setTimeout(() => ctrl.abort(), timeoutMs);
-  try {
-    return await fetch(url, {
-      ...opts,
-      signal: ctrl.signal,
-      headers: { "User-Agent": UA, ...opts.headers },
-    });
-  } finally {
-    clearTimeout(timer);
-  }
-}
-
-export async function getJSON(url) {
-  const res = await fetchWithTimeout(url);
-  if (!res.ok) throw new Error(`HTTP ${res.status} for ${url}`);
-  return res.json();
-}
-
-export async function getText(url) {
-  const res = await fetchWithTimeout(url);
-  if (!res.ok) throw new Error(`HTTP ${res.status} for ${url}`);
-  return res.text();
-}
+export async function getJSON(url) {return readPublic(url,{json:true});}
+export async function getText(url) {return readPublic(url);}
 
 /** Yahoo Finance v8 chart URL builder (keyless). */
 export function YH(sym, range = "1d", interval = "5m") {

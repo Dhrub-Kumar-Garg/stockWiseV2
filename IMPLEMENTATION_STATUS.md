@@ -17,7 +17,7 @@ on positive cost-net evidence. Historical audit reports describe the old revisio
 | 7. One entrypoint and truthful UI | Complete | Both CLI paths mock-only integration; next-observation fill, cashflow P&L, build passed |
 | 8. Durable paper order lifecycle | Complete | SQLite atomic snapshots/events/IDs, writer lease, crash rollback, reservations, safe migration plan |
 | 9. Versioned causal evaluation | Complete | Frozen historical source, all-cost current runtime replay, adverse-first OHLC, chronological embargo and flat-alpha rejection |
-| 10. Bounded asynchronous feeds | Pending | |
+| 10. Bounded asynchronous feeds | Complete | Single-flight background snapshots, 1s risk cadence, bounded HTTP body deadlines/retry, WS watchdog/parser and partial-fill research adapter |
 | 11. Decision traces | Pending | |
 | 12. Structured news | Pending | |
 | 13. Calibration and expiring context | Pending | |
