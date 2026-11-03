@@ -7,7 +7,7 @@ export const revalidate = 0;
 export async function GET(request: Request) {
   const access = dashboardAccess(request.headers);
   if (!access.ok) return NextResponse.json({error: access.error}, {status: access.status, headers: {"Cache-Control": "no-store"}});
-  const data = process.env.STOCKWISE_DATA_DIR || path.resolve(process.cwd(), "../data");
+  const data = process.env.STOCKWISE_DATA_DIR || path.resolve(process.cwd(), "../data/paper");
   const read = (name: string, fallback: unknown = null): unknown => {
     try { return JSON.parse(readFileSync(path.join(data, name), "utf8")); } catch { return fallback; }
   };

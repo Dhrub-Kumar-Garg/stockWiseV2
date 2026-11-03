@@ -15,7 +15,8 @@ const scalars = (object, keys) => Object.fromEntries(keys.split(' ').filter(key 
 const rows = (value, keys, limit = 100) => Array.isArray(value) ? value.slice(-limit).map(row => scalars(row, keys)) : [];
 export function dashboardDTO(input = {}, serverTs = Date.now()) {
   const sig = input.signals || {};
-  const signals = scalars(sig, 'ts iso version mode episodeNum equity walletBalance startingCapital totalPnl totalPnlPct progressPct goalGap realizedPnlEpisode peakEquity maxDrawdownPct riskState regime generation fundingRate investedNotional grossLeverage');
+  const signals = scalars(sig, 'ts iso version mode episodeNum equity walletBalance startingCapital totalPnl totalNetPnl totalPnlPct progressPct goalGap realizedPnlEpisode peakEquity maxDrawdownPct riskState regime generation fundingRate investedNotional grossLeverage');
+  signals.health = scalars(sig.health, 'status validQuotes totalQuotes lastTick');
   signals.goal = scalars(sig.goal, 'target deadlineHours startEquity startedAt');
   signals.aggression = scalars(sig.aggression, 'kellyFraction leverageCap leverageCeiling unlockedLevel');
   signals.lifetime = scalars(sig.lifetime, 'episodes totalBlowups bestEpisodeReturnPct bestEquityEver initialCapital');
@@ -33,6 +34,6 @@ export function dashboardDTO(input = {}, serverTs = Date.now()) {
     episodes: rows(input.episodes, 'episodeNum startingCapital finalEquity peakEquity returnPct maxDrawdownPct blownUp endReason generation endedAt', 40),
     generations: rows(input.generations, 'generation episodeNum afterEpisode leverageCap kellyFraction unlockedLevel note ts', 30),
     memory: rows(input.memory, 'type kind title text lesson importance regime strategy_id ts', 20),
-    equity: rows(input.equity, 'ts equity wallet margin uPnl positions dd regime riskState episode', 2000),
+    equity: rows(input.equity, 'ts equity netEquity wallet margin uPnl positions dd regime riskState episode', 2000),
     trades: rows(input.trades, 'type trade_id symbol market strategy_id side price margin leverage notional fee entryPrice exitPrice net_pnl realized_R roi_on_margin exit_reason regime openedAt closedAt ts', 100)}};
 }

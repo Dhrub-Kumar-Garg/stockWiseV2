@@ -14,7 +14,7 @@ on positive cost-net evidence. Historical audit reports describe the old revisio
 | 4. Exposure budgets | Complete | Leverage, gross/net/cluster/correlation, stop risk, cash and reservations tested |
 | 5. Evidence-based sizing | Complete | Cost-net causal samples, quarter Kelly, no floors/goal chasing, nested ledger zero respected |
 | 6. Timestamp/currency integrity | Complete | Closed OHLC, gaps/duplicates, quote/FX age, currency and event-time pairing tested |
-| 7. One entrypoint and truthful UI | Pending | |
+| 7. One entrypoint and truthful UI | Complete | Both CLI paths mock-only integration; next-observation fill, cashflow P&L, build passed |
 | 8. Durable paper order lifecycle | Pending | |
 | 9. Versioned causal evaluation | Pending | |
 | 10. Bounded asynchronous feeds | Pending | |

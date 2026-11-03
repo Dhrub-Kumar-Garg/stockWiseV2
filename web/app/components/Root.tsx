@@ -17,10 +17,14 @@ export default function Root() {
   useEffect(() => {
     if (!token) return;
     let mounted = true;
+    let timer: ReturnType<typeof setTimeout>;
+    let active: AbortController;
 
     async function poll() {
+      active = new AbortController();
+      const deadline = setTimeout(() => active.abort(), 5000);
       try {
-        const res = await fetch("/api/state", { cache: "no-store", headers: {Authorization: `Bearer ${token}`} });
+        const res = await fetch("/api/state", { cache: "no-store", signal: active.signal, headers: {Authorization: `Bearer ${token}`} });
         if (res.status === 401 || res.status === 503) {
           if (mounted) { setAuthError(res.status === 503 ? "Dashboard access has not been configured on the server." : "Access token was rejected."); setToken(""); setData(null); }
           return;
@@ -30,12 +34,14 @@ export default function Root() {
         if (mounted) { setData(json); setError(false); }
       } catch {
         if (mounted) setError(true);
+      } finally {
+        clearTimeout(deadline);
+        if (mounted) timer = setTimeout(poll, 6000);
       }
     }
 
     poll();
-    const id = setInterval(poll, 6000);
-    return () => { mounted = false; clearInterval(id); };
+    return () => { mounted = false; clearTimeout(timer); active?.abort(); };
   }, [token]);
 
   if (!token) return <main className="min-h-screen flex items-center justify-center p-6">
@@ -85,7 +91,8 @@ export default function Root() {
   return (
     <>
       <Sakura />
-      <DashboardV2 data={data} />
+      {error && <p role="alert" className="card p-4">Connection lost. Displayed data may be stale.</p>}
+      <DashboardV2 data={data} connectionError={error} />
     </>
   );
 }

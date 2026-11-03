@@ -859,11 +859,11 @@ export function strategyExit(pos, q, eq, regime) {
  *
  * Returns an array of order objects.
  */
-export function runStrategies(state, eq, cfg, histCache) {
-  const strategies = ensureStrategies();
+export function runStrategies(state, eq, cfg, context = {}) {
+  const strategies = context.strategies || ensureStrategies();
   const v2 = cfg.v2;
   const orders = [];
-  const nowTs = now();
+  const nowTs = context.now ?? now();
   const maxPos = v2.strategies.maxConcurrentPositions;
 
   // ── Phase 1: Exits ──
@@ -881,7 +881,7 @@ export function runStrategies(state, eq, cfg, histCache) {
   let newOpens = 0;
 
   // ── AI ANALYST MODE ROUTING ──────────────────────────────────────────────
-  const analyst = readAnalystDecision();
+  const analyst = context.analyst || readAnalystDecision();
   const aiMode = (analyst.mode || "REVERT").toUpperCase();  // Default to REVERT, not SLEEP
   const aiBias = (analyst.direction_bias || "NEUTRAL").toUpperCase();
   const aiAggression = analyst.aggression || 0.4;
@@ -894,7 +894,7 @@ export function runStrategies(state, eq, cfg, histCache) {
 
   // ── NEWS SENTIMENT FILTER ────────────────────────────────────────────────
   // Read world data to adjust confidence based on news mood
-  const worldData = readJSON(V2.world, null);
+  const worldData = context.world || readJSON(V2.world, null);
   const newsMood = worldData?.newsMood?.mean_s ?? 0;
   const fearGreed = worldData?.fearGreedCrypto?.value ?? 50;
 

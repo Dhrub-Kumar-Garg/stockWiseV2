@@ -4,9 +4,10 @@
   "private": true,
   "type": "module",
   "scripts": {
-    "init": "node scripts/init.mjs",
-    "cycle": "node scripts/daemon.mjs --once",
-    "daemon": "node scripts/daemon.mjs"
+    "init": "node scripts/v2/engine.mjs --paper --initialize",
+    "cycle": "node scripts/v2/engine.mjs --paper --once",
+    "daemon": "node scripts/v2/engine.mjs --paper",
+    "test": "node --test tests/*.test.mjs"
   },
   "dependencies": {
     "ws": "^8.21.3"

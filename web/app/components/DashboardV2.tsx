@@ -44,7 +44,7 @@ function EquityChart({ data, startCap }: { data: any[]; startCap: number }) {
 
   if (!data || data.length < 2) return null;
 
-  const start = 100;
+  const start = startCap;
 
   // Filter data by time range
   const nowMs = Date.now();
@@ -132,7 +132,7 @@ function EquityChart({ data, startCap }: { data: any[]; startCap: number }) {
       <div
         style={{ width: "100%", height: 140 }}
         role="img"
-        aria-label={`Account equity chart. Current equity ${usd(points[points.length - 1]?.equity)}, ${isUp ? "up" : "down"} ${pct(Math.abs(pnl / start))} from starting capital.`}
+        aria-label={`Cashflow-adjusted account equity chart. Current equity ${usd(points[points.length - 1]?.equity)}, ${isUp ? "up" : "down"} ${pct(Math.abs(pnl / start))} from starting capital.`}
       >
         <ResponsiveContainer width="100%" height="100%">
           <AreaChart data={points} margin={{ top: 4, right: 4, bottom: 0, left: 0 }}>
@@ -223,7 +223,7 @@ function PnLChart({ data, startCap }: { data: any[]; startCap: number }) {
   type RangeKey = "1D" | "1W" | "1M" | "3M";
   const [range, setRange] = useState<RangeKey>("1D");
 
-  const start = 100;
+  const initialStart = startCap;
   const nowMs = Date.now();
   const rangeMs: Record<RangeKey, number> = {
     "1D": 24 * 60 * 60 * 1000,
@@ -232,6 +232,8 @@ function PnLChart({ data, startCap }: { data: any[]; startCap: number }) {
     "3M": 90 * 24 * 60 * 60 * 1000,
   };
   const cutoff = nowMs - rangeMs[range];
+  const before = data?.filter((d: any) => Number.isFinite(d.equity) && d.ts <= cutoff).at(-1);
+  const start = before?.equity ?? data?.find((d: any) => Number.isFinite(d.equity))?.equity ?? initialStart;
 
   const filtered = data?.filter((d: any) => d.equity != null && isFinite(d.equity) && (d.ts || 0) >= cutoff) ?? [];
 
@@ -245,7 +247,7 @@ function PnLChart({ data, startCap }: { data: any[]; startCap: number }) {
   if (filtered.length < 2) return (
     <div className="card p-5">
       <div className="flex items-center justify-between mb-3">
-        <p className="text-xs font-medium">PnL Over Time</p>
+        <p className="text-xs font-medium">Net PnL Over Time</p>
         <span role="group" aria-label="PnL time range" className="flex gap-1">
           {(["1D", "1W", "1M", "3M"] as RangeKey[]).map((r) => (
             <button key={r} onClick={() => setRange(r)} aria-pressed={range === r}
@@ -288,9 +290,9 @@ function PnLChart({ data, startCap }: { data: any[]; startCap: number }) {
       {/* Header */}
       <div className="flex items-center justify-between mb-4">
         <div>
-          <p className="text-xs font-medium">PnL Over Time</p>
+          <p className="text-xs font-medium">Net PnL Over Time</p>
           <p className={`text-lg font-display font-bold tnum mt-0.5 ${isUp ? "text-upink" : "text-downink"}`}>
-            {isUp ? "+" : ""}{signed(totalPnl)}
+            {signed(totalPnl)}
             <span className="text-xs font-normal text-inksoft ml-2">
               ({isUp ? "+" : ""}{((totalPnl / start) * 100).toFixed(2)}%)
             </span>
@@ -467,7 +469,7 @@ function EmptyNote({ text }: { text: string }) {
 //  OVERVIEW TAB
 // ════════════════════════════════════════════════════════════════════════════
 
-function OverviewTab({ sig, episodes, equity: eqCurve, world }: any) {
+function OverviewTab({ sig, episodes, equity: eqCurve, world, connectionError }: any) {
   const lastEp = episodes?.length ? episodes[episodes.length - 1] : null;
 
   return (
@@ -504,7 +506,7 @@ function OverviewTab({ sig, episodes, equity: eqCurve, world }: any) {
             <p className="font-display text-5xl font-bold tnum" aria-labelledby="equity-label">{usd(sig.equity)}</p>
             {(() => {
               const initCap = sig.lifetime?.initialCapital || 100;
-              const allTimePnl = (sig.equity ?? initCap) - initCap;
+              const allTimePnl = sig.totalNetPnl ?? ((sig.equity ?? initCap) - initCap);
               const allTimePnlPct = initCap > 0 ? allTimePnl / initCap : 0;
               return (
                 <p className="mt-1 text-sm flex flex-wrap items-center gap-x-2">
@@ -574,9 +576,9 @@ function OverviewTab({ sig, episodes, equity: eqCurve, world }: any) {
         <div className="card p-5 space-y-3">
           <div className="flex items-center gap-2 mb-1">
             <span
-              className="w-2.5 h-2.5 rounded-full bg-up live-dot"
+              className={`w-2.5 h-2.5 rounded-full ${!connectionError && sig.ts && Date.now()-sig.ts < 60000 ? "bg-up live-dot" : "bg-down"}`}
               role="status"
-              aria-label="Bot is live and running"
+              aria-label={!connectionError && sig.ts && Date.now()-sig.ts < 60000 ? "Paper engine heartbeat is current" : "Paper engine data is stale or unavailable"}
             />
             <span className="text-xs font-medium">The Bot</span>
           </div>
@@ -842,11 +844,11 @@ function StrategiesTab({ strategies }: any) {
                 </div>
                 <div className="card-quiet p-2">
                   <p className="text-inksoft text-[10px]">PF</p>
-                  <p className="tnum font-medium">{(l.pf ?? l.profitFactor ?? 0).toFixed(2)}</p>
+                  <p className="tnum font-medium">{Number.isFinite(l.pf ?? l.profitFactor) ? (l.pf ?? l.profitFactor).toFixed(2) : "—"}</p>
                 </div>
                 <div className="card-quiet p-2">
                   <p className="text-inksoft text-[10px]">DSR</p>
-                  <p className="tnum font-medium">{(l.dsr ?? 0).toFixed(2)}</p>
+                  <p className="tnum font-medium">{Number.isFinite(l.dsr) ? l.dsr.toFixed(2) : "—"}</p>
                 </div>
                 <div className="card-quiet p-2">
                   <p className="text-inksoft text-[10px]">Conf</p>
@@ -951,7 +953,7 @@ function LessonsTab({ memory }: any) {
                   <span className="font-medium text-sm">{l.title || "Lesson"}</span>
                   <span className={`text-[10px] px-2 py-0.5 rounded-full font-medium capitalize ${kindCls}`}>{l.kind || "note"}</span>
                 </div>
-                {l.lesson && <p className="text-xs text-inksoft mb-2 leading-relaxed">{l.lesson}</p>}
+                {(l.lesson || l.text) && <p className="text-xs text-inksoft mb-2 leading-relaxed">{l.lesson || l.text}</p>}
                 <div className="flex gap-3 text-[10px] text-inksoft">
                   <span>Regime: <span className="capitalize">{l.regime || "—"}</span></span>
                   <span>Importance: <span className="tnum">{l.importance ?? "—"}</span></span>
@@ -1024,7 +1026,7 @@ const TABS = [
 //  MAIN
 // ════════════════════════════════════════════════════════════════════════════
 
-export default function DashboardV2({ data }: { data: any }) {
+export default function DashboardV2({ data, connectionError = false }: { data: any; connectionError?: boolean }) {
   const [tab, setTab] = useState("overview");
 
   const v2 = data.v2 || {};
@@ -1033,13 +1035,13 @@ export default function DashboardV2({ data }: { data: any }) {
   const generations = v2.generations || [];
   const strategies = v2.strategies || [];
   const memory = v2.memory || [];
-  const equity = v2.equity || [];
+  const equity = (v2.equity || []).map((d: any) => ({...d, equity: d.netEquity ?? d.equity}));
   const trades = v2.trades || [];
   const world = sig.world || {};
 
   const renderTab = () => {
     switch (tab) {
-      case "overview": return <OverviewTab sig={sig} episodes={episodes} equity={equity} world={world} />;
+      case "overview": return <OverviewTab sig={sig} episodes={episodes} equity={equity} world={world} connectionError={connectionError} />;
       case "positions": return <PositionsTab sig={sig} />;
       case "episodes": return <EpisodesTab episodes={episodes} sig={sig} />;
       case "evolution": return <EvolutionTab generations={generations} />;

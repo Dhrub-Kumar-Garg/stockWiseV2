@@ -12,3 +12,4 @@ data/*
 *.p12
 *.pfx
 *.tsbuildinfo
+/test-output.log
