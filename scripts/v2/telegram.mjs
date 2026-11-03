@@ -1,3 +1,5 @@
+import {operatorPause, evaluateRisk} from "./risk.mjs";
+import {loadConfig} from "../lib.mjs";
 // scripts/v2/telegram.mjs — Telegram notifications + remote kill/start switch
 // Zero dependencies — uses built-in fetch.
 // Commands: /status, /kill, /start, /positions, /close_all, /equity, /help
@@ -167,7 +169,7 @@ async function handleCommand(cmd, state) {
   }
 
   if (c === "/kill") {
-    state.riskState = "halt";
+    operatorPause(state, true);
     writeJSON(V2.state, state);
     await notify(
       `🛑 <b>KILL SWITCH ACTIVATED</b>\n\n` +
@@ -180,11 +182,13 @@ async function handleCommand(cmd, state) {
 
   if (c === "/start") {
     if (state.riskState === "halt") {
-      state.riskState = "normal";
+      operatorPause(state, false);
+      const config = loadConfig();
+      if (config) evaluateRisk(state, config);
       writeJSON(V2.state, state);
       await notify(
         `▶️ <b>Trading RESUMED</b>\n\n` +
-        `Risk state: normal. Bot will look for new entries.\n` +
+        `Operator pause cleared. Loss locks still apply.\n` +
         `Equity: <code>$${round(state.equity, 2)}</code>`
       );
     } else {

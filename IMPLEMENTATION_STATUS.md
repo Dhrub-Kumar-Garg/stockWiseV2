@@ -10,7 +10,7 @@ on positive cost-net evidence. Historical audit reports describe the old revisio
 | --- | --- | --- |
 | 1. Dashboard/secret boundary | Complete | Auth, sentinel leakage, integrations disabled; no credential rotation |
 | 2. Cash accounting | Complete | Signed funding/restart idempotency, fees, isolated gaps, risk R; legacy state rejected |
-| 3. Persistent risk locks | Pending | |
+| 3. Persistent risk locks | Complete | Operator/day/DD locks survive restart and episode; no cash replenishment |
 | 4. Exposure budgets | Pending | |
 | 5. Evidence-based sizing | Pending | |
 | 6. Timestamp/currency integrity | Pending | |

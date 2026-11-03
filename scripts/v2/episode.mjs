@@ -103,6 +103,7 @@ export function recordEquityPeak(state) {
  * Returns "blowup" | "goal" | "time" | null.
  */
 export function episodeEndReason(state, cfg, nowTs = now()) {
+  if (state.blownUp) return null;
   // Blowup: equity at or below the floor (default 0)
   if (state.equity <= cfg.v2.episode.blowupEquity) return "blowup";
 
@@ -173,11 +174,8 @@ export function finalizeEpisode(state, reason, extra = {}) {
  * Generation, aggression, and all learning files PERSIST.
  */
 export function nextEpisode(state, cfg) {
-  const carryOver = cfg.v2?.episode?.carryOverCapital !== false;
-  const isBlowup = state.blownUp || state.equity <= (cfg.v2?.episode?.blowupEquity ?? 0);
-  const capital = (!isBlowup && carryOver && state.equity > 0)
-    ? round(state.equity, 2)
-    : cfg.v2.startingCapital;
+  if (Object.keys(state.positions || {}).length) throw new Error("Close positions before episode transition");
+  const capital = Math.max(0, state.equity);
   const ts = now();
 
   state.episodeNum += 1;
@@ -188,13 +186,12 @@ export function nextEpisode(state, cfg) {
   state.startingCapital = capital;
   state.walletBalance = capital;
   state.equity = capital;
-  state.peakEquity = capital;
-  state.maxDrawdownPct = 0;
+  state.peakEquity = Math.max(state.peakEquity || 0, capital);
   state.realizedPnlEpisode = 0;
 
   state.positions = {};
-  state.riskState = "normal";
-  state.blownUp = false;
+  state.riskState = state.risk?.blocked ? "halt" : "normal";
+  state.blownUp = capital <= 0;
 
   const initCap = state.lifetime?.initialCapital || cfg.v2.startingCapital || capital;
   state.goal = {

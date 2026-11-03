@@ -153,7 +153,7 @@
     "startingCapital": 100,
     "immutableCore": "honesty",
     "episode": {
-      "autoResetOnBlowup": true,
+      "autoResetOnBlowup": false,
       "carryOverCapital": true,
       "maxHoursPerEpisode": 24,
       "blowupEquity": 0,
@@ -254,6 +254,11 @@
       "brainLoopMinutes": 8,
       "maxConcurrentPositions": 5,
       "minNotionalUsd": 2
+    },
+    "safety": {
+      "maxDrawdown": 0.1,
+      "maxDailyLoss": 0.02,
+      "flattenOnPause": false
     }
   }
 }

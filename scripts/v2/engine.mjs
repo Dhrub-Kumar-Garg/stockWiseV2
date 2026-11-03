@@ -39,6 +39,8 @@ import { CryptoFeed } from "./ws_feed.mjs";
 
 import {recordEntry, settleFunding, settleClose, settleBorrow, assertPaperAccount} from "./accounting.mjs";
 
+import {evaluateRisk, canOpen} from "./risk.mjs";
+
 const ONCE = process.argv.includes("--once");
 
 // ── Caches (persist across cycles) ─────────────────────────────────────────
@@ -210,6 +212,7 @@ function markAndManage(state, eq, cfg) {
 // ── Open a position ────────────────────────────────────────────────────────
 
 function doOpen(state, order, q, cfg) {
+  if (!canOpen(state, cfg, now())) return;
   const v2     = cfg.v2;
   const market = (cfg.watchlist.find((w) => w.symbol === order.symbol) || {}).market || "crypto";
 
@@ -595,6 +598,11 @@ async function cycle(state, cfg) {
   // ──────────────────────────────────────────────────────────────────────
   // 5) PENDING — external / manual orders
   // ──────────────────────────────────────────────────────────────────────
+  const currentRisk = evaluateRisk(state, cfg, now());
+  if (currentRisk.flatten) {
+    for (const symbol of Object.keys(state.positions)) if (eq[symbol]) doClose(state, symbol, eq[symbol].price, "risk-lock", cfg);
+    recalcEquity(state, eq);
+  }
   const pending = readJSON(V2.pending, []);
   if (pending.length) {
     for (const raw of pending) {
@@ -639,10 +647,7 @@ async function cycle(state, cfg) {
   // ──────────────────────────────────────────────────────────────────────
   const dd = recordEquityPeak(state);
 
-  // Drawdown risk state
-  if (dd >= (cfg.risk?.ddHalt ?? 0.20))         state.riskState = "halt";
-  else if (dd >= (cfg.risk?.ddCaution ?? 0.12)) state.riskState = "caution";
-  else                                          state.riskState = "normal";
+  evaluateRisk(state, cfg, now());
 
   const endReason = episodeEndReason(state, cfg);
   if (endReason) {

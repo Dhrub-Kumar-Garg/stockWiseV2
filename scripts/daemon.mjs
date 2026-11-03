@@ -27,6 +27,8 @@ import { collectWorld } from "./v2/world.mjs";
 
 import {recordEntry, settleFunding, settleClose, settleBorrow, assertPaperAccount} from "./v2/accounting.mjs";
 
+import {evaluateRisk, canOpen} from "./v2/risk.mjs";
+
 const ONCE = process.argv.includes("--once");
 
 // ── History cache ──────────────────────────────────────────────────────────
@@ -161,9 +163,12 @@ async function cycle(state, cfg) {
   const ddHalt    = cfg.risk?.ddHalt    ?? 0.20;
   const ddCaution = cfg.risk?.ddCaution ?? 0.12;
 
-  if (dd >= ddHalt)         state.riskState = "halt";
-  else if (dd >= ddCaution) state.riskState = "caution";
-  else                      state.riskState = "normal";
+  recalcEquity(state, eq);
+  const currentRisk = evaluateRisk(state, cfg, now());
+  if (currentRisk.flatten) {
+    for (const symbol of Object.keys(state.positions)) if (eq[symbol]) closePosition(state, symbol, eq[symbol].price, "risk-lock", cfg);
+    recalcEquity(state, eq);
+  }
 
   // ── 5. Hard floor — emergency close ALL ────────────────────────────────
   const hardFloor = state.startingCapital * (cfg.risk?.hardFloorPct ?? 0.70);
@@ -333,6 +338,7 @@ async function cycle(state, cfg) {
 // ── Execution: Open ────────────────────────────────────────────────────────
 
 function executeOpen(state, order, q, cfg) {
+  if (!canOpen(state, cfg, now())) return;
   const v2 = cfg.v2;
   const market = (cfg.watchlist.find((w) => w.symbol === order.symbol) || {}).market || "crypto";
 
