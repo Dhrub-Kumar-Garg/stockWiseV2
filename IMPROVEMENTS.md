@@ -1,3 +1,5 @@
+> Historical proposal/audit record. The subsequent instruction "do every improvement one by one" approved software items 1–15. See IMPLEMENTATION_STATUS.md for the separate local commits and IMPLEMENTATION_RESULTS.md for current measurements. No rejected alpha was promoted; credential/deployment and implementation-push gates remain separate.
+
 # Ranked improvement proposals — no application changes applied
 
 Follow-up: see STRATEGY_NEWS_REVIEW.md for strategy inactivity, structural

@@ -8,3 +8,10 @@ export function volumeVWAP(bars){
  const value=rows.reduce((s,b)=>s+(b.h+b.l+b.c)/3*b.v,0)/volume;
  const sd=Math.sqrt(rows.reduce((s,b)=>s+b.v*((b.h+b.l+b.c)/3-value)**2,0)/volume);return {value,sd};
 }
+
+export function observedRegime(q){
+ const c=q.closes||[];if(c.length<200)return 'unknown';
+ const avg=c.slice(-200).reduce((s,v)=>s+v,0)/200,r=c.slice(-21).slice(1).map((v,i)=>Math.log(v/c.slice(-21)[i])),mean=r.reduce((s,v)=>s+v,0)/r.length;
+ const volatility=Math.sqrt(r.reduce((s,v)=>s+(v-mean)**2,0)/r.length)*Math.sqrt(365),trend=q.price/avg-1;
+ return (Math.abs(trend)>.03?(trend>0?'uptrend':'downtrend'):'range')+'_'+(volatility>.6?'highvol':'normalvol');
+}

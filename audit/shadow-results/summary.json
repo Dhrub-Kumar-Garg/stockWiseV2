@@ -1,4 +1,6 @@
 {
+  "sourceDigest": "6baa848cd0483243562c1cc970ada85ac73b1e5266b8fe8e326e5bd1b9e97b27",
+  "costHash": "525756db5a0164e6b4e5e287528d972002815d8dccba890cb350d29dc99c6c13",
   "metrics": {
     "sharpe": null,
     "maxDrawdown": 0,
@@ -821,10 +823,10 @@
     }
   ],
   "labelCount": 7905,
-  "labelSha256": "bcbf722b0b3350c96e223afd888a6684f31d21739651f37fed37c85f2e071be8",
+  "labelSha256": "fafd39c534bc1fbfce6824b2d81c823dd61b91afd48aa91e510ed261513236c6",
   "period": {
     "from": "2025-07-01",
     "to": "2026-01-01"
   },
-  "reproduce": "node scripts/v2/backtest.mjs --data-dir audit/data --out-dir audit/shadow-results --from 2025-07-01 --to 2026-01-01"
+  "reproduce": "node scripts/v2/backtest.mjs --data-dir audit/data --out-dir data/release-replay --from 2025-07-01 --to 2026-01-01"
 }

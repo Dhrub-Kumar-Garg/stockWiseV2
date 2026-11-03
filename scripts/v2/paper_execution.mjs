@@ -7,11 +7,13 @@ export class PaperExecution {
   submit(order,at){
     if(this.orders.has(order.id))return structuredClone(this.orders.get(order.id));
     if(!order.id||!['buy','sell'].includes(order.side)||!['market','limit'].includes(order.type)||!(order.qty>0)||!Number.isFinite(order.qty)||order.type==='limit'&&!(order.price>0))throw new Error('Invalid paper intent');
+    if(this.orders.size>=10000)throw new Error('Paper order capacity reached');
     const row={...order,createdAt:at,filled:0,status:'pending'};this.orders.set(order.id,row);return structuredClone(row);
   }
   cancel(id){const row=this.orders.get(id);if(row&&!['filled','expired'].includes(row.status))row.status='canceled';}
   observe(q){
-    if(!q.id||this.events.has(q.id)||!Number.isFinite(q.ts)||!(q.bid>0&&q.ask>=q.bid))return [];
+    if(!q.id||this.events.has(q.id)||!Number.isFinite(q.ts)||!Number.isFinite(q.sourceTs)||q.sourceTs>q.ts+1000||q.ts-q.sourceTs>2000||!(q.bid>0&&q.ask>=q.bid))return [];
+    if(this.events.size>=100000)throw new Error('Paper observation capacity reached');
     this.events.add(q.id);const fills=[];
     for(const o of this.orders.values()){
       if(['filled','expired','canceled'].includes(o.status))continue;

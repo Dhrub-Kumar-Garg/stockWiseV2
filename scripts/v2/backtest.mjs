@@ -1,3 +1,4 @@
+import {sourceDigest,costFingerprint} from './calibration.mjs';
 import {updateShadowBooks} from './shadow.mjs';
 // Versioned evaluation of the CURRENT paper runtime; original audit is pinned separately.
 import fs from 'node:fs';
@@ -64,7 +65,7 @@ export function replayPaper(dataset,cfg,{from,to,mode='TREND',initialEvidence=[]
   const marks=Object.fromEntries(dataset.map(d=>{const b=d.bars.filter(b=>b[0]<to).at(-1);return[d.symbol,{price:b[4],currency:'USD',ok:true,sourceTs:last,receivedAt:last+1}];}));
   tick(state,marks,cfg,{at:last+1,evaluate:()=>[]});shadowLabels.push(...updateShadowBooks(state,marks,cfg,last+1).map(e=>e.label)); curve.push({ts:last+1,equity:state.equity});
   const trades=allTrades.filter(t=>t.closedAt>=from);
-  return {metrics:metrics(trades,curve),curve,trades,shadowLabels,shadow:Object.entries(state.shadowBooks||{}).map(([id,b])=>({id,family:b.family,metrics:{...metrics(shadowLabels.filter(t=>t.strategy_id===b.strategy_id&&t.symbol===b.symbol),[{ts:from,equity:100},...b.curve]),maxDrawdown:b.maxDrawdown||0}})),accountingVersion:3,mode:'paper',limitations:['Conservative adverse-first OHLC excursion; fills at excursion marks, not precise stop quotes','OHLC opening quote plus1ms latency assumption','No production AI/news/OI history','Unvalidated models allocate zero']};
+  return {sourceDigest,costHash:costFingerprint(cfg),metrics:metrics(trades,curve),curve,trades,shadowLabels,shadow:Object.entries(state.shadowBooks||{}).map(([id,b])=>({id,family:b.family,metrics:{...metrics(shadowLabels.filter(t=>t.strategy_id===b.strategy_id&&t.symbol===b.symbol),[{ts:from,equity:100},...b.curve]),maxDrawdown:b.maxDrawdown||0}})),accountingVersion:3,mode:'paper',limitations:['Conservative adverse-first OHLC excursion; fills at excursion marks, not precise stop quotes','OHLC opening quote plus1ms latency assumption','No production AI/news/OI history','Unvalidated models allocate zero']};
 }
 if(process.argv[1]&&path.resolve(process.argv[1])===fileURLToPath(import.meta.url)) {
   try {

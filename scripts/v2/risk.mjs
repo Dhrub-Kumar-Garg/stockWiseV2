@@ -7,6 +7,7 @@ export function evaluateRisk(state, cfg, at = Date.now()) {
   state.risk ||= {operatorPaused: state.riskState === 'halt', lifetimePeak: state.equity, day, dayStartEquity: state.equity};
   const risk = state.risk;
   if (risk.day !== day) { risk.day = day; risk.dayStartEquity = risk.lastEquity ?? state.equity; risk.dailyLossLocked = false; }
+  risk.stalePositions = state.dataRiskPaused === true;
   risk.dataError = !Number.isFinite(state.equity);
   if (!risk.dataError) {
     risk.lifetimePeak = Math.max(risk.lifetimePeak || 0, state.equity);
@@ -19,7 +20,7 @@ export function evaluateRisk(state, cfg, at = Date.now()) {
     state.peakEquity = Math.max(state.peakEquity || 0, risk.lifetimePeak);
     state.maxDrawdownPct = Math.max(state.maxDrawdownPct || 0, risk.drawdown);
   }
-  risk.reasons = ['operatorPaused', 'drawdownLocked', 'dailyLossLocked', 'insolvent', 'dataError', 'historyCapacityLocked'].filter(k => risk[k]);
+  risk.reasons = ['operatorPaused', 'drawdownLocked', 'dailyLossLocked', 'insolvent', 'dataError', 'historyCapacityLocked','stalePositions'].filter(k => risk[k]);
   risk.blocked = risk.reasons.length > 0;
   risk.flatten = Boolean(risk.drawdownLocked || risk.dailyLossLocked || risk.insolvent || (risk.operatorPaused && limits.flattenOnPause));
   state.riskState = risk.blocked ? 'halt' : risk.drawdown >= maxDrawdown / 2 ? 'caution' : 'normal';

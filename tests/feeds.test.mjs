@@ -31,3 +31,8 @@ test('paper lifecycle: latency, partial fills, duplicate retry/event, cancel, ex
   sim.cancel('b');assert.equal(sim.orders.get('b').status,'canceled');
   sim.submit({id:'c',type:'market',side:'sell',qty:1},0);sim.observe({...q,id:'q4',ts:101});assert.equal(sim.orders.get('c').status,'expired');
 });
+
+test('429 Retry-After prevents immediate provider retry',async()=>{
+ let calls=0;const fetcher=async()=>{calls++;return new Response('',{status:429,headers:{'Retry-After':'60'}});};
+ await assert.rejects(readPublic('https://rate-limit-fixture.example/a',{fetcher}));await assert.rejects(readPublic('https://rate-limit-fixture.example/b',{fetcher}),/cooldown/);assert.equal(calls,1);
+});

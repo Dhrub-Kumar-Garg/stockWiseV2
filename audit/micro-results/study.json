@@ -1,0 +1,670 @@
+{
+  "protocol": {
+    "id": "spot-micro-v1",
+    "imbalance": 0.65,
+    "notional": 10,
+    "holdMs": 30000,
+    "latencyMs": 100,
+    "queueMultiplier": 2,
+    "entryTtlMs": 1000,
+    "takerFee": 0.0005,
+    "makerFee": 0.0002,
+    "slippage": 0.0002,
+    "safetyMargin": 0.0002
+  },
+  "independentDays": 1,
+  "durationMs": 60012,
+  "qualified": false,
+  "promotion": "disabled",
+  "results": [
+    {
+      "window": "train",
+      "from": 1793707318288,
+      "to": 1793707354295.2,
+      "variant": "baseline",
+      "stress": false,
+      "metrics": {
+        "sharpe": null,
+        "maxDrawdown": 0.0001293761076012201,
+        "profitFactor": 0,
+        "expectancy": -0.0129376107601189,
+        "tradeCount": 1,
+        "winRate": 0,
+        "returnPct": -0.0001293761076012201
+      },
+      "trades": [
+        {
+          "net_pnl": -0.0129376107601189,
+          "openedAt": 1793707336723,
+          "closedAt": 1793707354295.2
+        }
+      ],
+      "lowerDailyNet": null,
+      "submitted": 1,
+      "fillEvents": 2,
+      "filledOrders": 2,
+      "fillRatio": 1,
+      "rejections": 0,
+      "gaps": 0,
+      "unresolvedInventory": false,
+      "markouts": [
+        {
+          "ts": 1793707336723,
+          "latencyMs": 100,
+          "oneSecondMidMarkoutBp": -2.0002492801318716
+        }
+      ],
+      "limitations": [
+        "Long/flat spot hypothesis; no uncollateralized shorting",
+        "Queue size multiplier is conservative approximation, not actual queue priority",
+        "Terminal fresh-quote liquidation is modeled",
+        "Public fees are assumptions, not account-specific fee tiers"
+      ]
+    },
+    {
+      "window": "train",
+      "from": 1793707318288,
+      "to": 1793707354295.2,
+      "variant": "baseline",
+      "stress": true,
+      "metrics": {
+        "sharpe": null,
+        "maxDrawdown": 0.00025874021520477797,
+        "profitFactor": 0,
+        "expectancy": -0.025874021520479573,
+        "tradeCount": 1,
+        "winRate": 0,
+        "returnPct": -0.00025874021520477797
+      },
+      "trades": [
+        {
+          "net_pnl": -0.025874021520479573,
+          "openedAt": 1793707337124,
+          "closedAt": 1793707354295.2
+        }
+      ],
+      "lowerDailyNet": null,
+      "submitted": 1,
+      "fillEvents": 2,
+      "filledOrders": 2,
+      "fillRatio": 1,
+      "rejections": 0,
+      "gaps": 0,
+      "unresolvedInventory": false,
+      "markouts": [
+        {
+          "ts": 1793707337124,
+          "latencyMs": 500,
+          "oneSecondMidMarkoutBp": -3.999049710103897
+        }
+      ],
+      "limitations": [
+        "Long/flat spot hypothesis; no uncollateralized shorting",
+        "Queue size multiplier is conservative approximation, not actual queue priority",
+        "Terminal fresh-quote liquidation is modeled",
+        "Public fees are assumptions, not account-specific fee tiers"
+      ]
+    },
+    {
+      "window": "train",
+      "from": 1793707318288,
+      "to": 1793707354295.2,
+      "variant": "cost_gate",
+      "stress": false,
+      "metrics": {
+        "sharpe": null,
+        "maxDrawdown": 0,
+        "profitFactor": null,
+        "expectancy": null,
+        "tradeCount": 0,
+        "winRate": null,
+        "returnPct": 0
+      },
+      "trades": [],
+      "lowerDailyNet": null,
+      "submitted": 0,
+      "fillEvents": 0,
+      "filledOrders": 0,
+      "fillRatio": null,
+      "rejections": 25,
+      "gaps": 0,
+      "unresolvedInventory": false,
+      "markouts": [],
+      "limitations": [
+        "Long/flat spot hypothesis; no uncollateralized shorting",
+        "Queue size multiplier is conservative approximation, not actual queue priority",
+        "Terminal fresh-quote liquidation is modeled",
+        "Public fees are assumptions, not account-specific fee tiers"
+      ]
+    },
+    {
+      "window": "train",
+      "from": 1793707318288,
+      "to": 1793707354295.2,
+      "variant": "cost_gate",
+      "stress": true,
+      "metrics": {
+        "sharpe": null,
+        "maxDrawdown": 0,
+        "profitFactor": null,
+        "expectancy": null,
+        "tradeCount": 0,
+        "winRate": null,
+        "returnPct": 0
+      },
+      "trades": [],
+      "lowerDailyNet": null,
+      "submitted": 0,
+      "fillEvents": 0,
+      "filledOrders": 0,
+      "fillRatio": null,
+      "rejections": 25,
+      "gaps": 0,
+      "unresolvedInventory": false,
+      "markouts": [],
+      "limitations": [
+        "Long/flat spot hypothesis; no uncollateralized shorting",
+        "Queue size multiplier is conservative approximation, not actual queue priority",
+        "Terminal fresh-quote liquidation is modeled",
+        "Public fees are assumptions, not account-specific fee tiers"
+      ]
+    },
+    {
+      "window": "train",
+      "from": 1793707318288,
+      "to": 1793707354295.2,
+      "variant": "maker",
+      "stress": false,
+      "metrics": {
+        "sharpe": null,
+        "maxDrawdown": 0,
+        "profitFactor": null,
+        "expectancy": null,
+        "tradeCount": 0,
+        "winRate": null,
+        "returnPct": 0
+      },
+      "trades": [],
+      "lowerDailyNet": null,
+      "submitted": 4,
+      "fillEvents": 0,
+      "filledOrders": 0,
+      "fillRatio": 0,
+      "rejections": 0,
+      "gaps": 0,
+      "unresolvedInventory": false,
+      "markouts": [],
+      "limitations": [
+        "Long/flat spot hypothesis; no uncollateralized shorting",
+        "Queue size multiplier is conservative approximation, not actual queue priority",
+        "Terminal fresh-quote liquidation is modeled",
+        "Public fees are assumptions, not account-specific fee tiers"
+      ]
+    },
+    {
+      "window": "train",
+      "from": 1793707318288,
+      "to": 1793707354295.2,
+      "variant": "maker",
+      "stress": true,
+      "metrics": {
+        "sharpe": null,
+        "maxDrawdown": 0,
+        "profitFactor": null,
+        "expectancy": null,
+        "tradeCount": 0,
+        "winRate": null,
+        "returnPct": 0
+      },
+      "trades": [],
+      "lowerDailyNet": null,
+      "submitted": 4,
+      "fillEvents": 0,
+      "filledOrders": 0,
+      "fillRatio": 0,
+      "rejections": 0,
+      "gaps": 0,
+      "unresolvedInventory": false,
+      "markouts": [],
+      "limitations": [
+        "Long/flat spot hypothesis; no uncollateralized shorting",
+        "Queue size multiplier is conservative approximation, not actual queue priority",
+        "Terminal fresh-quote liquidation is modeled",
+        "Public fees are assumptions, not account-specific fee tiers"
+      ]
+    },
+    {
+      "window": "calibration",
+      "from": 1793707354295.2,
+      "to": 1793707366297.6,
+      "variant": "baseline",
+      "stress": false,
+      "metrics": {
+        "sharpe": null,
+        "maxDrawdown": 0.0001293761076012201,
+        "profitFactor": 0,
+        "expectancy": -0.0129376107601189,
+        "tradeCount": 1,
+        "winRate": 0,
+        "returnPct": -0.0001293761076012201
+      },
+      "trades": [
+        {
+          "net_pnl": -0.0129376107601189,
+          "openedAt": 1793707358322,
+          "closedAt": 1793707366297.6
+        }
+      ],
+      "lowerDailyNet": null,
+      "submitted": 1,
+      "fillEvents": 2,
+      "filledOrders": 2,
+      "fillRatio": 1,
+      "rejections": 0,
+      "gaps": 0,
+      "unresolvedInventory": false,
+      "markouts": [
+        {
+          "ts": 1793707358322,
+          "latencyMs": 100,
+          "oneSecondMidMarkoutBp": -2.0002492801318716
+        }
+      ],
+      "limitations": [
+        "Long/flat spot hypothesis; no uncollateralized shorting",
+        "Queue size multiplier is conservative approximation, not actual queue priority",
+        "Terminal fresh-quote liquidation is modeled",
+        "Public fees are assumptions, not account-specific fee tiers"
+      ]
+    },
+    {
+      "window": "calibration",
+      "from": 1793707354295.2,
+      "to": 1793707366297.6,
+      "variant": "baseline",
+      "stress": true,
+      "metrics": {
+        "sharpe": null,
+        "maxDrawdown": 0.00025874021520477797,
+        "profitFactor": 0,
+        "expectancy": -0.025874021520479573,
+        "tradeCount": 1,
+        "winRate": 0,
+        "returnPct": -0.00025874021520477797
+      },
+      "trades": [
+        {
+          "net_pnl": -0.025874021520479573,
+          "openedAt": 1793707358722,
+          "closedAt": 1793707366297.6
+        }
+      ],
+      "lowerDailyNet": null,
+      "submitted": 1,
+      "fillEvents": 2,
+      "filledOrders": 2,
+      "fillRatio": 1,
+      "rejections": 0,
+      "gaps": 0,
+      "unresolvedInventory": false,
+      "markouts": [
+        {
+          "ts": 1793707358722,
+          "latencyMs": 500,
+          "oneSecondMidMarkoutBp": -3.999049710103897
+        }
+      ],
+      "limitations": [
+        "Long/flat spot hypothesis; no uncollateralized shorting",
+        "Queue size multiplier is conservative approximation, not actual queue priority",
+        "Terminal fresh-quote liquidation is modeled",
+        "Public fees are assumptions, not account-specific fee tiers"
+      ]
+    },
+    {
+      "window": "calibration",
+      "from": 1793707354295.2,
+      "to": 1793707366297.6,
+      "variant": "cost_gate",
+      "stress": false,
+      "metrics": {
+        "sharpe": null,
+        "maxDrawdown": 0,
+        "profitFactor": null,
+        "expectancy": null,
+        "tradeCount": 0,
+        "winRate": null,
+        "returnPct": 0
+      },
+      "trades": [],
+      "lowerDailyNet": null,
+      "submitted": 0,
+      "fillEvents": 0,
+      "filledOrders": 0,
+      "fillRatio": null,
+      "rejections": 6,
+      "gaps": 0,
+      "unresolvedInventory": false,
+      "markouts": [],
+      "limitations": [
+        "Long/flat spot hypothesis; no uncollateralized shorting",
+        "Queue size multiplier is conservative approximation, not actual queue priority",
+        "Terminal fresh-quote liquidation is modeled",
+        "Public fees are assumptions, not account-specific fee tiers"
+      ]
+    },
+    {
+      "window": "calibration",
+      "from": 1793707354295.2,
+      "to": 1793707366297.6,
+      "variant": "cost_gate",
+      "stress": true,
+      "metrics": {
+        "sharpe": null,
+        "maxDrawdown": 0,
+        "profitFactor": null,
+        "expectancy": null,
+        "tradeCount": 0,
+        "winRate": null,
+        "returnPct": 0
+      },
+      "trades": [],
+      "lowerDailyNet": null,
+      "submitted": 0,
+      "fillEvents": 0,
+      "filledOrders": 0,
+      "fillRatio": null,
+      "rejections": 6,
+      "gaps": 0,
+      "unresolvedInventory": false,
+      "markouts": [],
+      "limitations": [
+        "Long/flat spot hypothesis; no uncollateralized shorting",
+        "Queue size multiplier is conservative approximation, not actual queue priority",
+        "Terminal fresh-quote liquidation is modeled",
+        "Public fees are assumptions, not account-specific fee tiers"
+      ]
+    },
+    {
+      "window": "calibration",
+      "from": 1793707354295.2,
+      "to": 1793707366297.6,
+      "variant": "maker",
+      "stress": false,
+      "metrics": {
+        "sharpe": null,
+        "maxDrawdown": 0,
+        "profitFactor": null,
+        "expectancy": null,
+        "tradeCount": 0,
+        "winRate": null,
+        "returnPct": 0
+      },
+      "trades": [],
+      "lowerDailyNet": null,
+      "submitted": 1,
+      "fillEvents": 0,
+      "filledOrders": 0,
+      "fillRatio": 0,
+      "rejections": 0,
+      "gaps": 0,
+      "unresolvedInventory": false,
+      "markouts": [],
+      "limitations": [
+        "Long/flat spot hypothesis; no uncollateralized shorting",
+        "Queue size multiplier is conservative approximation, not actual queue priority",
+        "Terminal fresh-quote liquidation is modeled",
+        "Public fees are assumptions, not account-specific fee tiers"
+      ]
+    },
+    {
+      "window": "calibration",
+      "from": 1793707354295.2,
+      "to": 1793707366297.6,
+      "variant": "maker",
+      "stress": true,
+      "metrics": {
+        "sharpe": null,
+        "maxDrawdown": 0,
+        "profitFactor": null,
+        "expectancy": null,
+        "tradeCount": 0,
+        "winRate": null,
+        "returnPct": 0
+      },
+      "trades": [],
+      "lowerDailyNet": null,
+      "submitted": 1,
+      "fillEvents": 0,
+      "filledOrders": 0,
+      "fillRatio": 0,
+      "rejections": 0,
+      "gaps": 0,
+      "unresolvedInventory": false,
+      "markouts": [],
+      "limitations": [
+        "Long/flat spot hypothesis; no uncollateralized shorting",
+        "Queue size multiplier is conservative approximation, not actual queue priority",
+        "Terminal fresh-quote liquidation is modeled",
+        "Public fees are assumptions, not account-specific fee tiers"
+      ]
+    },
+    {
+      "window": "test",
+      "from": 1793707366297.6,
+      "to": 1793707378300,
+      "variant": "baseline",
+      "stress": false,
+      "metrics": {
+        "sharpe": null,
+        "maxDrawdown": 0.00010831885589401846,
+        "profitFactor": 0,
+        "expectancy": -0.010831885589396961,
+        "tradeCount": 1,
+        "winRate": 0,
+        "returnPct": -0.00010831885589401846
+      },
+      "trades": [
+        {
+          "net_pnl": -0.010831885589396961,
+          "openedAt": 1793707369123,
+          "closedAt": 1793707378300
+        }
+      ],
+      "lowerDailyNet": null,
+      "submitted": 1,
+      "fillEvents": 2,
+      "filledOrders": 2,
+      "fillRatio": 1,
+      "rejections": 0,
+      "gaps": 0,
+      "unresolvedInventory": false,
+      "markouts": [
+        {
+          "ts": 1793707369123,
+          "latencyMs": 100,
+          "oneSecondMidMarkoutBp": -2.0002492801318716
+        }
+      ],
+      "limitations": [
+        "Long/flat spot hypothesis; no uncollateralized shorting",
+        "Queue size multiplier is conservative approximation, not actual queue priority",
+        "Terminal fresh-quote liquidation is modeled",
+        "Public fees are assumptions, not account-specific fee tiers"
+      ]
+    },
+    {
+      "window": "test",
+      "from": 1793707366297.6,
+      "to": 1793707378300,
+      "variant": "baseline",
+      "stress": true,
+      "metrics": {
+        "sharpe": null,
+        "maxDrawdown": 0.00023769770757597897,
+        "profitFactor": 0,
+        "expectancy": -0.02376977075759612,
+        "tradeCount": 1,
+        "winRate": 0,
+        "returnPct": -0.00023769770757597897
+      },
+      "trades": [
+        {
+          "net_pnl": -0.02376977075759612,
+          "openedAt": 1793707369522,
+          "closedAt": 1793707378300
+        }
+      ],
+      "lowerDailyNet": null,
+      "submitted": 1,
+      "fillEvents": 2,
+      "filledOrders": 2,
+      "fillRatio": 1,
+      "rejections": 0,
+      "gaps": 0,
+      "unresolvedInventory": false,
+      "markouts": [
+        {
+          "ts": 1793707369522,
+          "latencyMs": 500,
+          "oneSecondMidMarkoutBp": -3.999049710103897
+        }
+      ],
+      "limitations": [
+        "Long/flat spot hypothesis; no uncollateralized shorting",
+        "Queue size multiplier is conservative approximation, not actual queue priority",
+        "Terminal fresh-quote liquidation is modeled",
+        "Public fees are assumptions, not account-specific fee tiers"
+      ]
+    },
+    {
+      "window": "test",
+      "from": 1793707366297.6,
+      "to": 1793707378300,
+      "variant": "cost_gate",
+      "stress": false,
+      "metrics": {
+        "sharpe": null,
+        "maxDrawdown": 0,
+        "profitFactor": null,
+        "expectancy": null,
+        "tradeCount": 0,
+        "winRate": null,
+        "returnPct": 0
+      },
+      "trades": [],
+      "lowerDailyNet": null,
+      "submitted": 0,
+      "fillEvents": 0,
+      "filledOrders": 0,
+      "fillRatio": null,
+      "rejections": 256,
+      "gaps": 0,
+      "unresolvedInventory": false,
+      "markouts": [],
+      "limitations": [
+        "Long/flat spot hypothesis; no uncollateralized shorting",
+        "Queue size multiplier is conservative approximation, not actual queue priority",
+        "Terminal fresh-quote liquidation is modeled",
+        "Public fees are assumptions, not account-specific fee tiers"
+      ]
+    },
+    {
+      "window": "test",
+      "from": 1793707366297.6,
+      "to": 1793707378300,
+      "variant": "cost_gate",
+      "stress": true,
+      "metrics": {
+        "sharpe": null,
+        "maxDrawdown": 0,
+        "profitFactor": null,
+        "expectancy": null,
+        "tradeCount": 0,
+        "winRate": null,
+        "returnPct": 0
+      },
+      "trades": [],
+      "lowerDailyNet": null,
+      "submitted": 0,
+      "fillEvents": 0,
+      "filledOrders": 0,
+      "fillRatio": null,
+      "rejections": 256,
+      "gaps": 0,
+      "unresolvedInventory": false,
+      "markouts": [],
+      "limitations": [
+        "Long/flat spot hypothesis; no uncollateralized shorting",
+        "Queue size multiplier is conservative approximation, not actual queue priority",
+        "Terminal fresh-quote liquidation is modeled",
+        "Public fees are assumptions, not account-specific fee tiers"
+      ]
+    },
+    {
+      "window": "test",
+      "from": 1793707366297.6,
+      "to": 1793707378300,
+      "variant": "maker",
+      "stress": false,
+      "metrics": {
+        "sharpe": null,
+        "maxDrawdown": 0,
+        "profitFactor": null,
+        "expectancy": null,
+        "tradeCount": 0,
+        "winRate": null,
+        "returnPct": 0
+      },
+      "trades": [],
+      "lowerDailyNet": null,
+      "submitted": 10,
+      "fillEvents": 0,
+      "filledOrders": 0,
+      "fillRatio": 0,
+      "rejections": 0,
+      "gaps": 0,
+      "unresolvedInventory": false,
+      "markouts": [],
+      "limitations": [
+        "Long/flat spot hypothesis; no uncollateralized shorting",
+        "Queue size multiplier is conservative approximation, not actual queue priority",
+        "Terminal fresh-quote liquidation is modeled",
+        "Public fees are assumptions, not account-specific fee tiers"
+      ]
+    },
+    {
+      "window": "test",
+      "from": 1793707366297.6,
+      "to": 1793707378300,
+      "variant": "maker",
+      "stress": true,
+      "metrics": {
+        "sharpe": null,
+        "maxDrawdown": 0,
+        "profitFactor": null,
+        "expectancy": null,
+        "tradeCount": 0,
+        "winRate": null,
+        "returnPct": 0
+      },
+      "trades": [],
+      "lowerDailyNet": null,
+      "submitted": 10,
+      "fillEvents": 0,
+      "filledOrders": 0,
+      "fillRatio": 0,
+      "rejections": 0,
+      "gaps": 0,
+      "unresolvedInventory": false,
+      "markouts": [],
+      "limitations": [
+        "Long/flat spot hypothesis; no uncollateralized shorting",
+        "Queue size multiplier is conservative approximation, not actual queue priority",
+        "Terminal fresh-quote liquidation is modeled",
+        "Public fees are assumptions, not account-specific fee tiers"
+      ]
+    }
+  ],
+  "conclusion": "Insufficient independent executable-quote history; do not activate frequent trading"
+}

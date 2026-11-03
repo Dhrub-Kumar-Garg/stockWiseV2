@@ -1,13 +1,16 @@
+import fs from 'node:fs';
 // Frozen train/calibration/test protocol. Artifacts are evidence, never a profit guarantee.
 import {createHash} from 'node:crypto';
 import {lexiconScore} from '../world/score.mjs';
-export const CALIBRATION_PROTOCOL='paper-v3-logistic-1';
+export const CALIBRATION_PROTOCOL='paper-v3-logistic-2';
+const SOURCE_HASH=createHash('sha256');for(const name of ['strategies.mjs','features.mjs','calibration.mjs','shadow.mjs','runtime.mjs','perp.mjs','accounting.mjs','cli.mjs','backtest.mjs','flow.mjs','market_data.mjs','sizing.mjs','portfolio.mjs','risk.mjs','config.mjs','learning.mjs','../world/score.mjs','../lib.mjs'])SOURCE_HASH.update(fs.readFileSync(new URL(name,import.meta.url),'utf8').replace(/\r\n/g,'\n'));
+export const sourceDigest=SOURCE_HASH.digest('hex');
 const mean=a=>a.length?a.reduce((s,x)=>s+x,0)/a.length:0;
 const sigmoid=x=>1/(1+Math.exp(-Math.max(-30,Math.min(30,x))));
 const hash=x=>createHash('sha256').update(JSON.stringify(x)).digest('hex');
 export function scopeKey(r){return [r.strategy_id,r.symbol,r.side,r.regime||'unknown'].join('|');}
 export function strategyFingerprint(s){return hash({id:s.id,stop:s.stopPct,target:s.targetPct,intraday:s.intraday,baseLev:s.baseLev,definition:CALIBRATION_PROTOCOL});}
-export function costFingerprint(cfg){return hash({protocol:CALIBRATION_PROTOCOL,fees:cfg.v2.perpFees,slippage:cfg.slippage,spread:cfg.v2.halfSpread,funding:cfg.v2.execution.modeledFundingRatePer8h});}
+export function costFingerprint(cfg){return hash({protocol:CALIBRATION_PROTOCOL,sourceDigest,fees:cfg.v2.perpFees,slippage:cfg.slippage,spread:cfg.v2.halfSpread,funding:cfg.v2.execution.modeledFundingRatePer8h,fundingHours:cfg.v2.fundingHoursUTC,hold:cfg.v2.aggression.maxHoldHours,leverage:cfg.v2.leverage,tiers:cfg.v2.maintenanceTiers,safety:cfg.v2.safety,learning:cfg.v2.learning});}
 export function candidateFeatures(q,world,symbol,at){
  const c=q.closes||[],avg=mean(c.slice(-200)),returns=c.slice(-21).slice(1).map((v,i)=>v/c.slice(-21)[i]-1),m=mean(returns),vol=Math.sqrt(mean(returns.map(x=>(x-m)**2)));
  const asset=symbol.replace('-USD',''),news=(world?.news||[]).filter(n=>n.observedAt<=at&&n.publishedAt<=at&&at-n.publishedAt<86400000&&(n.assets?.includes(asset)||n.assets?.includes('MACRO')||q.market!=='crypto'&&n.assets?.includes('EQUITY')));
@@ -22,7 +25,7 @@ export function reliability(rows,predict){
 }
 export function fitCalibration(input,{trainEnd,calibrationEnd,testEnd,costHash,validForMs=7*86400000,trials=1}={}){
  if(![trainEnd,calibrationEnd,testEnd].every(Number.isFinite)||!(trainEnd<calibrationEnd&&calibrationEnd<testEnd)||!costHash)throw new Error('Frozen chronological boundaries and costs required');
- const seen=new Set(),rows=input.filter(r=>{if(!r.id||seen.has(r.id))return false;seen.add(r.id);return r.accountingVersion===3&&typeof r.strategyHash==='string'&&Number.isFinite(r.openedAt)&&Number.isFinite(r.featuresAt)&&r.featuresAt<=r.openedAt&&Number.isFinite(r.closedAt)&&r.closedAt>r.openedAt&&r.features?.length===5&&r.features.every(Number.isFinite)&&Number.isFinite(r.realized_R);}).sort((a,b)=>a.openedAt-b.openedAt);
+ const seen=new Set(),rows=input.filter(r=>{if(!r.id||seen.has(r.id))return false;seen.add(r.id);return r.accountingVersion===3&&r.costHash===costHash&&typeof r.strategyHash==='string'&&Number.isFinite(r.openedAt)&&Number.isFinite(r.featuresAt)&&r.featuresAt<=r.openedAt&&Number.isFinite(r.closedAt)&&r.closedAt>r.openedAt&&r.features?.length===5&&r.features.every(Number.isFinite)&&Number.isFinite(r.realized_R);}).sort((a,b)=>a.openedAt-b.openedAt);
  if(rows.some((r,i)=>i&&r.openedAt<rows[i-1].closedAt))throw new Error('Overlapping labels cannot be independent trials');
  if(!rows.length||new Set(rows.map(scopeKey)).size!==1)throw new Error('Exactly one strategy/asset/side/regime scope per artifact');
  // Trades crossing boundaries are purged rather than relabeled into another window.

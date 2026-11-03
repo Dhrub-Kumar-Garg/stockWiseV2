@@ -37,3 +37,9 @@ test('exact configured loss boundaries trigger, without floating-point slippage'
   for (const equity of [98, 90]) { const s = fixture(); evaluateRisk(s, cfg, at); s.equity = equity;
     assert.equal(canOpen(s, cfg, at+1), false); }
 });
+
+test('unpriced open exposure blocks new allocations without pretending it can flatten',()=>{
+ const s={mode:'paper',equity:100,startingCapital:100,dataRiskPaused:true};
+ const result=evaluateRisk(s,cfg,Date.UTC(2026,0,1));assert.equal(result.blocked,true);assert.ok(result.reasons.includes('stalePositions'));assert.equal(result.flatten,false);
+ s.dataRiskPaused=false;assert.equal(evaluateRisk(s,cfg,Date.UTC(2026,0,1)+1000).blocked,false);
+});

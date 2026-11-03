@@ -13,5 +13,6 @@ export function validateConfig(input) {
   const loop = cfg.v2.strategies?.loopSeconds;
   if (!Number.isFinite(loop) || loop < 1 || loop > 300) throw new Error('Loop interval must be 1–300 seconds');
   if (cfg.v2.analyst?.groqApiKey) throw new Error('Remove embedded analyst credentials from configuration; use optional environment settings');
+  if(cfg.v2.learning?.kellyFraction!=null&&(!Number.isFinite(cfg.v2.learning.kellyFraction)||cfg.v2.learning.kellyFraction<0||cfg.v2.learning.kellyFraction>.25))throw new Error('Kelly must be zero to quarter Kelly');
   return cfg;
 }

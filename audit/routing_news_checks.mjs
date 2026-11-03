@@ -131,5 +131,8 @@ await check('npm daemon does not refresh analyst or populate OI snapshots', () =
   return {analystRefresh: false, oiCachePopulation: false};
 });
 
+fs.mkdirSync(path.join(ROOT,'audit/results'),{recursive:true});
 fs.writeFileSync(path.join(ROOT, 'audit/results/routing-news-checks.json'), JSON.stringify(output, null, 2) + '\n');
 for (const row of output) console.log(row.status, row.name, JSON.stringify(row.evidence));
+
+if(output.some(row=>row.status!=='PASS'))process.exitCode=1;

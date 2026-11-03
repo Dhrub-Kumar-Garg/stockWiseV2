@@ -12,7 +12,7 @@ export function alignedCorrelation(a, b, minimum = 60) {
   return vx > 0 && vy > 0 ? covariance / Math.sqrt(vx*vy) : null;
 }
 export function rankOrders(orders) {
-  return [...orders].sort((a, b) => (b.netExpectedReturn || 0)-(a.netExpectedReturn || 0) || a.symbol.localeCompare(b.symbol) || String(a.strategy_id || '').localeCompare(String(b.strategy_id || '')));
+  return [...orders].sort((a, b) => (b.netExpectedReturn ?? b.expectedNetRLower ?? 0)-(a.netExpectedReturn ?? a.expectedNetRLower ?? 0) || a.symbol.localeCompare(b.symbol) || String(a.strategy_id || '').localeCompare(String(b.strategy_id || '')));
 }
 export function budgetOrder(state, order, quotes, cfg, at = Date.now()) {
   const reject = reason => ({...order, marginUsd: 0, rejected: reason});

@@ -1,12 +1,16 @@
 // Public GET only. Deadline includes response body; provider URLs never logged.
+const providerCooldown=new Map();
 export async function readPublic(url,{fetcher=fetch,timeoutMs=6000,maxBytes=2000000,retries=1,json=false,publicBody=null}={}) {
   const u=new URL(url); if(u.protocol!=='https:'||u.username||u.password)throw new Error('Public HTTPS required');
+  if((providerCooldown.get(u.origin)||0)>Date.now())throw new Error('Provider rate-limit cooldown');
   for(let attempt=0;attempt<=retries;attempt++) {
     const c=new AbortController(); let timer;
     try {
       const work=(async()=>{
         const res=await fetcher(url,{signal:c.signal,method:publicBody?'POST':'GET',body:publicBody?JSON.stringify(publicBody):undefined,headers:{'User-Agent':'Stockwise-Paper-Research/3',...(publicBody?{'Content-Type':'application/json'}:{})}});
-        if(!res.ok){await res.body?.cancel();const e=new Error('Provider HTTP failure');e.retry=res.status===429||res.status>=500;throw e;}
+        if(!res.ok){await res.body?.cancel();const e=new Error('Provider HTTP failure');
+          if(res.status===429){const raw=res.headers?.get('retry-after'),delay=Number(raw)*1000||Date.parse(raw)-Date.now()||60000;providerCooldown.set(u.origin,Date.now()+Math.max(1000,Math.min(300000,delay)));}
+          e.retry=res.status>=500;throw e;}
         const reader=res.body.getReader(),chunks=[];let bytes=0;
         try {for(;;){const {value,done}=await reader.read();if(done)break;bytes+=value.byteLength;if(bytes>maxBytes)throw new Error('Oversize response');chunks.push(Buffer.from(value));}}
         finally {reader.cancel().catch(()=>{});}

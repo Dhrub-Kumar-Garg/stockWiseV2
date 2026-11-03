@@ -26,7 +26,7 @@ export async function collectQuotes(cfg, at = Date.now(), mock = false) {
       const [raw,daily,intraday] = await Promise.all([fetchQuote(w.symbol),history(w.symbol,'1y','1d',at),
         history(w.symbol,'5d','15m',at)]);
       const q = toUsd(raw,await fxPromise,Date.now()), closes = daily.map(b=>b.c/(q.fx || 1));
-      return [w.symbol,{...q,...indicators(closes),symbol:w.symbol,market:w.market,closes,dailyBars:daily,returns:timestampedReturns(daily),intradayBars:intraday.map(b=>({...b,o:b.o/(q.fx||1),h:b.h/(q.fx||1),l:b.l/(q.fx||1),c:b.c/(q.fx||1)})),closesIntraday:intraday.map(b=>b.c/(q.fx || 1))}];
+      return [w.symbol,{...q,...indicators(closes),symbol:w.symbol,market:w.market,closes,dailyBars:daily.map(b=>({...b,o:b.o/(q.fx||1),h:b.h/(q.fx||1),l:b.l/(q.fx||1),c:b.c/(q.fx||1)})),returns:timestampedReturns(daily),intradayBars:intraday.map(b=>({...b,o:b.o/(q.fx||1),h:b.h/(q.fx||1),l:b.l/(q.fx||1),c:b.c/(q.fx||1)})),closesIntraday:intraday.map(b=>b.c/(q.fx || 1))}];
     } catch { return [w.symbol,{symbol:w.symbol,ok:false,stale:true}]; }
   })());}}));
   return Object.fromEntries(entries);

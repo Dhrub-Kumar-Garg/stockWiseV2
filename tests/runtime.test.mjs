@@ -24,3 +24,10 @@ test('public signal P&L excludes deposits and stale data is explicit',()=>{
   const s=createPaperState(cfg,at); s.cashflows.push({id:'deposit2',amount:50,ts:at+1}); s.walletBalance=150; s.equity=150;
   paperTick(s,{},cfg,{at:at+2,evaluate:()=>[]}); assert.equal(signalsFor(s,cfg).totalNetPnl,0); assert.equal(s.health.status,'waiting_data');
 });
+
+test('clock rollback cannot reset risk days and already-flat closes are durably completable',()=>{
+ const s=createPaperState(cfg,at);paperTick(s,q(at),cfg,{at,evaluate:()=>[]});
+ assert.throws(()=>paperTick(s,q(at-1),cfg,{at:at-1,evaluate:()=>[]}),/backwards/);
+ s.intents.push({id:'close-flat',op:'close',symbol:'BTC-USD',decisionAt:at,decisionSourceTs:at,expiresAt:at+1000});
+ const events=paperTick(s,{},cfg,{at:at+1,evaluate:()=>[]});assert.ok(events.some(e=>e.type==='close_noop'&&e.id==='close-flat'));assert.equal(s.intents.length,0);
+});

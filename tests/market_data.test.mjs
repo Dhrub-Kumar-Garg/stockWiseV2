@@ -30,3 +30,13 @@ test('Yahoo adjustment preserves split-consistent OHLC and rejects missing data'
   assert.equal(parseYahooBars(data,{asOf:1000,intervalMs:1000})[0].o,100);
   assert.throws(()=>parseYahooBars({}));
 });
+
+test('Coinbase fallback preserves the exchange trade timestamp instead of fabricating freshness',async()=>{
+ const {fetchQuote}=await import('../scripts/lib.mjs'),prior=globalThis.fetch,at=Date.now(),exchangeAt=at-60000;
+ try{
+  globalThis.fetch=async url=>String(url).includes('query1.finance.yahoo.com')?new Response('',{status:404}):new Response(JSON.stringify({price:'100',time:new Date(exchangeAt).toISOString()}));
+  const q=await fetchQuote('BTC-USD');assert.equal(q.source,'coinbase-exchange');assert.equal(q.sourceTs,exchangeAt);assert.equal(quoteUsable(q,at),false);
+  globalThis.fetch=async()=>new Response(JSON.stringify({chart:{result:[{meta:{regularMarketPrice:100,regularMarketTime:Math.floor(at/1000)}}]}}));
+  const unknown=await fetchQuote('UNKNOWN');assert.equal(unknown.currency,null);assert.equal(toUsd(unknown,null,at).ok,false);
+ }finally{globalThis.fetch=prior;}
+});

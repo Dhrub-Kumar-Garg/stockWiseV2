@@ -30,7 +30,7 @@ export function updateShadowBooks(state,quotes,cfg,at){
    }
    const entry=book.entry;book.closedTrades=[];book.cashLedger=[];
    const label={id:entry.id,trade_id:entry.id,accountingVersion:3,strategy_id:book.strategy_id,strategyHash:entry.strategyHash,symbol:book.symbol,side:entry.side,regime:entry.regime,
-     openedAt:main.openedAt,featuresAt:entry.featuresAt,closedAt:at,features:entry.features,realized_R:risk>0?net/risk:0,net_pnl:net,reason,source:'shadow',family:book.family};
+     openedAt:main.openedAt,featuresAt:entry.featuresAt,closedAt:at,features:entry.features,costHash:entry.costHash,realized_R:risk>0?net/risk:0,net_pnl:net,reason,source:'shadow',family:book.family};
    book.tradeCount=(book.tradeCount||0)+1;book.netPnl=(book.netPnl||0)+net;book.lastClose=label;events.push({type:'shadow_close',id:label.id,label,ts:at});return true;
   }
   let exit=book.exitPending&&at>book.exitPending.at&&q?.sourceTs>book.exitPending.sourceTs?book.exitPending.reason:null;
@@ -63,9 +63,11 @@ export function updateShadowBooks(state,quotes,cfg,at){
 }
 // Equal family budgets prevent correlated confirmations multiplying capital.
 export function netCandidates(rows){
- const families=new Map();for(const row of rows){const f=modelFamily(row.strategy_id),old=families.get(f);if(old===null)continue;
-  if(old&&old.side!==row.side&&Math.abs(old.calibration.expectedNetRLower-row.calibration.expectedNetRLower)<1e-12){families.set(f,null);continue;}
-  if(!old||row.calibration.expectedNetRLower>old.calibration.expectedNetRLower||row.calibration.expectedNetRLower===old.calibration.expectedNetRLower&&row.strategy_id.localeCompare(old.strategy_id)<0)families.set(f,row);}
+ const groups=new Map();for(const row of rows){const f=modelFamily(row.strategy_id);if(!groups.has(f))groups.set(f,[]);groups.get(f).push(row);}
+ const families=new Map();for(const [family,members] of groups){
+  members.sort((a,b)=>b.calibration.expectedNetRLower-a.calibration.expectedNetRLower||a.strategy_id.localeCompare(b.strategy_id));const top=members[0];
+  if(members.some(r=>r.side!==top.side&&Math.abs(r.calibration.expectedNetRLower-top.calibration.expectedNetRLower)<1e-12))continue;families.set(family,top);
+ }
  const selected=[...families.values()].filter(Boolean),total=selected.reduce((s,r)=>s+r.calibration.expectedNetRLower,0);
  if(!(total>0))return null;
  const signed=selected.reduce((s,r)=>s+(r.side==='long'?1:-1)*r.calibration.expectedNetRLower,0)/total;

@@ -19,6 +19,7 @@ export function createPaperState(cfg, at = Date.now()) {
 }
 export function paperTick(state, quotes, cfg, {at = Date.now(), evaluate = runStrategies, context = {}} = {}) {
   A.assertPaperAccount(state);
+  if(!Number.isFinite(at)||at<(state.lastTickAt??-Infinity))throw new Error('Paper clock moved backwards');
   if (state.lastTickAt === at) return [];
   state.lastTickAt = at;
   if (cfg.v2.execution?.mode !== 'paper') throw new Error('Paper execution mode required');
@@ -54,6 +55,7 @@ export function paperTick(state, quotes, cfg, {at = Date.now(), evaluate = runSt
     else if (at-pos.openedAt >= cfg.v2.aggression.maxHoldHours*3600000) close(symbol,'time-exit');
     else if (previousPeak/pos.initialMargin >= cfg.v2.aggression.trailActivateRoi && snap.uPnl/pos.initialMargin <= previousPeak/pos.initialMargin-cfg.v2.aggression.trailGiveRoi) close(symbol,'trailing-stop');
   }
+  state.dataRiskPaused=Object.keys(state.positions).some(symbol=>!valid[symbol]);
   A.equityAt(state,valid);
   let risk = evaluateRisk(state,cfg,at);
   if (risk.flatten) { for (const symbol of Object.keys(state.positions)) close(symbol,'risk-lock'); A.equityAt(state,valid); }
@@ -67,6 +69,7 @@ export function paperTick(state, quotes, cfg, {at = Date.now(), evaluate = runSt
   if (risk.flatten) {for (const symbol of Object.keys(state.positions)) close(symbol,'risk-lock'); A.equityAt(state,valid);}
   for (const intent of rankOrders(pending.filter(i=>["open","close"].includes(i.op)))) {
     const q = valid[intent.symbol];
+    if(intent.op==='close'&&!state.positions[intent.symbol]){events.push({type:'close_noop',id:intent.id,reason:'already_flat',ts:at});continue;}
     if (intent.op === 'open' && intent.expiresAt <= at) { delete state.orderReservations[intent.id]; events.push({type:'reject',id:intent.id,reason:'expired',ts:at}); continue; }
     if (!q || at <= intent.decisionAt || q.sourceTs <= intent.decisionSourceTs) { state.intents.push(intent); continue; }
     if (intent.op === 'close') { if (!close(intent.symbol,intent.reason || 'strategy-exit',intent.id)) state.intents.push(intent); continue; }

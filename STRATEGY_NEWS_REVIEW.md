@@ -1,3 +1,5 @@
+> Historical proposal/audit record. The subsequent instruction "do every improvement one by one" approved software items 1–15. See IMPLEMENTATION_STATUS.md for the separate local commits and IMPLEMENTATION_RESULTS.md for current measurements. No rejected alpha was promoted; credential/deployment and implementation-push gates remain separate.
+
 # Strategy participation, direction bias, news and trading frequency
 
 Follow-up requested 2026-11-03. Audited source remains

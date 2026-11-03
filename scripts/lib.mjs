@@ -117,7 +117,7 @@ export async function fetchQuote(symbol) {
       prevClose,
       changePct,
       marketState: meta.marketState || (Date.now()/1000 >= meta.currentTradingPeriod?.regular?.start && Date.now()/1000 < meta.currentTradingPeriod?.regular?.end ? "REGULAR" : "CLOSED"),
-      currency: meta.currency || "USD",
+      currency: meta.currency || null,
       sessionStart:
         meta.currentTradingPeriod?.regular?.start ?? null,
       ok: true,
@@ -128,12 +128,12 @@ export async function fetchQuote(symbol) {
       try {
         const pair = symbol.replace("-", "-"); // keep as-is
         const data = await getJSON(
-          `https://api.coinbase.com/v2/prices/${pair}/spot`
+          `https://api.exchange.coinbase.com/products/${pair}/ticker`
         );
-        const price = parseFloat(data.data.amount);
+        const price = Number(data.price);
         return {
           symbol,
-          sourceTs: Date.now(), receivedAt: Date.now(), source: "coinbase-observed",
+          sourceTs: Date.parse(data.time), receivedAt: Date.now(), source: "coinbase-exchange",
           price,
           prevClose: price,
           changePct: 0,

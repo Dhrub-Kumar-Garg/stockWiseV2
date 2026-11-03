@@ -42,3 +42,7 @@ test('tier leverage reductions cannot increase margin past its cap', () => {
   const o = budgetOrder(state(), {...order('BTC-USD'), stopPct: 0.0001}, quotes, settings, at);
   assert.equal(o.leverage, 1); assert.ok(o.marginUsd <= 20); assert.ok(o.marginUsd+o.entryFee <= 90);
 });
+
+test('portfolio allocation ranks calibrated net edge before watchlist symbol order',()=>{
+ const sorted=rankOrders([{symbol:'AAA',strategy_id:'a',expectedNetRLower:.1},{symbol:'ZZZ',strategy_id:'b',expectedNetRLower:.5}]);assert.equal(sorted[0].symbol,'ZZZ');
+});

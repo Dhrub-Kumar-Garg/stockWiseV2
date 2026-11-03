@@ -1,3 +1,21 @@
+# Current implementation after approved repairs
+
+The historical source audit below remains pinned to revision 5036099. IMPLEMENTATION_STATUS.md and IMPLEMENTATION_RESULTS.md describe the approved changes and current verification. Historical file:line references are not assertions about the repaired revision.
+
+The active system is a single paper runtime shared by daemon, cycle and the retired WS-prototype entrypoint. It refuses live/force modes and unreconciled legacy state. Public quote/FX/history, structured RSS/Atom news and matched public OI observations are collected in bounded background workers. The risk loop uses immutable snapshots on a one-second schedule; strategy decisions have their own cadence. Closed OHLC/volume features, source/receipt timestamps, explicit currency conversion and regular-session checks determine data eligibility.
+
+Every supported model/asset is evaluated with structured reasons. Independent virtual shadow books queue signals once per completed model horizon and fill only on a subsequent fresh observation. They charge fees, adverse execution, modeled funding/borrow, strategy/time/stop/target exits, and persist closed causal feature/outcome labels. They never debit portfolio cash. Pairs have joint shadow legs and remain research-only for portfolio execution. Original strategy descriptions below document the audited source; the repaired library corrects 28-bar indexing, decimal momentum, flat RSI, OHLC true range, volume VWAP, closed-session ORB and matched price/OI horizons.
+
+Offline calibration separates training, calibration and test windows with boundary purging and nonoverlapping labels. Artifacts bind strategy, asset, side, observed trend/volatility regime, costs, source-code digest and expiry. Reliability/Brier, independent days, minimum samples, net-R uncertainty and multiple-trial gates control eligibility. News is asset/macro-tagged model context with publication and observation cutoffs; its predictive benefit remains unverified. Analyst text expires and cannot veto a side, force activity or override risk. No real qualifying model is supplied.
+
+Qualified family budgets net opposing signals into one target direction per symbol. Quarter Kelly from causal cost-net outcomes sets stop-risk allocation; leverage, gross/net exposure, correlation/cluster, portfolio stop risk, reserved funds and minimum cash provide further caps. Operator pause, daily-loss and lifetime drawdown locks are separate and persistent; episodes cannot replenish cash or clear loss locks. Stale open exposure blocks new allocation. Fresh observations are required for exits; stale positions are not pretended flat.
+
+Pending intent IDs, reservations, cash/margin/funding settlement, semantic events and the authenticated dashboard projection commit atomically in SQLite WAL transactions under a renewable single-writer lease. IDs remain durable across restarts; competing command producers append transactionally. A failed transaction rolls back economics and queue changes together. Event-time observation archives support later causal replay. The dashboard reads a bounded allowlisted projection through bearer authentication and shows feed health, stale polls, net cashflow P&L, decision coverage and shadow books. External LLM providers/notifications are disabled unless separately configured through reviewed adapters.
+
+The separate spot microstructure recorder/study captures public depth/trades, validates snapshot bridges/sequences and simulates quote latency, venue minimums, partial fills and conservative maker queues. It has no live order transport or automatic promotion. Current retrospective results qualify no portfolio or minute-scale strategy.
+
+---
+
 # StockWise V2 architecture audit
 
 Audited source: `50360996451ddc7ad742372bff398b7938ae0029` (2026-10-23).

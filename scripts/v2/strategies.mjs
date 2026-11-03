@@ -1,7 +1,7 @@
-import {trueATR,volumeVWAP} from './features.mjs';
+import {trueATR,volumeVWAP,observedRegime} from './features.mjs';
 import {flowDeltas} from './flow.mjs';
 import {queueShadowCandidates,netCandidates} from './shadow.mjs';
-import {candidateFeatures,calibratedDecision,strategyFingerprint,scopeKey,expiringContext} from './calibration.mjs';
+import {candidateFeatures,calibratedDecision,strategyFingerprint,costFingerprint,scopeKey,expiringContext} from './calibration.mjs';
 import {quoteUsable, alignPair} from "./market_data.mjs";
 // scripts/v2/strategies.mjs — Deterministic strategy library
 // Reads enriched quotes, emits open/close orders with next-tick fills.
@@ -697,7 +697,7 @@ export function strategyExit(pos, q, eq, regime) {
  */
 // Every symbol/strategy receives a reason; shadow evaluation is independent of capital.
 export function evaluateCandidates(state,eq,cfg,{strategies=state.strategies||SEED_STRATEGIES,now:at=Date.now()}={}) {
-  const rows=[];
+  const rows=[],dataCostHash=costFingerprint(cfg);
   for(const item of cfg.watchlist)for(const strat of strategies) {
     const q=eq[item.symbol],row={ts:at,symbol:item.symbol,strategy_id:strat.id,pool:strat.pool,market:item.market,stage:'evaluated',reason:'no_signal',signal:null};
     if(strat.status==='retired')row.reason='retired';
@@ -711,7 +711,7 @@ export function evaluateCandidates(state,eq,cfg,{strategies=state.strategies||SE
     else if(['orderflow','oi_diverge'].includes(strat.id)&&!q.flow)row.reason='flow_history_missing';
     else if(strat.id==='orb'&&!q.sessionStart)row.reason='session_open_missing';
     else {try {row.signal=SIGNAL_FN[strat.id]?.({...q,symbol:item.symbol,market:item.market,observedAt:at},strat,eq)||null;row.reason=row.signal?'raw_signal':'no_signal';}catch{row.reason='signal_error';}}
-    if(row.signal){row.side=row.signal.side;row.rawConfidence=row.signal.confidence;row.regime=state.regime||'unknown';row.strategyHash=strategyFingerprint(strat);row.features=candidateFeatures(q,state.world,item.symbol,at);}
+    if(row.signal){row.side=row.signal.side;row.rawConfidence=row.signal.confidence;row.regime=observedRegime(q);row.costHash=dataCostHash;row.strategyHash=strategyFingerprint(strat);row.features=candidateFeatures(q,state.world,item.symbol,at);}
     rows.push(row);
   }
   return rows;
@@ -757,7 +757,7 @@ export function runStrategies(state,eq,cfg,context={}) {
       sizeScale:plan.sizeScale,features:best.features,strategyHash:best.strategyHash,regime:best.regime,probability:best.calibration.probability,expectedNetRLower:best.calibration.expectedNetRLower,edgeEvidence:best.calibration.evidence,modelHash:best.calibration.artifactHash,
       reason:sig.reason,trade_id:`${strat.id}:${item.symbol}:${at}`});
     for(const r of eligible)recordDecision(state,{...r,stage:chosen.includes(r)?'selected':'vetoed',reason:r===best?'primary':chosen.includes(r)?'confirmation':'lower_net_ev'});
-    available--;
+
   }
-  return orders;
+  return [...orders.filter(o=>o.op==='close'),...orders.filter(o=>o.op==='open').sort((a,b)=>b.expectedNetRLower-a.expectedNetRLower||a.symbol.localeCompare(b.symbol))];
 }
