@@ -163,12 +163,12 @@
       }
     },
     "aggression": {
-      "leverageStart": 5,
-      "leverageCeiling": 12,
-      "kellyFractionStart": 0.1,
-      "kellyFractionMax": 0.3,
+      "leverageStart": 2,
+      "leverageCeiling": 2,
+      "kellyFractionStart": 0.25,
+      "kellyFractionMax": 0.25,
       "volTargetAnnual": 0.6,
-      "earnItUnlockStep": 3.5,
+      "earnItUnlockStep": 0,
       "trailActivateRoi": 0.5,
       "trailGiveRoi": 0.25,
       "maxHoldHours": 2
@@ -269,6 +269,10 @@
       "maxClusterGross": 0.8,
       "maxCorrelatedGross": 0.5,
       "correlationThreshold": 0.75
+    },
+    "learning": {
+      "minTrades": 30,
+      "kellyFraction": 0.25
     }
   }
 }

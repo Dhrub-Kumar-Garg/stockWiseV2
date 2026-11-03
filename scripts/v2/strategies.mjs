@@ -72,7 +72,7 @@ export const SEED_STRATEGIES = [
     status: "candidate", baseLev: 4, stopPct: 0.03, targetPct: 0.08 },
 ];
 
-const DEFAULT_LEARNED = { n: 0, expectancy_R: 0, win_rate: 0, kelly: 0.12, confidence: 0.2 };
+const DEFAULT_LEARNED = { n: 0, expectancy_R: 0, win_rate: 0, kelly: 0, confidence: 0 };
 
 // ── Strategy persistence ───────────────────────────────────────────────────
 

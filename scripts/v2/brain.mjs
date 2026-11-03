@@ -1,3 +1,4 @@
+import {estimateEdge} from "./learning.mjs";
 // scripts/v2/brain.mjs — Evolution brain (engine-side, zero AI tokens)
 // FinMem + ReasoningBank inspired: score strategies, bank lessons from
 // wins AND losses, weight memories by importance × recency, and only
@@ -144,36 +145,9 @@ export function deflatedSharpe(rs, nTrials) {
 
 // ── 3. Per-strategy fractional Kelly ───────────────────────────────────────
 
-function strategyKelly(s, rs) {
-  const n = rs.length;
-
-  if (n < 5) {
-    const btStats = readJSON(V2.backtestStats, {});
-    const bt = btStats[s.id];
-    if (bt && bt.passed === false) return 0.04;
-    return 0.12;
-  }
-
-  const stats = expectancyStats(rs);
-  const variance = stdev(rs) ** 2;
-  // Half-Kelly
-  let kelly = variance > 0
-    ? 0.4 * clamp(stats.expectancyR / variance, 0, 1.5)
-    : 0;
-
-  // Blend with backtest prior (pseudo-count 15)
-  const btStats = readJSON(V2.backtestStats, {});
-  const bt = btStats[s.id];
-  if (bt && Number.isFinite(bt.backtest_kelly)) {
-    const pseudoN = 15;
-    kelly = (kelly * n + bt.backtest_kelly * pseudoN) / (n + pseudoN);
-  }
-
-  // Status adjustments
-  if (s.status === "probation") kelly *= 0.5;
-  if (s.status === "retired")   kelly = 0.02;
-
-  return clamp(kelly, 0.02, 0.40);
+function strategyKelly(s, trades) {
+  if (s.status === "retired") return 0;
+  return estimateEdge(trades, {cutoff: now()}).kelly;
 }
 
 // ── Reflog (hash-chained audit trail) ──────────────────────────────────────
@@ -201,12 +175,13 @@ export function loadClosedV2(sinceTs = 0) {
   for (const e of entries) {
     if (e.type === "pre") {
       preMap.set(e.trade_id, e);
-    } else if (e.type === "post" && preMap.has(e.trade_id)) {
+    } else if (e.type === "post" && e.accountingVersion === 3 && preMap.has(e.trade_id)) {
       const pre = preMap.get(e.trade_id);
       const tsClose = e.ts || 0;
       if (tsClose >= sinceTs) {
         closed.push({
           trade_id:     e.trade_id,
+          accountingVersion: 3, closedAt: e.ts,
           symbol:       pre.symbol,
           market:       pre.market,
           strategy_id:  pre.strategy_id,
@@ -280,7 +255,7 @@ export function scoreStrategies() {
     }
 
     // ── Kelly & confidence ──
-    const kelly = strategyKelly(strat, rs);
+    const kelly = strategyKelly(strat, trades);
 
     let confidence;
     if (strat.status === "active") {
@@ -298,6 +273,7 @@ export function scoreStrategies() {
       expectancy_R: round(stats.expectancyR, 4),
       win_rate:     round(stats.winRate, 4),
       kelly:        round(kelly, 4),
+      accountingVersion: 3, asOf: now(), pf: stats.profitFactor, dsr: dsr.dsr,
       confidence:   round(confidence, 3),
     };
 
@@ -445,36 +421,11 @@ export function onEpisodeEnd(state, rec, cfg) {
   const closedThisEp = closed.filter((t) => t.ts_close >= rec.startedAt);
   distillEpisodeLessons(state, rec, closedThisEp);
 
-  // 3. Measure edge
-  const rs = closedThisEp.map((t) => t.realized_R).filter((r) => isFinite(r));
-  const edge = rs.length ? mean(rs) : 0;
-
-  const v2  = cfg.v2;
+  const edge = estimateEdge(closedThisEp, {cutoff: now()}).expectedNetR;
   const agg = state.aggression;
-
-  // Survived well → unlock
-  if (
-    (rec.endReason === "goal" ||
-     (rec.endReason === "time" && rec.returnPct > 0)) &&
-    edge > 0
-  ) {
-    agg.unlockedLevel = (agg.unlockedLevel || 0) + 1;
-    agg.kellyFraction += 0.07 * clamp(edge, 0.2, 1.2);
-  }
-  // Blew up → pull back
-  else if (rec.blownUp) {
-    agg.unlockedLevel = Math.max(0, (agg.unlockedLevel || 0) - 1);
-    agg.kellyFraction -= 0.03;
-  }
-
-  agg.kellyFraction = clamp(
-    agg.kellyFraction, 0.05, v2.aggression.kellyFractionMax
-  );
-  agg.leverageCap = clamp(
-    v2.aggression.leverageStart + agg.unlockedLevel * v2.aggression.earnItUnlockStep,
-    v2.aggression.leverageStart,
-    agg.leverageCeiling
-  );
+  agg.kellyFraction = cfg.v2.learning?.kellyFraction ?? 0.25;
+  agg.leverageCap = Math.min(agg.leverageCap, cfg.v2.safety?.maxPositionLeverage ?? 2);
+  agg.unlockedLevel = 0;
 
   // 4. Bump generation
   state.generation += 1;
@@ -492,7 +443,7 @@ export function onEpisodeEnd(state, rec, cfg) {
     note: rec.blownUp
       ? `Blowup in ep${rec.episodeNum}. Pulled back aggression.`
       : rec.endReason === "goal"
-        ? `Goal hit in ep${rec.episodeNum}! Edge=${round(edge, 3)}. Unlocking more.`
+        ? `Goal hit in ep${rec.episodeNum}. Risk budgets remain unchanged.`
         : `Ep${rec.episodeNum} ended (${rec.endReason}). Edge=${round(edge, 3)}.`,
   };
 
@@ -519,51 +470,8 @@ export function onEpisodeEnd(state, rec, cfg) {
  * Needs 4+ closed trades. Returns true if a change was made.
  */
 export function evolveTick(state, cfg) {
-  const closed = loadClosedV2(state.startedAt);
-  if (closed.length < 4) return false;
-
-  const recentRs = closed.slice(-25).map((t) => t.realized_R).filter((r) => isFinite(r));
-  if (!recentRs.length) return false;
-
-  const edge = mean(recentRs);
-  const v2   = cfg.v2;
-  const agg  = state.aggression;
-  const dd   = state.peakEquity > 0
-    ? (state.peakEquity - state.equity) / state.peakEquity
-    : 0;
-  const prevLevel = agg.unlockedLevel;
-
-  if (edge > 0.05 && state.equity > state.startingCapital && dd < 0.15) {
-    agg.unlockedLevel = (agg.unlockedLevel || 0) + 0.5;
-    agg.kellyFraction += 0.02;
-  } else if (edge < -0.05 || dd >= 0.18) {
-    agg.unlockedLevel = Math.max(0, (agg.unlockedLevel || 0) - 0.5);
-    agg.kellyFraction -= 0.015;
-  } else {
-    return false; // no change
-  }
-
-  agg.kellyFraction = clamp(
-    agg.kellyFraction, 0.05, v2.aggression.kellyFractionMax
-  );
-  agg.leverageCap = clamp(
-    v2.aggression.leverageStart + agg.unlockedLevel * v2.aggression.earnItUnlockStep,
-    v2.aggression.leverageStart,
-    agg.leverageCeiling
-  );
-
-  if (agg.unlockedLevel !== prevLevel) {
-    reflog({
-      type: "evolve_tick",
-      edge: round(edge, 4),
-      drawdown: round(dd, 4),
-      unlockedLevel: agg.unlockedLevel,
-      kellyFraction: round(agg.kellyFraction, 4),
-      leverageCap: round(agg.leverageCap, 1),
-    });
-  }
-
-  return true;
+  // Reusing the same wins cannot unlock additional risk. Explicit budgets govern sizing.
+  return false;
 }
 
 // ── 9. Dashboard digest & helpers ──────────────────────────────────────────

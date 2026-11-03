@@ -64,6 +64,11 @@ export function settleClose(state, pos, exitFill, rate, reason, at = Date.now())
   const isolationAdjustment = netPnl - (rawPnl + funding + borrow - fees);
   state.walletBalance += recovery;
   state.realizedPnlEpisode = (state.realizedPnlEpisode || 0) + netPnl;
+  state.closedTrades ||= [];
+  state.closedTrades.push({trade_id: pos.openMeta?.trade_id, strategy_id: pos.openMeta?.strategy_id, symbol: pos.symbol, side: pos.side,
+    accountingVersion: 3, closedAt: at, net_pnl: netPnl, realized_R: pos.riskUsd > 0 ? netPnl/pos.riskUsd : 0,
+    regime: pos.openMeta?.regime || state.regime || 'unknown'});
+  state.closedTrades = state.closedTrades.slice(-6000);
   pos.closed = true;
   record(state, {type: 'close', id: pos.openMeta?.trade_id, cash: recovery, netPnl, fees, funding, borrow, isolationAdjustment, ts: at});
   return {rawPnl, exitFee, fees, funding, borrow, netPnl, isolationAdjustment,

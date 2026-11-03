@@ -433,6 +433,7 @@ function closePosition(state, symbol, markPrice, reasonTag, cfg) {
   const tradeId = pos.openMeta?.trade_id || `${symbol}_${pos.openedAt}`;
   appendJSONL(V2.journal, {
     type:         "post",
+    accountingVersion: 3,
     trade_id:     tradeId,
     symbol,
     exit_reason:  reasonTag,

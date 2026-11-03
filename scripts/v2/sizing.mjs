@@ -3,6 +3,8 @@
 // Bets bigger only after a strategy proves it works. Never chases losses.
 
 import { V2, readJSON, clamp } from "./store.mjs";
+import {estimateEdge, strategyObservations} from './learning.mjs';
+import {budgetOrder} from './portfolio.mjs';
 
 function dailyVol(closes) {
   if (!closes || closes.length < 15) return 0.03;
@@ -13,48 +15,30 @@ function dailyVol(closes) {
   return clamp(v, 0.005, 0.15);
 }
 
-export function sizeOrder(state, o, eq, cfg) {
+export function sizeOrder(state, o, eq, cfg, options = {}) {
   if (!o || o.op !== "open") return o;
   const V = cfg.v2;
+  const at = options.now ?? Date.now();
+  const ledger = options.ledger ?? readJSON(V2.strategies, []);
+  const strategies = Array.isArray(ledger) ? ledger : ledger?.strategies || [];
+  const strategy = strategies.find(s => s.id === o.strategy_id);
+  const observations = options.observations ?? strategyObservations(state, o.strategy_id, o.side);
+  const edge = estimateEdge(observations, {cutoff: at, minTrades: V.learning?.minTrades ?? 30, fraction: V.learning?.kellyFraction ?? 0.25});
+  if (!strategy || strategy.status === 'retired' || !edge.eligible) return {...o, marginUsd: 0, rejected: 'insufficient_cost_net_edge', edge};
   const market = (cfg.watchlist.find((w) => w.symbol === o.symbol) || {}).market || "crypto";
   const marketMax = V.leverage[market]?.maxLeverage || 1;
 
   let lev = o.leverage || state.aggression.leverageCap;
   lev = clamp(lev, 1, Math.min(state.aggression.leverageCap, state.aggression.leverageCeiling, marketMax));
 
-  const explicit = o.marginUsd != null;
-  let marginUsd = o.marginUsd;
-  if (!explicit) {
-    let base;
-    if (o.strategy_id) {
-      const lib = readJSON(V2.strategies) || { strategies: [] };
-      const st = (lib.strategies || []).find((s) => s.id === o.strategy_id);
-      const acctMult = clamp(state.aggression.kellyFraction / V.aggression.kellyFractionStart, 0.4, 1.6);
-      base = clamp((Number.isFinite(st?.kelly) ? st.kelly : 0.1) * acctMult, 0.02, 0.40);
-    } else {
-      base = o.sizePct != null ? o.sizePct : (state.aggression.kellyFraction ?? 0.25) * 0.5;
-    }
-    
-    // Scale size by dynamic confidence (if the strategy provided one, like Pairs Trading)
-    if (o.confidence) {
-      // Confidence is 0.0 to 1.0. Scale the base linearly, but keep a floor of 0.2x.
-      const confidenceScale = Math.max(0.2, o.confidence);
-      base *= confidenceScale;
-    }
-
-    marginUsd = base * state.equity;
-
-    const volTargetDaily = (V.aggression.volTargetAnnual ?? 0.8) / Math.sqrt(365);
-    const v = dailyVol(eq[o.symbol]?.closes);
-    marginUsd *= clamp(volTargetDaily / v, 0.25, 1.7);
-
-    const g = state.goal;
-    if (g && g.target > g.startEquity) {
-      const progress = (state.equity - g.startEquity) / (g.target - g.startEquity);
-      if (progress > 0 && progress < 1) marginUsd *= 1 + clamp(0.55 * (1 - progress), 0, 0.55);
-    }
-  }
-
-  marginUsd = clamp(marginUsd, 0, Math.max(0, state.walletBalance * 0.98));
-  return { ...o, leverage: lev, marginUsd };
+  const costs = 2*((V.perpFees?.taker ?? 0.0005)+(cfg.slippage?.[market] ?? 0.001)+(V.halfSpread?.[market] ?? 0.0002));
+  if (!Number.isFinite(o.stopPct) || o.stopPct <= 0) return {...o, marginUsd: 0, rejected: "invalid_stop"};
+  const learned = strategy.learned;
+  const learnedCap = learned?.accountingVersion === 3 && learned.n >= 30 && learned.asOf < at && Number.isFinite(learned.kelly)
+    ? Math.max(0, learned.kelly) : edge.kelly;
+  const riskFraction = Math.min(V.safety?.maxRiskPerTrade ?? 0.005, edge.kelly, learnedCap);
+  const volatilityScale = Math.min(1, (V.aggression.volTargetAnnual ?? 0.6)/Math.sqrt(365)/dailyVol(eq[o.symbol]?.closes));
+  const maximum = Math.max(0, state.equity*riskFraction*volatilityScale/(lev*(o.stopPct+costs)));
+  const marginUsd = o.marginUsd == null ? maximum : Math.min(Math.max(0, o.marginUsd), maximum);
+  return {...budgetOrder(state, {...o, leverage: lev, marginUsd}, eq, cfg, at), edge};
 }

@@ -335,7 +335,7 @@ function doClose(state, symbol, markPrice, reasonTag, cfg) {
 
   // Journal post
   appendJSONL(V2.journal, {
-    type: "post", trade_id: tradeId, symbol,
+    type: "post", accountingVersion: 3, trade_id: tradeId, symbol,
     exit_reason:   reasonTag,
     exitPrice:     round(exitFill, 6),
     net_pnl:       round(netPnl, 6),
