@@ -188,7 +188,7 @@ export function rsi(closes, n = 14) {
   }
   const avgGain = gainSum / n;
   const avgLoss = lossSum / n;
-  if (avgLoss === 0) return 100;
+  if (avgLoss === 0) return avgGain === 0 ? 50 : 100;
   const rs = avgGain / avgLoss;
   return 100 - 100 / (1 + rs);
 }

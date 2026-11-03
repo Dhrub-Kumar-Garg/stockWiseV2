@@ -1,3 +1,4 @@
+import {createFlowCollector} from './flow.mjs';
 import {createWorldCollector} from './world.mjs';
 import {SnapshotWorker} from './http.mjs';
 import fs from 'node:fs';
@@ -23,9 +24,9 @@ export async function collectQuotes(cfg, at = Date.now(), mock = false) {
   await Promise.all(Array.from({length:Math.min(3,pending.length)},async()=>{ while(pending.length) {const w=pending.shift();entries.push(await (async()=>{
     try {
       const [raw,daily,intraday] = await Promise.all([fetchQuote(w.symbol),history(w.symbol,'1y','1d',at),
-        w.market === 'crypto' ? history(w.symbol,'5d','15m',at) : []]);
+        history(w.symbol,'5d','15m',at)]);
       const q = toUsd(raw,await fxPromise,Date.now()), closes = daily.map(b=>b.c/(q.fx || 1));
-      return [w.symbol,{...q,...indicators(closes),symbol:w.symbol,market:w.market,closes,dailyBars:daily,returns:timestampedReturns(daily),closesIntraday:intraday.map(b=>b.c/(q.fx || 1))}];
+      return [w.symbol,{...q,...indicators(closes),symbol:w.symbol,market:w.market,closes,dailyBars:daily,returns:timestampedReturns(daily),intradayBars:intraday.map(b=>({...b,o:b.o/(q.fx||1),h:b.h/(q.fx||1),l:b.l/(q.fx||1),c:b.c/(q.fx||1)})),closesIntraday:intraday.map(b=>b.c/(q.fx || 1))}];
     } catch { return [w.symbol,{symbol:w.symbol,ok:false,stale:true}]; }
   })());}}));
   return Object.fromEntries(entries);
@@ -49,12 +50,16 @@ export async function runCLI(args = process.argv.slice(2)) {
     if (args.includes('--initialize')) return;
     const feed=new SnapshotWorker(()=>collectQuotes(cfg,Date.now(),args.includes('--mock')),{ttlMs:10000});
     if(args.includes('--once'))await feed.refresh();
-    let nextDecision=0,lastWorld=0;
+    let nextDecision=0,lastWorld=0,lastFlow=0;
+    const flowWorker=new SnapshotWorker(createFlowCollector(),{ttlMs:60000});
     const worldWorker=new SnapshotWorker(createWorldCollector(),{ttlMs:600000});
     do {
       const began=Date.now(); feed.refresh();
       const snapshot=feed.snapshot(), quotes=snapshot.value || {};
-      if(!args.includes('--mock'))worldWorker.refresh();
+      if(!args.includes('--mock')){worldWorker.refresh();flowWorker.refresh();}
+      const flow=flowWorker.snapshot();
+      if(flow.updatedAt>lastFlow){store.archiveObservation('public_flow',flow.value,flow.updatedAt);lastFlow=flow.updatedAt;}
+      for(const [symbol,q] of Object.entries(quotes))q.flow=flow.value?.flows?.[symbol]||null;
       const worldSnapshot=worldWorker.snapshot();
       if(worldSnapshot.updatedAt>lastWorld){store.archiveObservation('world',worldSnapshot.value,worldSnapshot.updatedAt);lastWorld=worldSnapshot.updatedAt;}
       const result=store.transact(state=>{state.world=worldSnapshot.value||{};return paperTick(state,quotes,cfg,{at:Date.now(),context:{world:state.world,models},...(began<nextDecision?{evaluate:()=>[]}:{})});},publish);

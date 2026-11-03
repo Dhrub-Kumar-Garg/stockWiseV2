@@ -1,0 +1,33 @@
+{
+  "period": [
+    "2025-07-01",
+    "2026-01-01"
+  ],
+  "source": "50360996451ddc7ad742372bff398b7938ae0029",
+  "TREND": {
+    "sharpe": -9.046151743234159,
+    "maxDrawdown": 0.8120505038752727,
+    "profitFactor": 0.4560562155720022,
+    "expectancyUsd": -0.05698707132084671,
+    "tradeCount": 1424,
+    "winRate": 0.29002808988764045,
+    "returnPct": -0.8114958956088575,
+    "finalEquity": 18.85041043911425,
+    "feesUsd": 31.93901016171232,
+    "signedFundingUsd": -0.5365805832641364,
+    "grossPnlUsd": -48.67399881590924
+  },
+  "REVERT": {
+    "sharpe": -10.9821680240753,
+    "maxDrawdown": 0.7322966425130963,
+    "profitFactor": 0.2833404274016098,
+    "expectancyUsd": -0.04432850097798553,
+    "tradeCount": 1651,
+    "winRate": 0.2919442761962447,
+    "returnPct": -0.7318635511465399,
+    "finalEquity": 26.813644885346005,
+    "feesUsd": 19.893917990319025,
+    "signedFundingUsd": -0.29655297491456983,
+    "grossPnlUsd": -52.99588414942055
+  }
+}

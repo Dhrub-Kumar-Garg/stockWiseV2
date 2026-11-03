@@ -1,3 +1,6 @@
+import {trueATR,volumeVWAP} from './features.mjs';
+import {flowDeltas} from './flow.mjs';
+import {queueShadowCandidates,netCandidates} from './shadow.mjs';
 import {candidateFeatures,calibratedDecision,strategyFingerprint,scopeKey,expiringContext} from './calibration.mjs';
 import {quoteUsable, alignPair} from "./market_data.mjs";
 // scripts/v2/strategies.mjs — Deterministic strategy library
@@ -135,34 +138,9 @@ export function ensureStrategies() {
 /** N-bar return: c[last] / c[last - 1 - n] - 1 */
 function retN(c, n) {
   const last = c.length - 1;
-  const idx = last - 1 - n;
+  const idx = last - n;
   if (idx < 0 || !c[idx]) return 0;
   return c[last] / c[idx] - 1;
-}
-
-// Module-level state for ORB session tracking, re-entry cooldowns, OI cache
-const _orbState = new Map();
-const _cooldowns = new Map();
-const _oiCache = {};        // symbol → { timestamps: [], ois: [] }
-const _fundingCache = {};   // symbol → { timestamps: [], rates: [] }
-
-/** Store an OI snapshot for a symbol (called from engine each cycle). */
-export function cacheOiSnapshot(symbol, oi, fundingRate) {
-  if (!_oiCache[symbol]) _oiCache[symbol] = { ts: [], oi: [] };
-  const c = _oiCache[symbol];
-  if (c.ts.at(-1) === now()) return;
-  c.ts.push(now());
-  c.oi.push(oi);
-  // Keep last 100 snapshots (~50 min at 30s cycles)
-  if (c.ts.length > 100) { c.ts.shift(); c.oi.shift(); }
-
-  if (fundingRate != null) {
-    if (!_fundingCache[symbol]) _fundingCache[symbol] = { ts: [], rate: [] };
-    const f = _fundingCache[symbol];
-    f.ts.push(now());
-    f.rate.push(fundingRate);
-    if (f.ts.length > 100) { f.ts.shift(); f.rate.shift(); }
-  }
 }
 
 // ── Signal functions ───────────────────────────────────────────────────────
@@ -265,7 +243,7 @@ function sigMomTrend(q, strat) {
   if (
     (isNaN(s200) || price > s200) &&
     r28 > 0.05 &&
-    q.mom > 1 &&
+    q.mom > 0.01 &&
     q.rsi < 78
   ) {
     return {
@@ -278,65 +256,14 @@ function sigMomTrend(q, strat) {
   return null;
 }
 
-function sigOrb(q, strat) {
-  if (q.market !== "us") return null;
-  if (!q.sessionStart || !q.price) return null;
-
-  const nowTs = q.observedAt ?? now();
-  const sym = q.symbol;
-
-  // Normalize sessionStart to ms (Yahoo returns seconds)
-  const sessionMs =
-    typeof q.sessionStart === "number" && q.sessionStart < 1e12
-      ? q.sessionStart * 1000
-      : q.sessionStart;
-
-  let orb = _orbState.get(sym);
-
-  // Reset on new session
-  if (!orb || orb.sessionStart !== sessionMs) {
-    // Must start watching within ~5 min of real session open
-    if (nowTs - sessionMs > 5 * 60 * 1000) return null;
-
-    orb = {
-      sessionStart: sessionMs,
-      watchStart: nowTs,
-      orHi: q.price,
-      orLo: q.price,
-      rangeFormed: false,
-    };
-    _orbState.set(sym, orb);
-  }
-
-  // First 30 minutes: build the opening range, no signals yet
-  const elapsedMin = (nowTs - sessionMs) / (60 * 1000);
-
-  if (elapsedMin <= 30) {
-    if (q.price > orb.orHi) orb.orHi = q.price;
-    if (q.price < orb.orLo) orb.orLo = q.price;
-    return null;
-  }
-
-  orb.rangeFormed = true;
-
-  // After range is set, trade the breakout
-  if (q.price > orb.orHi) {
-    return {
-      side: "long", baseLev: strat.baseLev,
-      stopPct: strat.stopPct, targetPct: strat.targetPct,
-      confidence: 0.55,
-      reason: `ORB long: price ${q.price.toFixed(2)} > orHi ${orb.orHi.toFixed(2)}`,
-    };
-  }
-  if (q.price < orb.orLo) {
-    return {
-      side: "short", baseLev: strat.baseLev,
-      stopPct: strat.stopPct, targetPct: strat.targetPct,
-      confidence: 0.5,
-      reason: `ORB short: price ${q.price.toFixed(2)} < orLo ${orb.orLo.toFixed(2)}`,
-    };
-  }
-  return null;
+function sigOrb(q,strat){
+ const start=q.sessionStart<1e12?q.sessionStart*1000:q.sessionStart,at=q.observedAt;
+ if(!Number.isFinite(start)||at<start+1800000)return null;
+ const bars=(q.intradayBars||[]).filter(b=>b.ts>=start&&b.closeTs<=start+1800000&&b.closeTs<=at);
+ if(bars.length<2||bars[0].ts!==start||bars.at(-1).closeTs!==start+1800000)return null;
+ const hi=Math.max(...bars.map(b=>b.h)),lo=Math.min(...bars.map(b=>b.l));
+ if(q.price<=hi&&q.price>=lo)return null;
+ return {side:q.price>hi?'long':'short',baseLev:strat.baseLev,stopPct:strat.stopPct,targetPct:strat.targetPct,confidence:.5,reason:'Closed first-30-minute session OHLC breakout'};
 }
 
 function sigBreakoutIntraday(q, strat) {
@@ -427,95 +354,24 @@ function sigAdaptiveRegime(q, strat) {
   return null;
 }
 
-function sigOiDivergence(q, strat) {
-  if (q.market !== "crypto") return null;
-  const sym = q.symbol;
-  const cache = _oiCache[sym];
-  if (!cache || cache.oi.length < 16) return null; // need ~8 min of snapshots
-
-  const c = q.closes;
-  if (!c || c.length < 10) return null;
-
-  // ΔP over last 8 closes
-  const n = Math.min(8, c.length - 1);
-  const pricePrev = c[c.length - 1 - n];
-  const priceNow = c[c.length - 1];
-  const deltaP = pricePrev > 0 ? (priceNow - pricePrev) / pricePrev : 0;
-
-  // ΔOI over last 8 cached OI snapshots
-  const oiN = Math.min(8, cache.oi.length - 1);
-  const oiPrev = cache.oi[cache.oi.length - 1 - oiN];
-  const oiNow = cache.oi[cache.oi.length - 1];
-  const deltaOI = oiPrev > 0 ? (oiNow - oiPrev) / oiPrev : 0;
-
-  // Threshold filter: |ΔP| > 1.5%, |ΔOI| > 3%
-  if (Math.abs(deltaP) < 0.015 || Math.abs(deltaOI) < 0.03) return null;
-
-  // Signal classification
-  if (deltaP > 0 && deltaOI > 0) {
-    // Confirmed uptrend
-    return { side: "long", baseLev: strat.baseLev, stopPct: strat.stopPct, targetPct: strat.targetPct,
-      confidence: 0.6, reason: `OI confirmed long: ΔP=${(deltaP*100).toFixed(1)}%, ΔOI=${(deltaOI*100).toFixed(1)}%` };
-  }
-  if (deltaP > 0 && deltaOI < 0) {
-    // Weak rally (short covering) → fade short
-    return { side: "short", baseLev: strat.baseLev, stopPct: strat.stopPct, targetPct: strat.targetPct,
-      confidence: 0.52, reason: `OI diverge short: ΔP=${(deltaP*100).toFixed(1)}% but ΔOI=${(deltaOI*100).toFixed(1)}% (short covering)` };
-  }
-  if (deltaP < 0 && deltaOI > 0) {
-    // Confirmed downtrend
-    return { side: "short", baseLev: strat.baseLev, stopPct: strat.stopPct, targetPct: strat.targetPct,
-      confidence: 0.6, reason: `OI confirmed short: ΔP=${(deltaP*100).toFixed(1)}%, ΔOI=${(deltaOI*100).toFixed(1)}%` };
-  }
-  if (deltaP < 0 && deltaOI < 0) {
-    // Weak selloff (long liquidation exhaustion) → fade long
-    return { side: "long", baseLev: strat.baseLev, stopPct: strat.stopPct, targetPct: strat.targetPct,
-      confidence: 0.52, reason: `OI diverge long: ΔP=${(deltaP*100).toFixed(1)}% but ΔOI=${(deltaOI*100).toFixed(1)}% (liquidation exhaustion)` };
-  }
-  return null;
+function sigOiDivergence(q,strat){
+ const d=flowDeltas(q);if(!d||Math.abs(d.price)<.015||Math.abs(d.oi)<.03)return null;
+ const side=d.price*d.oi>0?'long':'short';
+ return {side,baseLev:strat.baseLev,stopPct:strat.stopPct,targetPct:strat.targetPct,confidence:.5,reason:'Matched 8-minute price/OI divergence; received-time public data'};
 }
-
-function sigOrderFlow(q, strat) {
-  if (q.market !== "crypto") return null;
-  const sym = q.symbol;
-  const fCache = _fundingCache[sym];
-  const oCache = _oiCache[sym];
-  if (!fCache || fCache.rate.length < 5) return null;
-  if (!oCache || oCache.oi.length < 5) return null;
-
-  // Average funding over last 5 snapshots
-  const recentFunding = fCache.rate.slice(-5);
-  const avgFunding = mean(recentFunding);
-
-  // OI delta over last 5 snapshots
-  const recentOI = oCache.oi.slice(-5);
-  const oiDelta = recentOI.length >= 2
-    ? (recentOI[recentOI.length - 1] - recentOI[0]) / (recentOI[0] || 1)
-    : 0;
-
-  // Positive funding sustained + OI rising = longs crowded → short (contrarian)
-  const allPositive = recentFunding.every(r => r > 0.0001);
-  const allNegative = recentFunding.every(r => r < -0.0001);
-
-  if (allPositive && oiDelta > 0.01) {
-    return { side: "short", baseLev: strat.baseLev, stopPct: strat.stopPct, targetPct: strat.targetPct,
-      confidence: 0.5, reason: `OrderFlow short: longs crowded, funding=${(avgFunding*100).toFixed(4)}%, OI↑${(oiDelta*100).toFixed(1)}%` };
-  }
-  if (allNegative && oiDelta > 0.01) {
-    return { side: "long", baseLev: strat.baseLev, stopPct: strat.stopPct, targetPct: strat.targetPct,
-      confidence: 0.5, reason: `OrderFlow long: shorts crowded, funding=${(avgFunding*100).toFixed(4)}%, OI↑${(oiDelta*100).toFixed(1)}%` };
-  }
-  return null;
+function sigOrderFlow(q,strat){
+ const d=flowDeltas(q);if(!d||d.oi<.01||Math.abs(d.funding)<.0001)return null;
+ return {side:d.funding>0?'short':'long',baseLev:strat.baseLev,stopPct:strat.stopPct,targetPct:strat.targetPct,confidence:.5,reason:'Hourly funding crowd proxy; matched 8-minute OI window'};
 }
 
 function sigAtrExpansion(q, strat) {
   const c = q.closes;
   if (!c || c.length < 40) return null;
 
-  const atrNow = atr(c, 14);
+  const atrNow = trueATR(q.dailyBars, 14);
   // ATR 20 bars ago: use closes up to -20
   const cOld = c.slice(0, -20);
-  const atrOld = cOld.length >= 15 ? atr(cOld, 14) : NaN;
+  const atrOld = trueATR(q.dailyBars?.slice(0,-20),14);
   if (!isFinite(atrNow) || !isFinite(atrOld) || atrOld === 0) return null;
 
   const arRatio = atrNow / atrOld;
@@ -548,12 +404,8 @@ function sigVwapRevert(q, strat) {
   const bars = q.closesIntraday;
   if (!bars || bars.length < 30) return null;
 
-  // Approximate session VWAP as equal-weight mean of last ~48 bars (12h session)
-  const session = bars.slice(-48);
-  const vwap = mean(session);
-  const diffs = session.map(p => p - vwap);
-  const sigmaVwap = stdev(diffs);
-  if (sigmaVwap === 0) return null;
+  const volume=volumeVWAP(q.intradayBars);if(!volume)return null;
+  const vwap=volume.value,sigmaVwap=volume.sd;if(sigmaVwap===0)return null;
 
   const price = q.price;
   const upperBand = vwap + 2 * sigmaVwap;
@@ -657,7 +509,7 @@ function sigPairsTrade(q, strat, eq) {
     // Entry threshold: 1.5 (was 2.0 — too conservative)
     if (zScore < -1.5 && r < 40) {
       return {
-        side: "long", baseLev: strat.baseLev,
+        side: "long", hedgeSymbol:symB, baseLev: strat.baseLev,
         stopPct: strat.stopPct, targetPct: strat.targetPct,
         confidence: dynamicConfidence,
         reason: `PairsTrade: ${symA} undervalued vs ${symB} (z=${zScore.toFixed(2)}, RSI=${r.toFixed(0)})`,
@@ -665,7 +517,7 @@ function sigPairsTrade(q, strat, eq) {
     }
     if (zScore > 1.5 && r > 60) {
       return {
-        side: "short", baseLev: strat.baseLev,
+        side: "short", hedgeSymbol:symB, baseLev: strat.baseLev,
         stopPct: strat.stopPct, targetPct: strat.targetPct,
         confidence: dynamicConfidence,
         reason: `PairsTrade: ${symA} overvalued vs ${symB} (z=${zScore.toFixed(2)}, RSI=${r.toFixed(0)})`,
@@ -755,26 +607,11 @@ export function strategyExit(pos, q, eq, regime) {
     }
   }
 
-  // ── oi_diverge: exit on opposite divergence ──
-  if (stratId === "oi_diverge" && q.market === "crypto") {
-    const cache = _oiCache[q.symbol];
-    if (cache && cache.oi.length >= 8) {
-      const oiN = Math.min(8, cache.oi.length - 1);
-      const oiDelta = (cache.oi[cache.oi.length - 1] - cache.oi[cache.oi.length - 1 - oiN]) / (cache.oi[cache.oi.length - 1 - oiN] || 1);
-      const pDelta = c.length >= 8 ? (c[c.length - 1] - c[c.length - 8]) / c[c.length - 8] : 0;
-      // Exit long if price falling with OI rising (confirmed down)
-      if (pos.side === "long" && pDelta < -0.01 && oiDelta > 0.02) {
-        return { exit: true, reason: `OI diverge exit long: ΔP=${(pDelta*100).toFixed(1)}%, ΔOI=${(oiDelta*100).toFixed(1)}%` };
-      }
-      if (pos.side === "short" && pDelta > 0.01 && oiDelta > 0.02) {
-        return { exit: true, reason: `OI diverge exit short: ΔP=${(pDelta*100).toFixed(1)}%, ΔOI=${(oiDelta*100).toFixed(1)}%` };
-      }
-    }
-  }
+  if(stratId==='oi_diverge'){const d=flowDeltas(q);if(d&&d.oi>.02&&(pos.side==='long'?d.price<-.01:d.price>.01))return {exit:true,reason:'Opposite matched-horizon OI move'};}
 
   // ── atr_expand: ATR-based stop ──
   if (stratId === "atr_expand" && c.length >= 15) {
-    const a = atr(c, 14);
+    const a = trueATR(q.dailyBars,14);
     if (isFinite(a)) {
       const atrStop = 1.5 * a;
       const entry = pos.entryPrice;
@@ -789,10 +626,8 @@ export function strategyExit(pos, q, eq, regime) {
 
   // ── vwap_revert: revert to VWAP ± 0.5σ ──
   if (stratId === "vwap_revert" && q.closesIntraday?.length >= 30) {
-    const session = q.closesIntraday.slice(-48);
-    const vwap = mean(session);
-    const diffs = session.map(p => p - vwap);
-    const sigmaVwap = stdev(diffs);
+    const volume=volumeVWAP(q.intradayBars);if(!volume)return null;
+    const vwap=volume.value,sigmaVwap=volume.sd;
     if (sigmaVwap > 0) {
       const exitUpper = vwap + 0.5 * sigmaVwap;
       const exitLower = vwap - 0.5 * sigmaVwap;
@@ -871,6 +706,8 @@ export function evaluateCandidates(state,eq,cfg,{strategies=state.strategies||SE
     else if(!q||!quoteUsable(q,at,cfg.v2.data?.maxQuoteAgeMs??30000))row.reason='missing_or_stale_quote';
     else if(item.market!=='crypto'&&q.marketState!=='REGULAR')row.reason='session_closed';
     else if(!q.closes?.length)row.reason='history_missing';
+    else if(['tsmom','donchian','mom_trend','rsi2dip','adaptive_regime'].includes(strat.id)&&q.closes.length<200)row.reason='daily_warmup_missing';
+    else if(strat.id==='vwap_revert'&&!volumeVWAP(q.intradayBars))row.reason='volume_bars_missing';
     else if(['orderflow','oi_diverge'].includes(strat.id)&&!q.flow)row.reason='flow_history_missing';
     else if(strat.id==='orb'&&!q.sessionStart)row.reason='session_open_missing';
     else {try {row.signal=SIGNAL_FN[strat.id]?.({...q,symbol:item.symbol,market:item.market,observedAt:at},strat,eq)||null;row.reason=row.signal?'raw_signal':'no_signal';}catch{row.reason='signal_error';}}
@@ -896,10 +733,12 @@ export function runStrategies(state,eq,cfg,context={}) {
   }
   const analyst=expiringContext(context.analyst||state.analyst,at);state.analyst=analyst;
   const rows=evaluateCandidates(state,eq,cfg,{strategies,now:at});
+  queueShadowCandidates(state,rows,eq,cfg,at);
   for(const row of rows){
     recordDecision(state,row);if(!row.signal)continue;
     let reason=null;
-    if(state.positions[row.symbol])reason='symbol_occupied';
+    if(row.strategy_id==='pairs_trade')reason='paired_execution_research_only';
+    else if(state.positions[row.symbol])reason='symbol_occupied';
     else if((state.lastClosed?.[row.symbol]||0)+120000>at)reason='reentry_cooldown';
     const model=(context.models||state.calibrationModels||[]).find(m=>m.scope===scopeKey(row));
     row.calibration=calibratedDecision(model,row,cfg,at);
@@ -910,12 +749,12 @@ export function runStrategies(state,eq,cfg,context={}) {
   for(const item of [...cfg.watchlist].sort((a,b)=>a.symbol.localeCompare(b.symbol))){
     const eligible=rows.filter(r=>r.symbol===item.symbol&&r.signal&&!r.blocked).sort((a,b)=>b.calibration.expectedNetRLower-a.calibration.expectedNetRLower||a.strategy_id.localeCompare(b.strategy_id));
     // Exact opposing EV ties abstain. Never break ties in favor of long or force equal sides.
-    const best=eligible[0],tie=best&&eligible.some(r=>r.side!==best.side&&Math.abs(r.calibration.expectedNetRLower-best.calibration.expectedNetRLower)<1e-12);
+    const plan=netCandidates(eligible),best=plan?.primary,tie=eligible.length&&!plan;
     if(!best||!available||tie){for(const r of eligible)recordDecision(state,{...r,stage:'vetoed',reason:tie?'opposing_ev_tie':'position_slots'});continue;}
-    const chosen=eligible.filter(r=>r.side===best.side),strat=strategies.find(s=>s.id===best.strategy_id),sig=best.signal;
+    const chosen=plan.contributors,strat=strategies.find(s=>s.id===best.strategy_id),sig=best.signal;
     orders.push({op:'open',symbol:item.symbol,market:item.market,side:sig.side,leverage:sig.baseLev||strat.baseLev,strategy_id:strat.id,
       confirming_ids:chosen.slice(1).map(r=>r.strategy_id),setup_tag:strat.setup_tag,stopPct:sig.stopPct,targetPct:sig.targetPct,
-      features:best.features,strategyHash:best.strategyHash,regime:best.regime,probability:best.calibration.probability,expectedNetRLower:best.calibration.expectedNetRLower,edgeEvidence:best.calibration.evidence,modelHash:best.calibration.artifactHash,
+      sizeScale:plan.sizeScale,features:best.features,strategyHash:best.strategyHash,regime:best.regime,probability:best.calibration.probability,expectedNetRLower:best.calibration.expectedNetRLower,edgeEvidence:best.calibration.evidence,modelHash:best.calibration.artifactHash,
       reason:sig.reason,trade_id:`${strat.id}:${item.symbol}:${at}`});
     for(const r of eligible)recordDecision(state,{...r,stage:chosen.includes(r)?'selected':'vetoed',reason:r===best?'primary':chosen.includes(r)?'confirmation':'lower_net_ev'});
     available--;

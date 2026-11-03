@@ -1,3 +1,4 @@
+import {updateShadowBooks,shadowSummary} from './shadow.mjs';
 import {calibratedDecision} from './calibration.mjs';
 // Synchronous paper cycle, with injectable signals/clock and no network or filesystem writes.
 import * as P from './perp.mjs';
@@ -22,6 +23,7 @@ export function paperTick(state, quotes, cfg, {at = Date.now(), evaluate = runSt
   state.lastTickAt = at;
   if (cfg.v2.execution?.mode !== 'paper') throw new Error('Paper execution mode required');
   const events = [], valid = Object.fromEntries(Object.entries(quotes).filter(([,q]) => q.currency === 'USD' && quoteUsable(q,at,cfg.v2.data?.maxQuoteAgeMs ?? 30000)));
+  if(!context.skipShadow)events.push(...updateShadowBooks(state,valid,cfg,at));
   state.updatedAt = at; state.cycles = (state.cycles || 0)+1;
   function close(symbol, reason, requestId) {
     const pos = state.positions[symbol], q = valid[symbol];
@@ -120,6 +122,6 @@ export function signalsFor(state, cfg, at = Date.now()) {
     totalPnlPct:deposits>0?(state.equity-deposits)/deposits:0,peakEquity:state.peakEquity,maxDrawdownPct:state.maxDrawdownPct,
     riskState:state.riskState,regime:state.regime,generation:state.generation,aggression:state.aggression,lifetime:state.lifetime,
     grossLeverage:state.equity>0?positions.reduce((s,p)=>s+p.notional,0)/state.equity:0,health:state.health,positions,
-    decisionTraces:state.decisionTraces || [],decisionCounters:Object.entries(state.decisionCounters || {}).map(([strategy_id,c])=>({strategy_id,...c})),
+    shadowBooks:shadowSummary(state),decisionTraces:state.decisionTraces || [],decisionCounters:Object.entries(state.decisionCounters || {}).map(([strategy_id,c])=>({strategy_id,...c})),
     analyst:state.analyst || {mode:'SLEEP',direction_bias:'NEUTRAL',stale:true},world:state.world || {}};
 }

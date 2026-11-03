@@ -21,7 +21,7 @@ on positive cost-net evidence. Historical audit reports describe the old revisio
 | 11. Decision traces | Complete | Every symbol/strategy has a reason; bounded traces, separate raw/veto/selection/primary-fill counters and UI |
 | 12. Structured news | Complete | Bounded RSS/Atom subset, event/observation timestamps, balanced dedup, Fed/equity, TTL/outage health and immutable SQLite archive |
 | 13. Calibration and expiring context | Complete | Train/calibration/test artifacts, Brier/reliability, scope/cost/TTL checks, purged boundaries, no side/news heuristic veto; no real model qualifies yet |
-| 14. Shadow strategy books/netting | Pending | |
+| 14. Shadow strategy books/netting | Complete | Independent costed next-observation books, paired shadow legs, causal labels/export, family netting, volume/OHLC features and matched OI horizons; no automatic capital promotion |
 | 15. Sub-minute feasibility tools | Pending | |
 
 External credential revocation and deployment require separate approval. Future

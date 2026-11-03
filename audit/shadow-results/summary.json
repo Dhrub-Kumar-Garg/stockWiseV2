@@ -1,0 +1,830 @@
+{
+  "metrics": {
+    "sharpe": null,
+    "maxDrawdown": 0,
+    "profitFactor": null,
+    "expectancy": null,
+    "tradeCount": 0,
+    "winRate": null,
+    "returnPct": 0
+  },
+  "shadow": [
+    {
+      "id": "tsmom|BTC-USD",
+      "family": "trend",
+      "metrics": {
+        "sharpe": -9.14224239593664,
+        "maxDrawdown": 0.02209031802297201,
+        "profitFactor": 0.1440547310519568,
+        "expectancy": -0.022078165156910884,
+        "tradeCount": 100,
+        "winRate": 0.13,
+        "returnPct": -0.022078165156908414
+      }
+    },
+    {
+      "id": "donchian|BTC-USD",
+      "family": "trend",
+      "metrics": {
+        "sharpe": -5.298808067879835,
+        "maxDrawdown": 0.007659192419412708,
+        "profitFactor": 0.12201743776050242,
+        "expectancy": -0.023266702480825296,
+        "tradeCount": 31,
+        "winRate": 0.0967741935483871,
+        "returnPct": -0.007212677769055098
+      }
+    },
+    {
+      "id": "mom_trend|BTC-USD",
+      "family": "trend",
+      "metrics": {
+        "sharpe": -3.8376900613413585,
+        "maxDrawdown": 0.00283407471497088,
+        "profitFactor": 0.162711037804074,
+        "expectancy": -0.014916182710375515,
+        "tradeCount": 19,
+        "winRate": 0.10526315789473684,
+        "returnPct": -0.00283407471497088
+      }
+    },
+    {
+      "id": "ibreakout|BTC-USD",
+      "family": "trend",
+      "metrics": {
+        "sharpe": -17.693454446271478,
+        "maxDrawdown": 0.1331102071124559,
+        "profitFactor": 0.2716565068371104,
+        "expectancy": -0.017692513009208197,
+        "tradeCount": 752,
+        "winRate": 0.20212765957446807,
+        "returnPct": -0.13304769782922865
+      }
+    },
+    {
+      "id": "atr_expand|BTC-USD",
+      "family": "trend",
+      "metrics": {
+        "sharpe": -1.8703235880416187,
+        "maxDrawdown": 0.0017321229843182406,
+        "profitFactor": 0.26609727243526093,
+        "expectancy": -0.013570514988504168,
+        "tradeCount": 7,
+        "winRate": 0.2857142857142857,
+        "returnPct": -0.0009499360491951325
+      }
+    },
+    {
+      "id": "vol_expand|BTC-USD",
+      "family": "trend",
+      "metrics": {
+        "sharpe": -3.5768636315882323,
+        "maxDrawdown": 0.002757329507441564,
+        "profitFactor": 0,
+        "expectancy": -0.030636994527130416,
+        "tradeCount": 9,
+        "winRate": 0,
+        "returnPct": -0.002757329507441564
+      }
+    },
+    {
+      "id": "rsi2dip|BTC-USD",
+      "family": "reversion",
+      "metrics": {
+        "sharpe": -4.1216954498810265,
+        "maxDrawdown": 0.005398450273628508,
+        "profitFactor": 0.22817488882535744,
+        "expectancy": -0.01256286905247508,
+        "tradeCount": 42,
+        "winRate": 0.21428571428571427,
+        "returnPct": -0.005276405002038409
+      }
+    },
+    {
+      "id": "vwap_revert|BTC-USD",
+      "family": "reversion",
+      "metrics": {
+        "sharpe": -16.686234018419956,
+        "maxDrawdown": 0.09665672224453503,
+        "profitFactor": 0.14925089533686686,
+        "expectancy": -0.018908395831313055,
+        "tradeCount": 511,
+        "winRate": 0.23679060665362034,
+        "returnPct": -0.09662190269799675
+      }
+    },
+    {
+      "id": "orderflow|BTC-USD",
+      "family": "flow",
+      "metrics": {
+        "sharpe": null,
+        "maxDrawdown": 0,
+        "profitFactor": null,
+        "expectancy": null,
+        "tradeCount": 0,
+        "winRate": null,
+        "returnPct": 0
+      }
+    },
+    {
+      "id": "pairs_trade|BTC-USD",
+      "family": "spread",
+      "metrics": {
+        "sharpe": -3.974736976730677,
+        "maxDrawdown": 0.002948672884993009,
+        "profitFactor": 0.0009558156652836808,
+        "expectancy": -0.024212728220184634,
+        "tradeCount": 11,
+        "winRate": 0.09090909090909091,
+        "returnPct": -0.0026634001042201705
+      }
+    },
+    {
+      "id": "adaptive_regime|BTC-USD",
+      "family": "adaptive",
+      "metrics": {
+        "sharpe": -3.7160156576126764,
+        "maxDrawdown": 0.005745675325768085,
+        "profitFactor": 0.2700949807784853,
+        "expectancy": -0.01588374661229417,
+        "tradeCount": 34,
+        "winRate": 0.20588235294117646,
+        "returnPct": -0.005400473848179099
+      }
+    },
+    {
+      "id": "oi_diverge|BTC-USD",
+      "family": "flow",
+      "metrics": {
+        "sharpe": null,
+        "maxDrawdown": 0,
+        "profitFactor": null,
+        "expectancy": null,
+        "tradeCount": 0,
+        "winRate": null,
+        "returnPct": 0
+      }
+    },
+    {
+      "id": "tsmom|ETH-USD",
+      "family": "trend",
+      "metrics": {
+        "sharpe": -5.551532393774076,
+        "maxDrawdown": 0.020208227078715058,
+        "profitFactor": 0.34449446890180674,
+        "expectancy": -0.01754383289515046,
+        "tradeCount": 109,
+        "winRate": 0.28440366972477066,
+        "returnPct": -0.019122777855712147
+      }
+    },
+    {
+      "id": "donchian|ETH-USD",
+      "family": "trend",
+      "metrics": {
+        "sharpe": -2.2709071063567015,
+        "maxDrawdown": 0.005976503907641484,
+        "profitFactor": 0.40373694536154325,
+        "expectancy": -0.014589710593153464,
+        "tradeCount": 30,
+        "winRate": 0.3333333333333333,
+        "returnPct": -0.0043769131779454185
+      }
+    },
+    {
+      "id": "mom_trend|ETH-USD",
+      "family": "trend",
+      "metrics": {
+        "sharpe": -3.7410262231168505,
+        "maxDrawdown": 0.006652740480082686,
+        "profitFactor": 0.21706250192401647,
+        "expectancy": -0.019460878098723763,
+        "tradeCount": 30,
+        "winRate": 0.16666666666666666,
+        "returnPct": -0.005838263429616464
+      }
+    },
+    {
+      "id": "ibreakout|ETH-USD",
+      "family": "trend",
+      "metrics": {
+        "sharpe": -12.25343873473598,
+        "maxDrawdown": 0.13132897913429942,
+        "profitFactor": 0.44604569862345966,
+        "expectancy": -0.017536803454904156,
+        "tradeCount": 745,
+        "winRate": 0.2993288590604027,
+        "returnPct": -0.13064918573901796
+      }
+    },
+    {
+      "id": "atr_expand|ETH-USD",
+      "family": "trend",
+      "metrics": {
+        "sharpe": 0.17453734183823066,
+        "maxDrawdown": 0.0015842471010545367,
+        "profitFactor": 1.1506728112437423,
+        "expectancy": 0.0033122721573790037,
+        "tradeCount": 5,
+        "winRate": 0.6,
+        "returnPct": 0.00016561360786893076
+      }
+    },
+    {
+      "id": "vol_expand|ETH-USD",
+      "family": "trend",
+      "metrics": {
+        "sharpe": -2.517111014642106,
+        "maxDrawdown": 0.004365339674466839,
+        "profitFactor": 0.19347453097967157,
+        "expectancy": -0.023518984373140484,
+        "tradeCount": 16,
+        "winRate": 0.3125,
+        "returnPct": -0.003763037499702304
+      }
+    },
+    {
+      "id": "rsi2dip|ETH-USD",
+      "family": "reversion",
+      "metrics": {
+        "sharpe": -2.490512676041934,
+        "maxDrawdown": 0.010159346180852347,
+        "profitFactor": 0.48377793427489924,
+        "expectancy": -0.015957620563917887,
+        "tradeCount": 50,
+        "winRate": 0.38,
+        "returnPct": -0.007978810281957793
+      }
+    },
+    {
+      "id": "vwap_revert|ETH-USD",
+      "family": "reversion",
+      "metrics": {
+        "sharpe": -10.282239663089744,
+        "maxDrawdown": 0.12291872754860678,
+        "profitFactor": 0.3124084894640144,
+        "expectancy": -0.023872666247156702,
+        "tradeCount": 514,
+        "winRate": 0.39883268482490275,
+        "returnPct": -0.12270550451037365
+      }
+    },
+    {
+      "id": "orderflow|ETH-USD",
+      "family": "flow",
+      "metrics": {
+        "sharpe": null,
+        "maxDrawdown": 0,
+        "profitFactor": null,
+        "expectancy": null,
+        "tradeCount": 0,
+        "winRate": null,
+        "returnPct": 0
+      }
+    },
+    {
+      "id": "pairs_trade|ETH-USD",
+      "family": "spread",
+      "metrics": {
+        "sharpe": null,
+        "maxDrawdown": 0,
+        "profitFactor": null,
+        "expectancy": null,
+        "tradeCount": 0,
+        "winRate": null,
+        "returnPct": 0
+      }
+    },
+    {
+      "id": "adaptive_regime|ETH-USD",
+      "family": "adaptive",
+      "metrics": {
+        "sharpe": -2.061200083118161,
+        "maxDrawdown": 0.00521335877887108,
+        "profitFactor": 0.45931735788174977,
+        "expectancy": -0.01360678816678327,
+        "tradeCount": 26,
+        "winRate": 0.38461538461538464,
+        "returnPct": -0.003537764923363107
+      }
+    },
+    {
+      "id": "oi_diverge|ETH-USD",
+      "family": "flow",
+      "metrics": {
+        "sharpe": null,
+        "maxDrawdown": 0,
+        "profitFactor": null,
+        "expectancy": null,
+        "tradeCount": 0,
+        "winRate": null,
+        "returnPct": 0
+      }
+    },
+    {
+      "id": "tsmom|SOL-USD",
+      "family": "trend",
+      "metrics": {
+        "sharpe": -5.352646163093438,
+        "maxDrawdown": 0.026464185852370203,
+        "profitFactor": 0.37680987878662675,
+        "expectancy": -0.0198887226075207,
+        "tradeCount": 129,
+        "winRate": 0.35658914728682173,
+        "returnPct": -0.025656452163698273
+      }
+    },
+    {
+      "id": "donchian|SOL-USD",
+      "family": "trend",
+      "metrics": {
+        "sharpe": -1.3167187454873783,
+        "maxDrawdown": 0.006610753732279373,
+        "profitFactor": 0.6573732048916948,
+        "expectancy": -0.009413000437816843,
+        "tradeCount": 33,
+        "winRate": 0.42424242424242425,
+        "returnPct": -0.0031062901444788293
+      }
+    },
+    {
+      "id": "mom_trend|SOL-USD",
+      "family": "trend",
+      "metrics": {
+        "sharpe": -1.1524284201155126,
+        "maxDrawdown": 0.005079349364186636,
+        "profitFactor": 0.7147449011453081,
+        "expectancy": -0.006031815782213457,
+        "tradeCount": 48,
+        "winRate": 0.4791666666666667,
+        "returnPct": -0.0028952715754616554
+      }
+    },
+    {
+      "id": "ibreakout|SOL-USD",
+      "family": "trend",
+      "metrics": {
+        "sharpe": -13.795133112500446,
+        "maxDrawdown": 0.17175043843194815,
+        "profitFactor": 0.4279454001295657,
+        "expectancy": -0.02109447680786001,
+        "tradeCount": 809,
+        "winRate": 0.3263288009888752,
+        "returnPct": -0.1706543173755697
+      }
+    },
+    {
+      "id": "atr_expand|SOL-USD",
+      "family": "trend",
+      "metrics": {
+        "sharpe": 0.5713016238949058,
+        "maxDrawdown": 0.002254173011949301,
+        "profitFactor": 1.6230743552569673,
+        "expectancy": 0.010969250414721798,
+        "tradeCount": 4,
+        "winRate": 0.75,
+        "returnPct": 0.00043877001658887416
+      }
+    },
+    {
+      "id": "vol_expand|SOL-USD",
+      "family": "trend",
+      "metrics": {
+        "sharpe": 0.1291569125622334,
+        "maxDrawdown": 0.0030953393001306173,
+        "profitFactor": 1.062500756954173,
+        "expectancy": 0.0015731883691898678,
+        "tradeCount": 12,
+        "winRate": 0.5,
+        "returnPct": 0.00018878260430321703
+      }
+    },
+    {
+      "id": "rsi2dip|SOL-USD",
+      "family": "reversion",
+      "metrics": {
+        "sharpe": -2.8352264555637516,
+        "maxDrawdown": 0.008343865390092353,
+        "profitFactor": 0.4064054465601153,
+        "expectancy": -0.016923902289269124,
+        "tradeCount": 45,
+        "winRate": 0.4666666666666667,
+        "returnPct": -0.007615756030170395
+      }
+    },
+    {
+      "id": "vwap_revert|SOL-USD",
+      "family": "reversion",
+      "metrics": {
+        "sharpe": -10.876371766779831,
+        "maxDrawdown": 0.12052607305211238,
+        "profitFactor": 0.36038666481282505,
+        "expectancy": -0.02277396644194113,
+        "tradeCount": 523,
+        "winRate": 0.4225621414913958,
+        "returnPct": -0.11910784449133871
+      }
+    },
+    {
+      "id": "orderflow|SOL-USD",
+      "family": "flow",
+      "metrics": {
+        "sharpe": null,
+        "maxDrawdown": 0,
+        "profitFactor": null,
+        "expectancy": null,
+        "tradeCount": 0,
+        "winRate": null,
+        "returnPct": 0
+      }
+    },
+    {
+      "id": "pairs_trade|SOL-USD",
+      "family": "spread",
+      "metrics": {
+        "sharpe": -6.879380239613363,
+        "maxDrawdown": 0.007069715120724629,
+        "profitFactor": 0.01789557850131325,
+        "expectancy": -0.02038759392101265,
+        "tradeCount": 32,
+        "winRate": 0.03125,
+        "returnPct": -0.006524030054722685
+      }
+    },
+    {
+      "id": "adaptive_regime|SOL-USD",
+      "family": "adaptive",
+      "metrics": {
+        "sharpe": -2.127427851914535,
+        "maxDrawdown": 0.005619169738839913,
+        "profitFactor": 0.35198381201848034,
+        "expectancy": -0.017265431426742986,
+        "tradeCount": 26,
+        "winRate": 0.46153846153846156,
+        "returnPct": -0.004489012170952544
+      }
+    },
+    {
+      "id": "oi_diverge|SOL-USD",
+      "family": "flow",
+      "metrics": {
+        "sharpe": null,
+        "maxDrawdown": 0,
+        "profitFactor": null,
+        "expectancy": null,
+        "tradeCount": 0,
+        "winRate": null,
+        "returnPct": 0
+      }
+    },
+    {
+      "id": "tsmom|XRP-USD",
+      "family": "trend",
+      "metrics": {
+        "sharpe": -4.069359533486621,
+        "maxDrawdown": 0.02026563328885378,
+        "profitFactor": 0.49991710187048893,
+        "expectancy": -0.013562246561647518,
+        "tradeCount": 118,
+        "winRate": 0.3050847457627119,
+        "returnPct": -0.016003450942740804
+      }
+    },
+    {
+      "id": "donchian|XRP-USD",
+      "family": "trend",
+      "metrics": {
+        "sharpe": 0.07108710893870862,
+        "maxDrawdown": 0.004825047193567467,
+        "profitFactor": 1.0252632922848939,
+        "expectancy": 0.0006460322261545509,
+        "tradeCount": 23,
+        "winRate": 0.43478260869565216,
+        "returnPct": 0.00014858741201617676
+      }
+    },
+    {
+      "id": "mom_trend|XRP-USD",
+      "family": "trend",
+      "metrics": {
+        "sharpe": -0.22391318302065952,
+        "maxDrawdown": 0.001996904927452414,
+        "profitFactor": 0.9054150649621132,
+        "expectancy": -0.0017395008574337008,
+        "tradeCount": 17,
+        "winRate": 0.4117647058823529,
+        "returnPct": -0.00029571514576343105
+      }
+    },
+    {
+      "id": "ibreakout|XRP-USD",
+      "family": "trend",
+      "metrics": {
+        "sharpe": -11.383516257868132,
+        "maxDrawdown": 0.162910565418115,
+        "profitFactor": 0.3826484861918149,
+        "expectancy": -0.020463750297053263,
+        "tradeCount": 791,
+        "winRate": 0.3185840707964602,
+        "returnPct": -0.16186826484967232
+      }
+    },
+    {
+      "id": "atr_expand|XRP-USD",
+      "family": "trend",
+      "metrics": {
+        "sharpe": -1.0887587724643755,
+        "maxDrawdown": 0.0042588833827529315,
+        "profitFactor": 0.5956404169031496,
+        "expectancy": -0.013750496878456484,
+        "tradeCount": 13,
+        "winRate": 0.38461538461538464,
+        "returnPct": -0.0017875645941991536
+      }
+    },
+    {
+      "id": "vol_expand|XRP-USD",
+      "family": "trend",
+      "metrics": {
+        "sharpe": 1.4426288705329602,
+        "maxDrawdown": 0.002814622865542349,
+        "profitFactor": 2.162709247898195,
+        "expectancy": 0.02121603370959492,
+        "tradeCount": 11,
+        "winRate": 0.6363636363636364,
+        "returnPct": 0.002333763708055825
+      }
+    },
+    {
+      "id": "rsi2dip|XRP-USD",
+      "family": "reversion",
+      "metrics": {
+        "sharpe": -3.4275018084212445,
+        "maxDrawdown": 0.010100554378347004,
+        "profitFactor": 0.3140577398003433,
+        "expectancy": -0.01846723245265049,
+        "tradeCount": 48,
+        "winRate": 0.3333333333333333,
+        "returnPct": -0.008864271577270988
+      }
+    },
+    {
+      "id": "vwap_revert|XRP-USD",
+      "family": "reversion",
+      "metrics": {
+        "sharpe": -9.753420864748653,
+        "maxDrawdown": 0.12319031030975025,
+        "profitFactor": 0.3361385873865489,
+        "expectancy": -0.023155471433255942,
+        "tradeCount": 531,
+        "winRate": 0.3992467043314501,
+        "returnPct": -0.12295555331057684
+      }
+    },
+    {
+      "id": "orderflow|XRP-USD",
+      "family": "flow",
+      "metrics": {
+        "sharpe": null,
+        "maxDrawdown": 0,
+        "profitFactor": null,
+        "expectancy": null,
+        "tradeCount": 0,
+        "winRate": null,
+        "returnPct": 0
+      }
+    },
+    {
+      "id": "pairs_trade|XRP-USD",
+      "family": "spread",
+      "metrics": {
+        "sharpe": null,
+        "maxDrawdown": 0,
+        "profitFactor": null,
+        "expectancy": null,
+        "tradeCount": 0,
+        "winRate": null,
+        "returnPct": 0
+      }
+    },
+    {
+      "id": "adaptive_regime|XRP-USD",
+      "family": "adaptive",
+      "metrics": {
+        "sharpe": -2.421164559675926,
+        "maxDrawdown": 0.006596838003024241,
+        "profitFactor": 0.36185353220494176,
+        "expectancy": -0.016718073953491557,
+        "tradeCount": 25,
+        "winRate": 0.2,
+        "returnPct": -0.004179518488372169
+      }
+    },
+    {
+      "id": "oi_diverge|XRP-USD",
+      "family": "flow",
+      "metrics": {
+        "sharpe": null,
+        "maxDrawdown": 0,
+        "profitFactor": null,
+        "expectancy": null,
+        "tradeCount": 0,
+        "winRate": null,
+        "returnPct": 0
+      }
+    },
+    {
+      "id": "tsmom|DOGE-USD",
+      "family": "trend",
+      "metrics": {
+        "sharpe": -5.4078834607184545,
+        "maxDrawdown": 0.02977194459981425,
+        "profitFactor": 0.4059638828512637,
+        "expectancy": -0.019092622061862435,
+        "tradeCount": 142,
+        "winRate": 0.31690140845070425,
+        "returnPct": -0.02711152332784106
+      }
+    },
+    {
+      "id": "donchian|DOGE-USD",
+      "family": "trend",
+      "metrics": {
+        "sharpe": -0.4787208382052833,
+        "maxDrawdown": 0.006770857442726208,
+        "profitFactor": 0.837826132112304,
+        "expectancy": -0.00565844732004255,
+        "tradeCount": 25,
+        "winRate": 0.52,
+        "returnPct": -0.0014146118300100152
+      }
+    },
+    {
+      "id": "mom_trend|DOGE-USD",
+      "family": "trend",
+      "metrics": {
+        "sharpe": -2.1633637355097446,
+        "maxDrawdown": 0.007592890040757472,
+        "profitFactor": 0.3984260626302971,
+        "expectancy": -0.022651525187370423,
+        "tradeCount": 26,
+        "winRate": 0.34615384615384615,
+        "returnPct": -0.005889396548715675
+      }
+    },
+    {
+      "id": "ibreakout|DOGE-USD",
+      "family": "trend",
+      "metrics": {
+        "sharpe": -6.084091701696553,
+        "maxDrawdown": 0.1399529231772565,
+        "profitFactor": 0.5516639775978972,
+        "expectancy": -0.01724352158939407,
+        "tradeCount": 795,
+        "winRate": 0.3371069182389937,
+        "returnPct": -0.13708599663566323
+      }
+    },
+    {
+      "id": "atr_expand|DOGE-USD",
+      "family": "trend",
+      "metrics": {
+        "sharpe": 1.031616708447259,
+        "maxDrawdown": 0.0036066257432411097,
+        "profitFactor": 1.8897847317586902,
+        "expectancy": 0.03428629927629097,
+        "tradeCount": 9,
+        "winRate": 0.5555555555555556,
+        "returnPct": 0.0030857669348662853
+      }
+    },
+    {
+      "id": "vol_expand|DOGE-USD",
+      "family": "trend",
+      "metrics": {
+        "sharpe": 1.4287822900177733,
+        "maxDrawdown": 0.002673324813311395,
+        "profitFactor": 1.949910054497898,
+        "expectancy": 0.015376389827418378,
+        "tradeCount": 14,
+        "winRate": 0.5714285714285714,
+        "returnPct": 0.002152694575838776
+      }
+    },
+    {
+      "id": "rsi2dip|DOGE-USD",
+      "family": "reversion",
+      "metrics": {
+        "sharpe": -3.5120224756886618,
+        "maxDrawdown": 0.011908173727592786,
+        "profitFactor": 0.2555994384322196,
+        "expectancy": -0.029750473394441854,
+        "tradeCount": 36,
+        "winRate": 0.4444444444444444,
+        "returnPct": -0.010710170421998289
+      }
+    },
+    {
+      "id": "vwap_revert|DOGE-USD",
+      "family": "reversion",
+      "metrics": {
+        "sharpe": -8.938717363045955,
+        "maxDrawdown": 0.11711676307985941,
+        "profitFactor": 0.4387865423110059,
+        "expectancy": -0.021021072932215314,
+        "tradeCount": 557,
+        "winRate": 0.4236983842010772,
+        "returnPct": -0.1170873762324266
+      }
+    },
+    {
+      "id": "orderflow|DOGE-USD",
+      "family": "flow",
+      "metrics": {
+        "sharpe": null,
+        "maxDrawdown": 0,
+        "profitFactor": null,
+        "expectancy": null,
+        "tradeCount": 0,
+        "winRate": null,
+        "returnPct": 0
+      }
+    },
+    {
+      "id": "pairs_trade|DOGE-USD",
+      "family": "spread",
+      "metrics": {
+        "sharpe": null,
+        "maxDrawdown": 0,
+        "profitFactor": null,
+        "expectancy": null,
+        "tradeCount": 0,
+        "winRate": null,
+        "returnPct": 0
+      }
+    },
+    {
+      "id": "adaptive_regime|DOGE-USD",
+      "family": "adaptive",
+      "metrics": {
+        "sharpe": -2.9486805679707317,
+        "maxDrawdown": 0.009779891343677516,
+        "profitFactor": 0.17057093145615304,
+        "expectancy": -0.03900505510816302,
+        "tradeCount": 22,
+        "winRate": 0.4090909090909091,
+        "returnPct": -0.008581112123795531
+      }
+    },
+    {
+      "id": "oi_diverge|DOGE-USD",
+      "family": "flow",
+      "metrics": {
+        "sharpe": null,
+        "maxDrawdown": 0,
+        "profitFactor": null,
+        "expectancy": null,
+        "tradeCount": 0,
+        "winRate": null,
+        "returnPct": 0
+      }
+    }
+  ],
+  "accountingVersion": 3,
+  "mode": "paper",
+  "limitations": [
+    "Conservative adverse-first OHLC excursion; fills at excursion marks, not precise stop quotes",
+    "OHLC opening quote plus1ms latency assumption",
+    "No production AI/news/OI history",
+    "Unvalidated models allocate zero"
+  ],
+  "inputHashes": [
+    {
+      "symbol": "BTC-USD",
+      "sha256": "88cf90520cfe18602a008fb2a7067b396f73bb48f24cebf5742cf191b6153b8f"
+    },
+    {
+      "symbol": "ETH-USD",
+      "sha256": "815d9df0d2ee05d3f5e15b7d9a69fec14a50887ed3d58079ef34eb23b29b50a8"
+    },
+    {
+      "symbol": "SOL-USD",
+      "sha256": "7695cdf554b4e57629213df569b433928d8da9534e9e2696e57559bf4cfb46d1"
+    },
+    {
+      "symbol": "XRP-USD",
+      "sha256": "21f9d7d59623a765802019025ac31835b37ffea49b4997629b3abe4788651201"
+    },
+    {
+      "symbol": "DOGE-USD",
+      "sha256": "51f035fbd3b818c8652b1189a1be0082ad4225f99a8d35ad4099ea1cabc618c0"
+    }
+  ],
+  "labelCount": 7905,
+  "labelSha256": "bcbf722b0b3350c96e223afd888a6684f31d21739651f37fed37c85f2e071be8",
+  "period": {
+    "from": "2025-07-01",
+    "to": "2026-01-01"
+  },
+  "reproduce": "node scripts/v2/backtest.mjs --data-dir audit/data --out-dir audit/shadow-results --from 2025-07-01 --to 2026-01-01"
+}

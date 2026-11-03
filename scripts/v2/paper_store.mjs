@@ -107,7 +107,7 @@ export class PaperStore {
       const events=fn(state) || [];
       this.failpoint('after_economic_effect');
       for (const event of events) {
-        const orderId=event.requestId || event.id;
+        const orderId=event.type==='shadow_close'?null:event.requestId || event.id;
         if (orderId && !this.db.prepare('SELECT id FROM orders WHERE id=?').get(orderId)) {
           this.db.prepare('INSERT INTO orders VALUES(?,?,?,?)').run(orderId,event.type==='reject'?'rejected':'completed',JSON.stringify(event),this.clock());
         }

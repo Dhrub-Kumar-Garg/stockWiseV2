@@ -38,7 +38,8 @@ export function sizeOrder(state, o, eq, cfg, options = {}) {
     ? Math.max(0, learned.kelly) : edge.kelly;
   const riskFraction = Math.min(V.safety?.maxRiskPerTrade ?? 0.005, edge.kelly, learnedCap);
   const volatilityScale = Math.min(1, (V.aggression.volTargetAnnual ?? 0.6)/Math.sqrt(365)/dailyVol(eq[o.symbol]?.closes));
-  const maximum = Math.max(0, state.equity*riskFraction*volatilityScale/(lev*(o.stopPct+costs)));
+  const sizeScale=o.sizeScale==null?1:Math.max(0,Math.min(1,Number.isFinite(o.sizeScale)?o.sizeScale:0));
+  const maximum = sizeScale*Math.max(0, state.equity*riskFraction*volatilityScale/(lev*(o.stopPct+costs)));
   const marginUsd = o.marginUsd == null ? maximum : Math.min(Math.max(0, o.marginUsd), maximum);
   return {...budgetOrder(state, {...o, leverage: lev, marginUsd}, eq, cfg, at), edge};
 }
