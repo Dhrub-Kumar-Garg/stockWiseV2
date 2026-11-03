@@ -1,0 +1,145 @@
+[
+  {
+    "name": "TREND crypto routes 9 of 13 strategies before signal checks",
+    "status": "PASS",
+    "evidence": [
+      "tsmom",
+      "donchian",
+      "mom_trend",
+      "ibreakout",
+      "atr_expand",
+      "vol_expand",
+      "pairs_trade",
+      "adaptive_regime",
+      "oi_diverge"
+    ]
+  },
+  {
+    "name": "REVERT crypto routes 6 of 13 strategies before signal checks",
+    "status": "PASS",
+    "evidence": [
+      "rsi2dip",
+      "vwap_revert",
+      "orderflow",
+      "pairs_trade",
+      "adaptive_regime",
+      "oi_diverge"
+    ]
+  },
+  {
+    "name": "SLEEP routes only pairs but confidence cap prevents a single entry",
+    "status": "PASS",
+    "evidence": {
+      "evaluated": [
+        "pairs_trade"
+      ],
+      "opens": 0
+    }
+  },
+  {
+    "name": "Hard SHORT analyst bias vetoes a 0.99 long signal",
+    "status": "PASS",
+    "evidence": {
+      "opens": 0
+    }
+  },
+  {
+    "name": "Hard LONG analyst bias vetoes a 0.99 short signal",
+    "status": "PASS",
+    "evidence": {
+      "opens": 0
+    }
+  },
+  {
+    "name": "Equal confluence counts favor two weak longs over two strong shorts",
+    "status": "PASS",
+    "evidence": {
+      "chosenSide": "long",
+      "chosenConfidence": 0.4
+    }
+  },
+  {
+    "name": "0.62 single long qualifies while 0.55 single short is blocked",
+    "status": "PASS",
+    "evidence": {
+      "longOpens": 1,
+      "shortOpens": 0
+    }
+  },
+  {
+    "name": "Positive news changes an actual router decision from no entry to long",
+    "status": "PASS",
+    "evidence": {
+      "neutralOpens": 0,
+      "bullishNewsOpens": 1,
+      "adjustedConfidence": 0.624
+    }
+  },
+  {
+    "name": "Negative news changes an actual router decision from no entry to short",
+    "status": "PASS",
+    "evidence": {
+      "neutralOpens": 0,
+      "bearishNewsOpens": 1,
+      "adjustedConfidence": 0.624
+    }
+  },
+  {
+    "name": "A year-old analyst decision is returned without expiration",
+    "status": "PASS",
+    "evidence": {
+      "mode": "TREND",
+      "direction_bias": "SHORT",
+      "ts": 0
+    }
+  },
+  {
+    "name": "Fed headlines are collected separately but omitted from analyst prompt",
+    "status": "PASS",
+    "evidence": {
+      "cryptoHeadlineIncluded": true,
+      "fedHeadlineIncluded": false
+    }
+  },
+  {
+    "name": "The first crypto feed can consume all 20 retained headline slots",
+    "status": "PASS",
+    "evidence": {
+      "retained": 20,
+      "firstFeed": 20,
+      "secondFeed": 0
+    }
+  },
+  {
+    "name": "RSS parsing discards dates and does not support Atom entries",
+    "status": "PASS",
+    "evidence": {
+      "oldHeadlineRetained": true,
+      "timestampRetained": false,
+      "atomTitles": 0
+    }
+  },
+  {
+    "name": "World cache keeps old news through a subsequent fetch failure without age marker",
+    "status": "PASS",
+    "evidence": {
+      "oldHeadlineRetained": true,
+      "ageMarker": false
+    }
+  },
+  {
+    "name": "Current headline fetch is after current strategy decisions in newer engine",
+    "status": "PASS",
+    "evidence": {
+      "currentCycleUsesPreviousWorldAndAnalyst": true
+    }
+  },
+  {
+    "name": "npm daemon does not refresh analyst or populate OI snapshots",
+    "status": "PASS",
+    "evidence": {
+      "analystRefresh": false,
+      "oiCachePopulation": false
+    }
+  }
+]

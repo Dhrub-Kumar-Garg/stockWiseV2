@@ -1,0 +1,3093 @@
+{
+  "kind": "ADDITIONAL HISTORICAL PERIOD; CONDITIONAL ROUTING ABLATIONS, NOT LIVE OR SUB-MINUTE PERFORMANCE",
+  "sourceCommit": "50360996451ddc7ad742372bff398b7938ae0029",
+  "manifest": {
+    "files": [
+      {
+        "file": "BTC_15m_2026.json",
+        "rows": 26208,
+        "sha256": "b2b5f463f1c9004a2ca6bc51cd97ea946f1c97e292e8434e8df9ff1166de3cfd",
+        "first": 1767225600000,
+        "last": 1790811900000,
+        "gaps": []
+      },
+      {
+        "file": "ETH_15m_2026.json",
+        "rows": 26208,
+        "sha256": "823dc2d13fbd77825f3b87c79ae19c464c54aa16685e443f85a0ccae05d58000",
+        "first": 1767225600000,
+        "last": 1790811900000,
+        "gaps": []
+      },
+      {
+        "file": "SOL_15m_2026.json",
+        "rows": 26208,
+        "sha256": "5609a162e0a9e62b75e9725ee2b3a172645904f0fadef0aaadab35eefda3e37c",
+        "first": 1767225600000,
+        "last": 1790811900000,
+        "gaps": []
+      },
+      {
+        "file": "XRP_15m_2026.json",
+        "rows": 26208,
+        "sha256": "eba8c57535f62ed0a9d225cd1271aa6fa0ca515a146552a7645413d2abdff94a",
+        "first": 1767225600000,
+        "last": 1790811900000,
+        "gaps": []
+      },
+      {
+        "file": "DOGE_15m_2026.json",
+        "rows": 26208,
+        "sha256": "152762a7525c38f8e23504bd23c5c2704fc8659c13e48a7089d8b77f7991da19",
+        "first": 1767225600000,
+        "last": 1790811900000,
+        "gaps": []
+      }
+    ],
+    "archives": [
+      {
+        "url": "https://data.binance.vision/data/spot/monthly/klines/BTCUSDT/15m/BTCUSDT-15m-2026-01.zip",
+        "sha256": "545a4a8f7ed9aefb9f4d785778f76ae4ce2679c2929a62c10899fee96dec82fc",
+        "rows": 2976
+      },
+      {
+        "url": "https://data.binance.vision/data/spot/monthly/klines/BTCUSDT/15m/BTCUSDT-15m-2026-02.zip",
+        "sha256": "d09bac6fc336d31e943427071bcbf448f024d3116255edbbe5c9646993f700fe",
+        "rows": 2688
+      },
+      {
+        "url": "https://data.binance.vision/data/spot/monthly/klines/BTCUSDT/15m/BTCUSDT-15m-2026-03.zip",
+        "sha256": "1ecf7fcaffea810ee26e66eac1e3aa2f1fdf4d71330ea2cb2c5e6c0195c964a5",
+        "rows": 2976
+      },
+      {
+        "url": "https://data.binance.vision/data/spot/monthly/klines/BTCUSDT/15m/BTCUSDT-15m-2026-04.zip",
+        "sha256": "ba9adf37ba8dc020618db953888cb9a6e1ccc4f1ae62c026b2d99ed66e92b853",
+        "rows": 2880
+      },
+      {
+        "url": "https://data.binance.vision/data/spot/monthly/klines/BTCUSDT/15m/BTCUSDT-15m-2026-05.zip",
+        "sha256": "1df53032797db1ca7ab680d9aa726b6cd591e0b7ae0e13d6b5e1bbfd1bd04b8c",
+        "rows": 2976
+      },
+      {
+        "url": "https://data.binance.vision/data/spot/monthly/klines/BTCUSDT/15m/BTCUSDT-15m-2026-06.zip",
+        "sha256": "1380a9c33e1025bdd4bbe690fd1bb67e37ca8b57d50dfc2993ba36d9dc4a1c7d",
+        "rows": 2880
+      },
+      {
+        "url": "https://data.binance.vision/data/spot/monthly/klines/BTCUSDT/15m/BTCUSDT-15m-2026-07.zip",
+        "sha256": "b043676622c6abcf82eaa07d9c149028aead438636fba1ef97cd88bb6ce1bab4",
+        "rows": 2976
+      },
+      {
+        "url": "https://data.binance.vision/data/spot/monthly/klines/BTCUSDT/15m/BTCUSDT-15m-2026-08.zip",
+        "sha256": "c46dee1dac1460f9b0067175e282c98fd2b2e7506ae4d35f0a644d3c07b174fb",
+        "rows": 2976
+      },
+      {
+        "url": "https://data.binance.vision/data/spot/monthly/klines/BTCUSDT/15m/BTCUSDT-15m-2026-09.zip",
+        "sha256": "0d452e884c1bdd20bbb414b8feab30753e8e9ebef3e8c821d8a54eef48859cd0",
+        "rows": 2880
+      },
+      {
+        "url": "https://data.binance.vision/data/spot/monthly/klines/ETHUSDT/15m/ETHUSDT-15m-2026-01.zip",
+        "sha256": "f9b69306bb83aabdba848b7b0e39eae08ef06bce33a8e2df43e4e4d9319c28de",
+        "rows": 2976
+      },
+      {
+        "url": "https://data.binance.vision/data/spot/monthly/klines/ETHUSDT/15m/ETHUSDT-15m-2026-02.zip",
+        "sha256": "88c42f0ae1ce10df10784d00b692d59114ea3739464d2d0f1ce5a3a6726d5bf4",
+        "rows": 2688
+      },
+      {
+        "url": "https://data.binance.vision/data/spot/monthly/klines/ETHUSDT/15m/ETHUSDT-15m-2026-03.zip",
+        "sha256": "4db1d336066d4e3a89d53f4e2c8de009ee91944de20b4096d01cee73e04f5cf2",
+        "rows": 2976
+      },
+      {
+        "url": "https://data.binance.vision/data/spot/monthly/klines/ETHUSDT/15m/ETHUSDT-15m-2026-04.zip",
+        "sha256": "c86b7752f8eb21a15a20b7197d0951a5ddb523628a6756daeece3dcb96ca2f7c",
+        "rows": 2880
+      },
+      {
+        "url": "https://data.binance.vision/data/spot/monthly/klines/ETHUSDT/15m/ETHUSDT-15m-2026-05.zip",
+        "sha256": "487c08d03a03d1ff7adac5d2d61b009165bd364e4ec44a0c5ca0dda44ef780b5",
+        "rows": 2976
+      },
+      {
+        "url": "https://data.binance.vision/data/spot/monthly/klines/ETHUSDT/15m/ETHUSDT-15m-2026-06.zip",
+        "sha256": "be1199a81d8064fe6193f2993de58f75f4a57fd9ca11a5e8c7c7ba2ca50fa9ce",
+        "rows": 2880
+      },
+      {
+        "url": "https://data.binance.vision/data/spot/monthly/klines/ETHUSDT/15m/ETHUSDT-15m-2026-07.zip",
+        "sha256": "d4742ef1a072a4662f371ddd56b4388fb2af68310c70831ccfadda89bd29b8c8",
+        "rows": 2976
+      },
+      {
+        "url": "https://data.binance.vision/data/spot/monthly/klines/ETHUSDT/15m/ETHUSDT-15m-2026-08.zip",
+        "sha256": "9fee5627c59a8eba386ea8574db136dced264ffb0c41e69975008a25d6e18ebb",
+        "rows": 2976
+      },
+      {
+        "url": "https://data.binance.vision/data/spot/monthly/klines/ETHUSDT/15m/ETHUSDT-15m-2026-09.zip",
+        "sha256": "88bb25ae0989bc335a1a1eb0e661a32b3984369ff94b6e8db888a82e916b4b1f",
+        "rows": 2880
+      },
+      {
+        "url": "https://data.binance.vision/data/spot/monthly/klines/SOLUSDT/15m/SOLUSDT-15m-2026-01.zip",
+        "sha256": "5709dc75fb58b1e8980b4a4204a76221146447eefabb7a3f784e67ebd6823bf3",
+        "rows": 2976
+      },
+      {
+        "url": "https://data.binance.vision/data/spot/monthly/klines/SOLUSDT/15m/SOLUSDT-15m-2026-02.zip",
+        "sha256": "a6ce8287142b4a66acf0535d80a7ce4d09c90908eb6e1cfab6cbef3d6107b61d",
+        "rows": 2688
+      },
+      {
+        "url": "https://data.binance.vision/data/spot/monthly/klines/SOLUSDT/15m/SOLUSDT-15m-2026-03.zip",
+        "sha256": "96fd9e1cc295a2115e7231ee152a18401907e231dca6fc57ed28d1b37212eb2b",
+        "rows": 2976
+      },
+      {
+        "url": "https://data.binance.vision/data/spot/monthly/klines/SOLUSDT/15m/SOLUSDT-15m-2026-04.zip",
+        "sha256": "e0fe3ab8e8dcf896f0c08368bae0d0c4a0ec4ad43d8ac47b02524adc5b1f3c8a",
+        "rows": 2880
+      },
+      {
+        "url": "https://data.binance.vision/data/spot/monthly/klines/SOLUSDT/15m/SOLUSDT-15m-2026-05.zip",
+        "sha256": "79da15d4858b571f58fcc531bde67a9d31436f70caf98671e24a4e71f2210cd4",
+        "rows": 2976
+      },
+      {
+        "url": "https://data.binance.vision/data/spot/monthly/klines/SOLUSDT/15m/SOLUSDT-15m-2026-06.zip",
+        "sha256": "81e7d6cb78e8a263ffc62e1ec0cd53bdc22cf46b64111536b093663674a2537b",
+        "rows": 2880
+      },
+      {
+        "url": "https://data.binance.vision/data/spot/monthly/klines/SOLUSDT/15m/SOLUSDT-15m-2026-07.zip",
+        "sha256": "180483fe021ea7ff7997545d135dc1b382c00481205ea6338cfa5b1ab9e5dc64",
+        "rows": 2976
+      },
+      {
+        "url": "https://data.binance.vision/data/spot/monthly/klines/SOLUSDT/15m/SOLUSDT-15m-2026-08.zip",
+        "sha256": "2afcd57a077f5694d6da7f94518499561a41e67cd99d847bb4968acd9db98450",
+        "rows": 2976
+      },
+      {
+        "url": "https://data.binance.vision/data/spot/monthly/klines/SOLUSDT/15m/SOLUSDT-15m-2026-09.zip",
+        "sha256": "6cab6dc48b598e7d1b503e5a38356c6dce3f04f95cb006c98ebc324001af7b54",
+        "rows": 2880
+      },
+      {
+        "url": "https://data.binance.vision/data/spot/monthly/klines/XRPUSDT/15m/XRPUSDT-15m-2026-01.zip",
+        "sha256": "e44d632908caaf6a33be8ce0a072c32b9c00155b66771d0ef3b18a2f9e450288",
+        "rows": 2976
+      },
+      {
+        "url": "https://data.binance.vision/data/spot/monthly/klines/XRPUSDT/15m/XRPUSDT-15m-2026-02.zip",
+        "sha256": "f6f4c12154c68f8161ea75751d19c1db69a99d766da66e80da349b09b804f719",
+        "rows": 2688
+      },
+      {
+        "url": "https://data.binance.vision/data/spot/monthly/klines/XRPUSDT/15m/XRPUSDT-15m-2026-03.zip",
+        "sha256": "1429ff075c12fe59e514fdb72c034a054ed99de8227cb392f82e8b44f35d4f68",
+        "rows": 2976
+      },
+      {
+        "url": "https://data.binance.vision/data/spot/monthly/klines/XRPUSDT/15m/XRPUSDT-15m-2026-04.zip",
+        "sha256": "769cc260db9e429f9c2721c49cfa3d4335cf74f54a0f696d2252110c876cd20c",
+        "rows": 2880
+      },
+      {
+        "url": "https://data.binance.vision/data/spot/monthly/klines/XRPUSDT/15m/XRPUSDT-15m-2026-05.zip",
+        "sha256": "0435ba8114a6746726dfb02fc018e3cb8066866e661340780df3c1313b4a5086",
+        "rows": 2976
+      },
+      {
+        "url": "https://data.binance.vision/data/spot/monthly/klines/XRPUSDT/15m/XRPUSDT-15m-2026-06.zip",
+        "sha256": "947b075b09360101c4b57d8b3a55c4b0f4ca647de156caea031e1332b8e9f7d9",
+        "rows": 2880
+      },
+      {
+        "url": "https://data.binance.vision/data/spot/monthly/klines/XRPUSDT/15m/XRPUSDT-15m-2026-07.zip",
+        "sha256": "52e64466c6f04b1c0df7fd39517382fa863400402c5fb398322c967a98458723",
+        "rows": 2976
+      },
+      {
+        "url": "https://data.binance.vision/data/spot/monthly/klines/XRPUSDT/15m/XRPUSDT-15m-2026-08.zip",
+        "sha256": "8166a0f5a59effd67aebe0fb7920c20ab7864907d294e1a066058bfef045ccb1",
+        "rows": 2976
+      },
+      {
+        "url": "https://data.binance.vision/data/spot/monthly/klines/XRPUSDT/15m/XRPUSDT-15m-2026-09.zip",
+        "sha256": "d54464b71887b17a194de8fdc33371da4e38c09c2edad8002e28e6f259350eb7",
+        "rows": 2880
+      },
+      {
+        "url": "https://data.binance.vision/data/spot/monthly/klines/DOGEUSDT/15m/DOGEUSDT-15m-2026-01.zip",
+        "sha256": "d4d669359b5c53ce23c56a1ed35c9c3a413d8c77701c3bf118844efe1dfb6fe0",
+        "rows": 2976
+      },
+      {
+        "url": "https://data.binance.vision/data/spot/monthly/klines/DOGEUSDT/15m/DOGEUSDT-15m-2026-02.zip",
+        "sha256": "476d6dbe2ec132dc9e304308861a77cc902e56ae368b6cc8894f54b5d9d3b234",
+        "rows": 2688
+      },
+      {
+        "url": "https://data.binance.vision/data/spot/monthly/klines/DOGEUSDT/15m/DOGEUSDT-15m-2026-03.zip",
+        "sha256": "6ac8ba3b2495f64aef160eabc5dd87321ab1cd10f55e601cc3304dd7005e7dec",
+        "rows": 2976
+      },
+      {
+        "url": "https://data.binance.vision/data/spot/monthly/klines/DOGEUSDT/15m/DOGEUSDT-15m-2026-04.zip",
+        "sha256": "aa00c634261bdd58a3d89ee7bf7b50080598a27959a95ad89aa8e51e1789f5c1",
+        "rows": 2880
+      },
+      {
+        "url": "https://data.binance.vision/data/spot/monthly/klines/DOGEUSDT/15m/DOGEUSDT-15m-2026-05.zip",
+        "sha256": "0399f33706380e07697ab7f1398460754fd3f5f8e1f04f088f5a16fd5422ecc8",
+        "rows": 2976
+      },
+      {
+        "url": "https://data.binance.vision/data/spot/monthly/klines/DOGEUSDT/15m/DOGEUSDT-15m-2026-06.zip",
+        "sha256": "3aec654ee9f4519727549572a398eb0f497fd02f4d2d0bfd2bc1cfd0f04ca857",
+        "rows": 2880
+      },
+      {
+        "url": "https://data.binance.vision/data/spot/monthly/klines/DOGEUSDT/15m/DOGEUSDT-15m-2026-07.zip",
+        "sha256": "ac2788b2b21fd8e1d0f542aa1e1534dd0607dd00c9e2c7e3db26d009de4ed123",
+        "rows": 2976
+      },
+      {
+        "url": "https://data.binance.vision/data/spot/monthly/klines/DOGEUSDT/15m/DOGEUSDT-15m-2026-08.zip",
+        "sha256": "b821ded1dae0cbb16f968a09d66b833e3a07475d5f888ec942888df7d34eb0b2",
+        "rows": 2976
+      },
+      {
+        "url": "https://data.binance.vision/data/spot/monthly/klines/DOGEUSDT/15m/DOGEUSDT-15m-2026-09.zip",
+        "sha256": "cf25d4eb07a01a91ac97a30b5635cfc97a92fd9c24bb09015e734679f7574ecc",
+        "rows": 2880
+      }
+    ]
+  },
+  "folds": [
+    [
+      "2026Q1_partial",
+      "2026-01-06",
+      "2026-04-01"
+    ],
+    [
+      "2026Q2",
+      "2026-04-01",
+      "2026-07-01"
+    ],
+    [
+      "2026Q3",
+      "2026-07-01",
+      "2026-10-01"
+    ]
+  ],
+  "sourceHashes": {
+    "audit/followup_research.mjs": "a39d9be1a7df12cabf34691e578ceefb09d41ab9b8c2364110b4f3511cc6a5ad",
+    "audit/FOLLOWUP_EXPERIMENT_PLAN.md": "101826b0a4b571dcfc22aa041b8d49c0d33eca5a05929335e0c302e2f89ddba6",
+    "audit/backtest.mjs": "9b422315868480b7ed692f56864d01a21258373ea0b189cb3f29ba3f7d98dec4",
+    "audit/source_adapter.mjs": "00255bd2ef0daf9843ffe51b9470cec0f5da3fc0761f48e8e5333d12305f406c",
+    "scripts/v2/strategies.mjs": "2025083efde56aeb2a099dbcfb7154803bebe7849797f2cc6f149da05af14091"
+  },
+  "results": {
+    "base": {
+      "TREND": {
+        "baseline": {
+          "aggregate": {
+            "sharpe": -12.713591620358212,
+            "maxDrawdown": 0.9851428583266923,
+            "profitFactor": 0.3612989012281404,
+            "expectancyUsd": -0.062225447831772154,
+            "tradeCount": 3556,
+            "winRate": 0.24578177727784026,
+            "returnPct": -0.9847024114310914,
+            "finalEquity": 1.529758856890857,
+            "feesUsd": 66.81970565106631,
+            "signedFundingUsd": 0.7558350370544847,
+            "grossPnlUsd": -155.20982187577007
+          },
+          "folds": [
+            {
+              "name": "2026Q1_partial",
+              "from": "2026-01-06",
+              "to": "2026-04-01",
+              "metrics": {
+                "sharpe": -8.334119841204512,
+                "maxDrawdown": 0.6113168295041672,
+                "profitFactor": 0.516420757879773,
+                "expectancyUsd": -0.062323311271591395,
+                "tradeCount": 976,
+                "winRate": 0.32581967213114754,
+                "returnPct": -0.608275518010731,
+                "finalEquity": 39.1724481989269,
+                "feesUsd": 18.103481904060317,
+                "signedFundingUsd": 0.35301099174331485,
+                "grossPnlUsd": -43.07708088875607
+              },
+              "participation": {
+                "vol_expand": {
+                  "long": 39,
+                  "short": 0,
+                  "netUsd": -8.263234994831864
+                },
+                "adaptive_regime": {
+                  "long": 0,
+                  "short": 59,
+                  "netUsd": -5.053835750311482
+                },
+                "tsmom": {
+                  "long": 0,
+                  "short": 742,
+                  "netUsd": -36.0554836051108
+                },
+                "atr_expand": {
+                  "long": 24,
+                  "short": 0,
+                  "netUsd": -1.7703537468326824
+                },
+                "donchian": {
+                  "long": 0,
+                  "short": 90,
+                  "netUsd": -9.493839225921503
+                },
+                "pairs_trade": {
+                  "long": 22,
+                  "short": 0,
+                  "netUsd": -0.19080447806475673
+                }
+              }
+            },
+            {
+              "name": "2026Q2",
+              "from": "2026-04-01",
+              "to": "2026-07-01",
+              "metrics": {
+                "sharpe": -16.85117224826325,
+                "maxDrawdown": 0.8101780687053858,
+                "profitFactor": 0.2503251136501796,
+                "expectancyUsd": -0.058570300873166496,
+                "tradeCount": 1383,
+                "winRate": 0.19450469992769343,
+                "returnPct": -0.8100272610758905,
+                "finalEquity": 18.997273892410952,
+                "feesUsd": 25.332901312566953,
+                "signedFundingUsd": 0.3134739236292146,
+                "grossPnlUsd": -55.98329871865141
+              },
+              "participation": {
+                "tsmom": {
+                  "long": 0,
+                  "short": 397,
+                  "netUsd": -25.661040847642575
+                },
+                "pairs_trade": {
+                  "long": 111,
+                  "short": 559,
+                  "netUsd": -38.86902662798438
+                },
+                "adaptive_regime": {
+                  "long": 0,
+                  "short": 118,
+                  "netUsd": -3.840813024736582
+                },
+                "donchian": {
+                  "long": 0,
+                  "short": 131,
+                  "netUsd": -10.436853885221648
+                },
+                "vol_expand": {
+                  "long": 40,
+                  "short": 0,
+                  "netUsd": -1.1680262043299432
+                },
+                "atr_expand": {
+                  "long": 27,
+                  "short": 0,
+                  "netUsd": -1.026965517674048
+                }
+              }
+            },
+            {
+              "name": "2026Q3",
+              "from": "2026-07-01",
+              "to": "2026-10-01",
+              "metrics": {
+                "sharpe": -13.71218247002432,
+                "maxDrawdown": 0.8012383111403996,
+                "profitFactor": 0.29450530837761507,
+                "expectancyUsd": -0.06636876740277363,
+                "tradeCount": 1197,
+                "winRate": 0.23976608187134502,
+                "returnPct": -0.7944341458111965,
+                "finalEquity": 20.556585418880346,
+                "feesUsd": 23.38332243443911,
+                "signedFundingUsd": 0.08935012168195525,
+                "grossPnlUsd": -56.14944226836277
+              },
+              "participation": {
+                "tsmom": {
+                  "long": 602,
+                  "short": 388,
+                  "netUsd": -66.49906036396762
+                },
+                "pairs_trade": {
+                  "long": 56,
+                  "short": 50,
+                  "netUsd": -11.626575034494957
+                },
+                "adaptive_regime": {
+                  "long": 0,
+                  "short": 50,
+                  "netUsd": -2.739908318722362
+                },
+                "donchian": {
+                  "long": 13,
+                  "short": 26,
+                  "netUsd": -1.6241138441950618
+                },
+                "vol_expand": {
+                  "long": 7,
+                  "short": 0,
+                  "netUsd": 1.9654144746109026
+                },
+                "atr_expand": {
+                  "long": 5,
+                  "short": 0,
+                  "netUsd": 1.080828505649214
+                }
+              }
+            }
+          ],
+          "participation": {
+            "vol_expand": {
+              "long": 86,
+              "short": 0,
+              "netUsd": -7.4658467245509055
+            },
+            "adaptive_regime": {
+              "long": 0,
+              "short": 227,
+              "netUsd": -11.63455709377043
+            },
+            "tsmom": {
+              "long": 602,
+              "short": 1527,
+              "netUsd": -128.21558481672122
+            },
+            "atr_expand": {
+              "long": 56,
+              "short": 0,
+              "netUsd": -1.7164907588575173
+            },
+            "donchian": {
+              "long": 13,
+              "short": 247,
+              "netUsd": -21.554806955338233
+            },
+            "pairs_trade": {
+              "long": 189,
+              "short": 609,
+              "netUsd": -50.68640614054408
+            }
+          }
+        },
+        "symmetric_confidence": {
+          "aggregate": {
+            "sharpe": -10.435349789520027,
+            "maxDrawdown": 0.9917155269831072,
+            "profitFactor": 0.3413732535815359,
+            "expectancyUsd": -0.06473524417572238,
+            "tradeCount": 3679,
+            "winRate": 0.24816526229953792,
+            "returnPct": -0.9916515562640136,
+            "finalEquity": 0.8348443735986463,
+            "feesUsd": 69.71659363724724,
+            "signedFundingUsd": 1.327436410481875,
+            "grossPnlUsd": -169.77180609571766
+          },
+          "folds": [
+            {
+              "name": "2026Q1_partial",
+              "from": "2026-01-06",
+              "to": "2026-04-01",
+              "metrics": {
+                "sharpe": -7.4990364349861975,
+                "maxDrawdown": 0.7435778229224133,
+                "profitFactor": 0.5318391085429222,
+                "expectancyUsd": -0.052993871892781735,
+                "tradeCount": 1399,
+                "winRate": 0.34953538241601145,
+                "returnPct": -0.7413842677800151,
+                "finalEquity": 25.861573221998484,
+                "feesUsd": 25.634384214433275,
+                "signedFundingUsd": 0.5392325004674599,
+                "grossPnlUsd": -49.0432750640358
+              },
+              "participation": {
+                "vol_expand": {
+                  "long": 24,
+                  "short": 0,
+                  "netUsd": -7.3320429217033665
+                },
+                "adaptive_regime": {
+                  "long": 0,
+                  "short": 40,
+                  "netUsd": -4.635996955767392
+                },
+                "tsmom": {
+                  "long": 0,
+                  "short": 1204,
+                  "netUsd": -52.67220920277415
+                },
+                "atr_expand": {
+                  "long": 1,
+                  "short": 0,
+                  "netUsd": -0.15901210030284266
+                },
+                "donchian": {
+                  "long": 0,
+                  "short": 118,
+                  "netUsd": -9.424529763231993
+                },
+                "pairs_trade": {
+                  "long": 12,
+                  "short": 0,
+                  "netUsd": 0.08536416577803838
+                }
+              }
+            },
+            {
+              "name": "2026Q2",
+              "from": "2026-04-01",
+              "to": "2026-07-01",
+              "metrics": {
+                "sharpe": -14.107210511774907,
+                "maxDrawdown": 0.8293004760714795,
+                "profitFactor": 0.2018746257832463,
+                "expectancyUsd": -0.061222641980333815,
+                "tradeCount": 1354,
+                "winRate": 0.17503692762186115,
+                "returnPct": -0.8289545724137233,
+                "finalEquity": 17.10454275862767,
+                "feesUsd": 23.307835350858344,
+                "signedFundingUsd": 0.3495043982584196,
+                "grossPnlUsd": -59.93712628877227
+              },
+              "participation": {
+                "tsmom": {
+                  "long": 0,
+                  "short": 501,
+                  "netUsd": -44.106872028054596
+                },
+                "pairs_trade": {
+                  "long": 102,
+                  "short": 552,
+                  "netUsd": -29.344147540423158
+                },
+                "adaptive_regime": {
+                  "long": 0,
+                  "short": 98,
+                  "netUsd": -2.4713283842091918
+                },
+                "donchian": {
+                  "long": 0,
+                  "short": 35,
+                  "netUsd": -5.860112280061628
+                },
+                "vol_expand": {
+                  "long": 39,
+                  "short": 0,
+                  "netUsd": -0.4753065545974825
+                },
+                "atr_expand": {
+                  "long": 27,
+                  "short": 0,
+                  "netUsd": -0.6376904540261137
+                }
+              }
+            },
+            {
+              "name": "2026Q3",
+              "from": "2026-07-01",
+              "to": "2026-10-01",
+              "metrics": {
+                "sharpe": -11.17410866414965,
+                "maxDrawdown": 0.8148872352650176,
+                "profitFactor": 0.18365665292701738,
+                "expectancyUsd": -0.08761023682841168,
+                "tradeCount": 926,
+                "winRate": 0.2019438444924406,
+                "returnPct": -0.8112707930310936,
+                "finalEquity": 18.872920696890635,
+                "feesUsd": 20.774374071955645,
+                "signedFundingUsd": 0.4386995117559949,
+                "grossPnlUsd": -60.791404742909634
+              },
+              "participation": {
+                "tsmom": {
+                  "long": 0,
+                  "short": 737,
+                  "netUsd": -66.020497058869
+                },
+                "pairs_trade": {
+                  "long": 48,
+                  "short": 39,
+                  "netUsd": -9.48394435519932
+                },
+                "adaptive_regime": {
+                  "long": 0,
+                  "short": 35,
+                  "netUsd": -1.3822943020642733
+                },
+                "donchian": {
+                  "long": 0,
+                  "short": 67,
+                  "netUsd": -4.240343586976775
+                }
+              }
+            }
+          ],
+          "participation": {
+            "vol_expand": {
+              "long": 63,
+              "short": 0,
+              "netUsd": -7.807349476300851
+            },
+            "adaptive_regime": {
+              "long": 0,
+              "short": 173,
+              "netUsd": -8.489619642040859
+            },
+            "tsmom": {
+              "long": 0,
+              "short": 2442,
+              "netUsd": -162.79957828969737
+            },
+            "atr_expand": {
+              "long": 28,
+              "short": 0,
+              "netUsd": -0.7967025543289563
+            },
+            "donchian": {
+              "long": 0,
+              "short": 220,
+              "netUsd": -19.524985630270393
+            },
+            "pairs_trade": {
+              "long": 162,
+              "short": 591,
+              "netUsd": -38.74272772984445
+            }
+          },
+          "profitScreenPassed": false
+        },
+        "all_pools": {
+          "aggregate": {
+            "sharpe": -13.294361965811419,
+            "maxDrawdown": 0.9886062188383637,
+            "profitFactor": 0.33556479536147427,
+            "expectancyUsd": -0.05483374759763128,
+            "tradeCount": 4206,
+            "winRate": 0.24155967665240133,
+            "returnPct": -0.9886062188383637,
+            "finalEquity": 1.139378116163621,
+            "feesUsd": 68.77883895025056,
+            "signedFundingUsd": 1.1686321782110567,
+            "grossPnlUsd": -163.02053562359774
+          },
+          "folds": [
+            {
+              "name": "2026Q1_partial",
+              "from": "2026-01-06",
+              "to": "2026-04-01",
+              "metrics": {
+                "sharpe": -9.790173013408353,
+                "maxDrawdown": 0.6893500308296481,
+                "profitFactor": 0.5019698166680798,
+                "expectancyUsd": -0.052065712298311854,
+                "tradeCount": 1324,
+                "winRate": 0.3255287009063444,
+                "returnPct": -0.6893500308296481,
+                "finalEquity": 31.064996917035185,
+                "feesUsd": 22.212019696833767,
+                "signedFundingUsd": 0.46789224961526776,
+                "grossPnlUsd": -47.19087563574648
+              },
+              "participation": {
+                "rsi2dip": {
+                  "long": 0,
+                  "short": 358,
+                  "netUsd": -20.33384883534607
+                },
+                "vol_expand": {
+                  "long": 29,
+                  "short": 0,
+                  "netUsd": -5.4331303645883064
+                },
+                "tsmom": {
+                  "long": 0,
+                  "short": 822,
+                  "netUsd": -35.310876513514835
+                },
+                "atr_expand": {
+                  "long": 11,
+                  "short": 0,
+                  "netUsd": -0.6905110678323648
+                },
+                "donchian": {
+                  "long": 0,
+                  "short": 89,
+                  "netUsd": -7.224092721738133
+                },
+                "pairs_trade": {
+                  "long": 15,
+                  "short": 0,
+                  "netUsd": 0.05745642005478956
+                }
+              }
+            },
+            {
+              "name": "2026Q2",
+              "from": "2026-04-01",
+              "to": "2026-07-01",
+              "metrics": {
+                "sharpe": -14.83774079047546,
+                "maxDrawdown": 0.8071238894351711,
+                "profitFactor": 0.23307010858528474,
+                "expectancyUsd": -0.04880195096450703,
+                "tradeCount": 1653,
+                "winRate": 0.19479733817301875,
+                "returnPct": -0.8066962494432988,
+                "finalEquity": 19.330375055670128,
+                "feesUsd": 24.53267161637258,
+                "signedFundingUsd": 0.3570059366954571,
+                "grossPnlUsd": -56.493959264653206
+              },
+              "participation": {
+                "rsi2dip": {
+                  "long": 0,
+                  "short": 669,
+                  "netUsd": -26.307164383728384
+                },
+                "tsmom": {
+                  "long": 0,
+                  "short": 254,
+                  "netUsd": -19.70145578513317
+                },
+                "donchian": {
+                  "long": 0,
+                  "short": 22,
+                  "netUsd": -4.124706984600003
+                },
+                "pairs_trade": {
+                  "long": 106,
+                  "short": 558,
+                  "netUsd": -29.502868409512132
+                },
+                "vol_expand": {
+                  "long": 20,
+                  "short": 0,
+                  "netUsd": -0.37517485479626667
+                },
+                "atr_expand": {
+                  "long": 24,
+                  "short": 0,
+                  "netUsd": -0.6582545265602248
+                }
+              }
+            },
+            {
+              "name": "2026Q3",
+              "from": "2026-07-01",
+              "to": "2026-10-01",
+              "metrics": {
+                "sharpe": -15.739536684517748,
+                "maxDrawdown": 0.8125693061719006,
+                "profitFactor": 0.21719574039508713,
+                "expectancyUsd": -0.06592849012883822,
+                "tradeCount": 1229,
+                "winRate": 0.21399511798209928,
+                "returnPct": -0.8102611436834227,
+                "finalEquity": 18.97388563165773,
+                "feesUsd": 22.03414763704422,
+                "signedFundingUsd": 0.3437339919003309,
+                "grossPnlUsd": -59.33570072319822
+              },
+              "participation": {
+                "tsmom": {
+                  "long": 208,
+                  "short": 537,
+                  "netUsd": -57.723292143185624
+                },
+                "pairs_trade": {
+                  "long": 51,
+                  "short": 44,
+                  "netUsd": -9.297972439752511
+                },
+                "rsi2dip": {
+                  "long": 0,
+                  "short": 349,
+                  "netUsd": -12.847649742390631
+                },
+                "donchian": {
+                  "long": 11,
+                  "short": 25,
+                  "netUsd": -1.1654688873322412
+                },
+                "vol_expand": {
+                  "long": 4,
+                  "short": 0,
+                  "netUsd": 0.008268844318711499
+                }
+              }
+            }
+          ],
+          "participation": {
+            "rsi2dip": {
+              "long": 0,
+              "short": 1376,
+              "netUsd": -59.48866296146516
+            },
+            "vol_expand": {
+              "long": 53,
+              "short": 0,
+              "netUsd": -5.8000363750658614
+            },
+            "tsmom": {
+              "long": 208,
+              "short": 1613,
+              "netUsd": -112.73562444183356
+            },
+            "atr_expand": {
+              "long": 35,
+              "short": 0,
+              "netUsd": -1.3487655943925891
+            },
+            "donchian": {
+              "long": 11,
+              "short": 136,
+              "netUsd": -12.514268593670382
+            },
+            "pairs_trade": {
+              "long": 172,
+              "short": 602,
+              "netUsd": -38.74338442920984
+            }
+          },
+          "profitScreenPassed": false
+        },
+        "symmetric_all_pools": {
+          "aggregate": {
+            "sharpe": -9.96131079258582,
+            "maxDrawdown": 0.9921569373692407,
+            "profitFactor": 0.34236177036319976,
+            "expectancyUsd": -0.05799284113367262,
+            "tradeCount": 4131,
+            "winRate": 0.25223916727184703,
+            "returnPct": -0.9921569373692407,
+            "finalEquity": 0.7843062630759277,
+            "feesUsd": 71.96796565012318,
+            "signedFundingUsd": 1.446603029945678,
+            "grossPnlUsd": -169.0470641030243
+          },
+          "folds": [
+            {
+              "name": "2026Q1_partial",
+              "from": "2026-01-06",
+              "to": "2026-04-01",
+              "metrics": {
+                "sharpe": -7.389652017715979,
+                "maxDrawdown": 0.7519171999234583,
+                "profitFactor": 0.5219300543597393,
+                "expectancyUsd": -0.050228269867966586,
+                "tradeCount": 1497,
+                "winRate": 0.3406813627254509,
+                "returnPct": -0.7519171999234582,
+                "finalEquity": 24.80828000765418,
+                "feesUsd": 26.8752336076138,
+                "signedFundingUsd": 0.6216067573804948,
+                "grossPnlUsd": -48.93809314211268
+              },
+              "participation": {
+                "rsi2dip": {
+                  "long": 0,
+                  "short": 315,
+                  "netUsd": -19.09420964353094
+                },
+                "vol_expand": {
+                  "long": 14,
+                  "short": 0,
+                  "netUsd": -3.7310769690738796
+                },
+                "tsmom": {
+                  "long": 0,
+                  "short": 1037,
+                  "netUsd": -41.687506351963975
+                },
+                "atr_expand": {
+                  "long": 1,
+                  "short": 0,
+                  "netUsd": -0.14886738758000445
+                },
+                "donchian": {
+                  "long": 0,
+                  "short": 118,
+                  "netUsd": -10.701317115845162
+                },
+                "pairs_trade": {
+                  "long": 12,
+                  "short": 0,
+                  "netUsd": 0.1712574756479748
+                }
+              }
+            },
+            {
+              "name": "2026Q2",
+              "from": "2026-04-01",
+              "to": "2026-07-01",
+              "metrics": {
+                "sharpe": -12.8570312278769,
+                "maxDrawdown": 0.8330062355074523,
+                "profitFactor": 0.2137807933760854,
+                "expectancyUsd": -0.054944465990450886,
+                "tradeCount": 1515,
+                "winRate": 0.18151815181518152,
+                "returnPct": -0.8324086597553312,
+                "finalEquity": 16.759134024466885,
+                "feesUsd": 23.921358624696026,
+                "signedFundingUsd": 0.3797906815004894,
+                "grossPnlUsd": -59.69929803233748
+              },
+              "participation": {
+                "rsi2dip": {
+                  "long": 0,
+                  "short": 600,
+                  "netUsd": -21.633053725516458
+                },
+                "tsmom": {
+                  "long": 0,
+                  "short": 304,
+                  "netUsd": -33.951910853183705
+                },
+                "donchian": {
+                  "long": 0,
+                  "short": 27,
+                  "netUsd": -5.3070160495778484
+                },
+                "pairs_trade": {
+                  "long": 103,
+                  "short": 439,
+                  "netUsd": -21.614271705789314
+                },
+                "vol_expand": {
+                  "long": 18,
+                  "short": 0,
+                  "netUsd": -0.2188419229970089
+                },
+                "atr_expand": {
+                  "long": 24,
+                  "short": 0,
+                  "netUsd": -0.5157717184686654
+                }
+              }
+            },
+            {
+              "name": "2026Q3",
+              "from": "2026-07-01",
+              "to": "2026-10-01",
+              "metrics": {
+                "sharpe": -10.661979432642788,
+                "maxDrawdown": 0.8149731709115656,
+                "profitFactor": 0.1977020999862359,
+                "expectancyUsd": -0.0725074537581079,
+                "tradeCount": 1119,
+                "winRate": 0.22966934763181412,
+                "returnPct": -0.811358407553229,
+                "finalEquity": 18.864159244677108,
+                "feesUsd": 21.171373417813136,
+                "signedFundingUsd": 0.4452055910646928,
+                "grossPnlUsd": -60.409672928574246
+              },
+              "participation": {
+                "tsmom": {
+                  "long": 0,
+                  "short": 578,
+                  "netUsd": -54.745021338611366
+                },
+                "pairs_trade": {
+                  "long": 46,
+                  "short": 43,
+                  "netUsd": -10.04056174157494
+                },
+                "rsi2dip": {
+                  "long": 0,
+                  "short": 387,
+                  "netUsd": -13.338166835194084
+                },
+                "donchian": {
+                  "long": 0,
+                  "short": 65,
+                  "netUsd": -3.012090839942335
+                }
+              }
+            }
+          ],
+          "participation": {
+            "rsi2dip": {
+              "long": 0,
+              "short": 1302,
+              "netUsd": -54.06543020424148
+            },
+            "vol_expand": {
+              "long": 32,
+              "short": 0,
+              "netUsd": -3.949918892070888
+            },
+            "tsmom": {
+              "long": 0,
+              "short": 1919,
+              "netUsd": -130.384438543759
+            },
+            "atr_expand": {
+              "long": 25,
+              "short": 0,
+              "netUsd": -0.66463910604867
+            },
+            "donchian": {
+              "long": 0,
+              "short": 210,
+              "netUsd": -19.020424005365356
+            },
+            "pairs_trade": {
+              "long": 161,
+              "short": 482,
+              "netUsd": -31.483575971716274
+            }
+          },
+          "profitScreenPassed": false
+        }
+      },
+      "REVERT": {
+        "baseline": {
+          "aggregate": {
+            "sharpe": -11.647504244850152,
+            "maxDrawdown": 0.9331845639940215,
+            "profitFactor": 0.24576141075218086,
+            "expectancyUsd": -0.05241342172584059,
+            "tradeCount": 3178,
+            "winRate": 0.2315921963499056,
+            "returnPct": -0.933155637638635,
+            "finalEquity": 6.684436236136499,
+            "feesUsd": 50.88654280374605,
+            "signedFundingUsd": 0.6138647074941,
+            "grossPnlUsd": -116.29717614847
+          },
+          "folds": [
+            {
+              "name": "2026Q1_partial",
+              "from": "2026-01-06",
+              "to": "2026-04-01",
+              "metrics": {
+                "sharpe": -8.538053254266492,
+                "maxDrawdown": 0.3344055766322696,
+                "profitFactor": 0.30077531735108654,
+                "expectancyUsd": -0.06564345004705598,
+                "tradeCount": 509,
+                "winRate": 0.30844793713163066,
+                "returnPct": -0.3341251607395158,
+                "finalEquity": 66.58748392604842,
+                "feesUsd": 8.770503087122437,
+                "signedFundingUsd": 0.1682770736096983,
+                "grossPnlUsd": -24.81029006043874
+              },
+              "participation": {
+                "rsi2dip": {
+                  "long": 0,
+                  "short": 451,
+                  "netUsd": -29.490262691756847
+                },
+                "adaptive_regime": {
+                  "long": 0,
+                  "short": 16,
+                  "netUsd": -2.6918965874916436
+                },
+                "pairs_trade": {
+                  "long": 42,
+                  "short": 0,
+                  "netUsd": -1.2303567947030034
+                }
+              }
+            },
+            {
+              "name": "2026Q2",
+              "from": "2026-04-01",
+              "to": "2026-07-01",
+              "metrics": {
+                "sharpe": -15.21625087778266,
+                "maxDrawdown": 0.7725801091345057,
+                "profitFactor": 0.21936786958082793,
+                "expectancyUsd": -0.04657105855069382,
+                "tradeCount": 1658,
+                "winRate": 0.19662243667068757,
+                "returnPct": -0.7721481507705067,
+                "finalEquity": 22.78518492294933,
+                "feesUsd": 24.472750500679435,
+                "signedFundingUsd": 0.2873118037830492,
+                "grossPnlUsd": -53.02937638015399
+              },
+              "participation": {
+                "rsi2dip": {
+                  "long": 0,
+                  "short": 930,
+                  "netUsd": -36.53619882256173
+                },
+                "pairs_trade": {
+                  "long": 173,
+                  "short": 553,
+                  "netUsd": -40.64838497562424
+                },
+                "adaptive_regime": {
+                  "long": 0,
+                  "short": 2,
+                  "netUsd": -0.030231278864582895
+                }
+              }
+            },
+            {
+              "name": "2026Q3",
+              "from": "2026-07-01",
+              "to": "2026-10-01",
+              "metrics": {
+                "sharpe": -11.428230872846678,
+                "maxDrawdown": 0.5595269180664496,
+                "profitFactor": 0.24551628568704123,
+                "expectancyUsd": -0.05533385073562785,
+                "tradeCount": 1011,
+                "winRate": 0.2502472799208704,
+                "returnPct": -0.5594252309371972,
+                "finalEquity": 44.057476906280286,
+                "feesUsd": 17.643289215944225,
+                "signedFundingUsd": 0.15827583010135104,
+                "grossPnlUsd": -38.45750970787684
+              },
+              "participation": {
+                "pairs_trade": {
+                  "long": 75,
+                  "short": 119,
+                  "netUsd": -14.75090842959304
+                },
+                "rsi2dip": {
+                  "long": 314,
+                  "short": 488,
+                  "netUsd": -40.49354423579258
+                },
+                "adaptive_regime": {
+                  "long": 10,
+                  "short": 1,
+                  "netUsd": -0.4581580488830835
+                },
+                "vwap_revert": {
+                  "long": 0,
+                  "short": 4,
+                  "netUsd": -0.2399123794510147
+                }
+              }
+            }
+          ],
+          "participation": {
+            "rsi2dip": {
+              "long": 314,
+              "short": 1869,
+              "netUsd": -106.52000575011101
+            },
+            "adaptive_regime": {
+              "long": 10,
+              "short": 19,
+              "netUsd": -3.1802859152393097
+            },
+            "pairs_trade": {
+              "long": 290,
+              "short": 672,
+              "netUsd": -56.62965019992029
+            },
+            "vwap_revert": {
+              "long": 0,
+              "short": 4,
+              "netUsd": -0.2399123794510147
+            }
+          }
+        },
+        "symmetric_confidence": {
+          "aggregate": {
+            "sharpe": -12.74323746933947,
+            "maxDrawdown": 0.9670863133802894,
+            "profitFactor": 0.2555640704054058,
+            "expectancyUsd": -0.05114047803742975,
+            "tradeCount": 3877,
+            "winRate": 0.2357492906886768,
+            "returnPct": -0.9670863133802894,
+            "finalEquity": 3.291368661971058,
+            "feesUsd": 59.0760999007734,
+            "signedFundingUsd": 0.9188911692833964,
+            "grossPnlUsd": -140.11442461962474
+          },
+          "folds": [
+            {
+              "name": "2026Q1_partial",
+              "from": "2026-01-06",
+              "to": "2026-04-01",
+              "metrics": {
+                "sharpe": -10.234061948818301,
+                "maxDrawdown": 0.5060526517440582,
+                "profitFactor": 0.3421304271635048,
+                "expectancyUsd": -0.049651065942966796,
+                "tradeCount": 1019,
+                "winRate": 0.30225711481844947,
+                "returnPct": -0.5059443619588311,
+                "finalEquity": 49.405563804116895,
+                "feesUsd": 14.415506344898766,
+                "signedFundingUsd": 0.3301442891248606,
+                "grossPnlUsd": -36.50907414010929
+              },
+              "participation": {
+                "rsi2dip": {
+                  "long": 0,
+                  "short": 962,
+                  "netUsd": -46.777438149439476
+                },
+                "adaptive_regime": {
+                  "long": 0,
+                  "short": 15,
+                  "netUsd": -2.6876612691471906
+                },
+                "pairs_trade": {
+                  "long": 42,
+                  "short": 0,
+                  "netUsd": -1.1293367772964702
+                }
+              }
+            },
+            {
+              "name": "2026Q2",
+              "from": "2026-04-01",
+              "to": "2026-07-01",
+              "metrics": {
+                "sharpe": -15.313039568160551,
+                "maxDrawdown": 0.7815294136817599,
+                "profitFactor": 0.234577851570401,
+                "expectancyUsd": -0.04688335713431418,
+                "tradeCount": 1666,
+                "winRate": 0.20828331332533012,
+                "returnPct": -0.781076729857673,
+                "finalEquity": 21.892327014232706,
+                "feesUsd": 25.178033268394287,
+                "signedFundingUsd": 0.32340458783900095,
+                "grossPnlUsd": -53.25304430521216
+              },
+              "participation": {
+                "rsi2dip": {
+                  "long": 0,
+                  "short": 1039,
+                  "netUsd": -42.70086968195622
+                },
+                "pairs_trade": {
+                  "long": 175,
+                  "short": 450,
+                  "netUsd": -35.37514044490251
+                },
+                "adaptive_regime": {
+                  "long": 0,
+                  "short": 2,
+                  "netUsd": -0.03166285890863484
+                }
+              }
+            },
+            {
+              "name": "2026Q3",
+              "from": "2026-07-01",
+              "to": "2026-10-01",
+              "metrics": {
+                "sharpe": -12.577584655642116,
+                "maxDrawdown": 0.6956952416946455,
+                "profitFactor": 0.20388586423891109,
+                "expectancyUsd": -0.05836369477304075,
+                "tradeCount": 1192,
+                "winRate": 0.21728187919463088,
+                "returnPct": -0.6956952416946454,
+                "finalEquity": 30.43047583053546,
+                "feesUsd": 19.482560287480485,
+                "signedFundingUsd": 0.2653422923195356,
+                "grossPnlUsd": -50.35230617430355
+              },
+              "participation": {
+                "pairs_trade": {
+                  "long": 75,
+                  "short": 71,
+                  "netUsd": -14.002728215316484
+                },
+                "rsi2dip": {
+                  "long": 252,
+                  "short": 789,
+                  "netUsd": -55.33826470943501
+                },
+                "adaptive_regime": {
+                  "long": 5,
+                  "short": 0,
+                  "netUsd": -0.22853124471312364
+                }
+              }
+            }
+          ],
+          "participation": {
+            "rsi2dip": {
+              "long": 252,
+              "short": 2790,
+              "netUsd": -144.8165725408305
+            },
+            "adaptive_regime": {
+              "long": 5,
+              "short": 17,
+              "netUsd": -2.9478553727689487
+            },
+            "pairs_trade": {
+              "long": 292,
+              "short": 521,
+              "netUsd": -50.50720543751544
+            }
+          },
+          "profitScreenPassed": false
+        },
+        "all_pools": {
+          "aggregate": {
+            "sharpe": -13.294361965811419,
+            "maxDrawdown": 0.9886062188383637,
+            "profitFactor": 0.33556479536147427,
+            "expectancyUsd": -0.05483374759763128,
+            "tradeCount": 4206,
+            "winRate": 0.24155967665240133,
+            "returnPct": -0.9886062188383637,
+            "finalEquity": 1.139378116163621,
+            "feesUsd": 68.77883895025056,
+            "signedFundingUsd": 1.1686321782110567,
+            "grossPnlUsd": -163.02053562359774
+          },
+          "folds": [
+            {
+              "name": "2026Q1_partial",
+              "from": "2026-01-06",
+              "to": "2026-04-01",
+              "metrics": {
+                "sharpe": -9.790173013408353,
+                "maxDrawdown": 0.6893500308296481,
+                "profitFactor": 0.5019698166680798,
+                "expectancyUsd": -0.052065712298311854,
+                "tradeCount": 1324,
+                "winRate": 0.3255287009063444,
+                "returnPct": -0.6893500308296481,
+                "finalEquity": 31.064996917035185,
+                "feesUsd": 22.212019696833767,
+                "signedFundingUsd": 0.46789224961526776,
+                "grossPnlUsd": -47.19087563574648
+              },
+              "participation": {
+                "rsi2dip": {
+                  "long": 0,
+                  "short": 358,
+                  "netUsd": -20.33384883534607
+                },
+                "vol_expand": {
+                  "long": 29,
+                  "short": 0,
+                  "netUsd": -5.4331303645883064
+                },
+                "tsmom": {
+                  "long": 0,
+                  "short": 822,
+                  "netUsd": -35.310876513514835
+                },
+                "atr_expand": {
+                  "long": 11,
+                  "short": 0,
+                  "netUsd": -0.6905110678323648
+                },
+                "donchian": {
+                  "long": 0,
+                  "short": 89,
+                  "netUsd": -7.224092721738133
+                },
+                "pairs_trade": {
+                  "long": 15,
+                  "short": 0,
+                  "netUsd": 0.05745642005478956
+                }
+              }
+            },
+            {
+              "name": "2026Q2",
+              "from": "2026-04-01",
+              "to": "2026-07-01",
+              "metrics": {
+                "sharpe": -14.83774079047546,
+                "maxDrawdown": 0.8071238894351711,
+                "profitFactor": 0.23307010858528474,
+                "expectancyUsd": -0.04880195096450703,
+                "tradeCount": 1653,
+                "winRate": 0.19479733817301875,
+                "returnPct": -0.8066962494432988,
+                "finalEquity": 19.330375055670128,
+                "feesUsd": 24.53267161637258,
+                "signedFundingUsd": 0.3570059366954571,
+                "grossPnlUsd": -56.493959264653206
+              },
+              "participation": {
+                "rsi2dip": {
+                  "long": 0,
+                  "short": 669,
+                  "netUsd": -26.307164383728384
+                },
+                "tsmom": {
+                  "long": 0,
+                  "short": 254,
+                  "netUsd": -19.70145578513317
+                },
+                "donchian": {
+                  "long": 0,
+                  "short": 22,
+                  "netUsd": -4.124706984600003
+                },
+                "pairs_trade": {
+                  "long": 106,
+                  "short": 558,
+                  "netUsd": -29.502868409512132
+                },
+                "vol_expand": {
+                  "long": 20,
+                  "short": 0,
+                  "netUsd": -0.37517485479626667
+                },
+                "atr_expand": {
+                  "long": 24,
+                  "short": 0,
+                  "netUsd": -0.6582545265602248
+                }
+              }
+            },
+            {
+              "name": "2026Q3",
+              "from": "2026-07-01",
+              "to": "2026-10-01",
+              "metrics": {
+                "sharpe": -15.739536684517748,
+                "maxDrawdown": 0.8125693061719006,
+                "profitFactor": 0.21719574039508713,
+                "expectancyUsd": -0.06592849012883822,
+                "tradeCount": 1229,
+                "winRate": 0.21399511798209928,
+                "returnPct": -0.8102611436834227,
+                "finalEquity": 18.97388563165773,
+                "feesUsd": 22.03414763704422,
+                "signedFundingUsd": 0.3437339919003309,
+                "grossPnlUsd": -59.33570072319822
+              },
+              "participation": {
+                "tsmom": {
+                  "long": 208,
+                  "short": 537,
+                  "netUsd": -57.723292143185624
+                },
+                "pairs_trade": {
+                  "long": 51,
+                  "short": 44,
+                  "netUsd": -9.297972439752511
+                },
+                "rsi2dip": {
+                  "long": 0,
+                  "short": 349,
+                  "netUsd": -12.847649742390631
+                },
+                "donchian": {
+                  "long": 11,
+                  "short": 25,
+                  "netUsd": -1.1654688873322412
+                },
+                "vol_expand": {
+                  "long": 4,
+                  "short": 0,
+                  "netUsd": 0.008268844318711499
+                }
+              }
+            }
+          ],
+          "participation": {
+            "rsi2dip": {
+              "long": 0,
+              "short": 1376,
+              "netUsd": -59.48866296146516
+            },
+            "vol_expand": {
+              "long": 53,
+              "short": 0,
+              "netUsd": -5.8000363750658614
+            },
+            "tsmom": {
+              "long": 208,
+              "short": 1613,
+              "netUsd": -112.73562444183356
+            },
+            "atr_expand": {
+              "long": 35,
+              "short": 0,
+              "netUsd": -1.3487655943925891
+            },
+            "donchian": {
+              "long": 11,
+              "short": 136,
+              "netUsd": -12.514268593670382
+            },
+            "pairs_trade": {
+              "long": 172,
+              "short": 602,
+              "netUsd": -38.74338442920984
+            }
+          },
+          "profitScreenPassed": false
+        },
+        "symmetric_all_pools": {
+          "aggregate": {
+            "sharpe": -9.96131079258582,
+            "maxDrawdown": 0.9921569373692407,
+            "profitFactor": 0.34236177036319976,
+            "expectancyUsd": -0.05799284113367262,
+            "tradeCount": 4131,
+            "winRate": 0.25223916727184703,
+            "returnPct": -0.9921569373692407,
+            "finalEquity": 0.7843062630759277,
+            "feesUsd": 71.96796565012318,
+            "signedFundingUsd": 1.446603029945678,
+            "grossPnlUsd": -169.0470641030243
+          },
+          "folds": [
+            {
+              "name": "2026Q1_partial",
+              "from": "2026-01-06",
+              "to": "2026-04-01",
+              "metrics": {
+                "sharpe": -7.389652017715979,
+                "maxDrawdown": 0.7519171999234583,
+                "profitFactor": 0.5219300543597393,
+                "expectancyUsd": -0.050228269867966586,
+                "tradeCount": 1497,
+                "winRate": 0.3406813627254509,
+                "returnPct": -0.7519171999234582,
+                "finalEquity": 24.80828000765418,
+                "feesUsd": 26.8752336076138,
+                "signedFundingUsd": 0.6216067573804948,
+                "grossPnlUsd": -48.93809314211268
+              },
+              "participation": {
+                "rsi2dip": {
+                  "long": 0,
+                  "short": 315,
+                  "netUsd": -19.09420964353094
+                },
+                "vol_expand": {
+                  "long": 14,
+                  "short": 0,
+                  "netUsd": -3.7310769690738796
+                },
+                "tsmom": {
+                  "long": 0,
+                  "short": 1037,
+                  "netUsd": -41.687506351963975
+                },
+                "atr_expand": {
+                  "long": 1,
+                  "short": 0,
+                  "netUsd": -0.14886738758000445
+                },
+                "donchian": {
+                  "long": 0,
+                  "short": 118,
+                  "netUsd": -10.701317115845162
+                },
+                "pairs_trade": {
+                  "long": 12,
+                  "short": 0,
+                  "netUsd": 0.1712574756479748
+                }
+              }
+            },
+            {
+              "name": "2026Q2",
+              "from": "2026-04-01",
+              "to": "2026-07-01",
+              "metrics": {
+                "sharpe": -12.8570312278769,
+                "maxDrawdown": 0.8330062355074523,
+                "profitFactor": 0.2137807933760854,
+                "expectancyUsd": -0.054944465990450886,
+                "tradeCount": 1515,
+                "winRate": 0.18151815181518152,
+                "returnPct": -0.8324086597553312,
+                "finalEquity": 16.759134024466885,
+                "feesUsd": 23.921358624696026,
+                "signedFundingUsd": 0.3797906815004894,
+                "grossPnlUsd": -59.69929803233748
+              },
+              "participation": {
+                "rsi2dip": {
+                  "long": 0,
+                  "short": 600,
+                  "netUsd": -21.633053725516458
+                },
+                "tsmom": {
+                  "long": 0,
+                  "short": 304,
+                  "netUsd": -33.951910853183705
+                },
+                "donchian": {
+                  "long": 0,
+                  "short": 27,
+                  "netUsd": -5.3070160495778484
+                },
+                "pairs_trade": {
+                  "long": 103,
+                  "short": 439,
+                  "netUsd": -21.614271705789314
+                },
+                "vol_expand": {
+                  "long": 18,
+                  "short": 0,
+                  "netUsd": -0.2188419229970089
+                },
+                "atr_expand": {
+                  "long": 24,
+                  "short": 0,
+                  "netUsd": -0.5157717184686654
+                }
+              }
+            },
+            {
+              "name": "2026Q3",
+              "from": "2026-07-01",
+              "to": "2026-10-01",
+              "metrics": {
+                "sharpe": -10.661979432642788,
+                "maxDrawdown": 0.8149731709115656,
+                "profitFactor": 0.1977020999862359,
+                "expectancyUsd": -0.0725074537581079,
+                "tradeCount": 1119,
+                "winRate": 0.22966934763181412,
+                "returnPct": -0.811358407553229,
+                "finalEquity": 18.864159244677108,
+                "feesUsd": 21.171373417813136,
+                "signedFundingUsd": 0.4452055910646928,
+                "grossPnlUsd": -60.409672928574246
+              },
+              "participation": {
+                "tsmom": {
+                  "long": 0,
+                  "short": 578,
+                  "netUsd": -54.745021338611366
+                },
+                "pairs_trade": {
+                  "long": 46,
+                  "short": 43,
+                  "netUsd": -10.04056174157494
+                },
+                "rsi2dip": {
+                  "long": 0,
+                  "short": 387,
+                  "netUsd": -13.338166835194084
+                },
+                "donchian": {
+                  "long": 0,
+                  "short": 65,
+                  "netUsd": -3.012090839942335
+                }
+              }
+            }
+          ],
+          "participation": {
+            "rsi2dip": {
+              "long": 0,
+              "short": 1302,
+              "netUsd": -54.06543020424148
+            },
+            "vol_expand": {
+              "long": 32,
+              "short": 0,
+              "netUsd": -3.949918892070888
+            },
+            "tsmom": {
+              "long": 0,
+              "short": 1919,
+              "netUsd": -130.384438543759
+            },
+            "atr_expand": {
+              "long": 25,
+              "short": 0,
+              "netUsd": -0.66463910604867
+            },
+            "donchian": {
+              "long": 0,
+              "short": 210,
+              "netUsd": -19.020424005365356
+            },
+            "pairs_trade": {
+              "long": 161,
+              "short": 482,
+              "netUsd": -31.483575971716274
+            }
+          },
+          "profitScreenPassed": false
+        }
+      }
+    },
+    "stress": {
+      "TREND": {
+        "baseline": {
+          "aggregate": {
+            "sharpe": -12.280299970479112,
+            "maxDrawdown": 0.9895415402378049,
+            "profitFactor": 0.1883694635423631,
+            "expectancyUsd": -0.1012896240721515,
+            "tradeCount": 2293,
+            "winRate": 0.1513301351940689,
+            "returnPct": -0.9895065038656417,
+            "finalEquity": 1.0493496134358393,
+            "feesUsd": 39.97169347173915,
+            "signedFundingUsd": 1.7026212551622832,
+            "grossPnlUsd": -193.98803578086606
+          },
+          "folds": [
+            {
+              "name": "2026Q1_partial",
+              "from": "2026-01-06",
+              "to": "2026-04-01",
+              "metrics": {
+                "sharpe": -9.27882635644974,
+                "maxDrawdown": 0.6926568889709914,
+                "profitFactor": 0.33263269906953075,
+                "expectancyUsd": -0.09632691837274644,
+                "tradeCount": 718,
+                "winRate": 0.24233983286908078,
+                "returnPct": -0.691627273916319,
+                "finalEquity": 30.83727260836811,
+                "feesUsd": 12.429442656622614,
+                "signedFundingUsd": 0.6800653014037209,
+                "grossPnlUsd": -57.41335003641302
+              },
+              "participation": {
+                "vol_expand": {
+                  "long": 34,
+                  "short": 0,
+                  "netUsd": -9.55657824491351
+                },
+                "adaptive_regime": {
+                  "long": 0,
+                  "short": 42,
+                  "netUsd": -7.069062858765765
+                },
+                "tsmom": {
+                  "long": 0,
+                  "short": 535,
+                  "netUsd": -39.70799509933982
+                },
+                "atr_expand": {
+                  "long": 13,
+                  "short": 0,
+                  "netUsd": -1.1084775226008656
+                },
+                "donchian": {
+                  "long": 0,
+                  "short": 82,
+                  "netUsd": -11.789754467486949
+                },
+                "pairs_trade": {
+                  "long": 12,
+                  "short": 0,
+                  "netUsd": 0.06914080147505805
+                }
+              }
+            },
+            {
+              "name": "2026Q2",
+              "from": "2026-04-01",
+              "to": "2026-07-01",
+              "metrics": {
+                "sharpe": -14.261316120552877,
+                "maxDrawdown": 0.8202407778392625,
+                "profitFactor": 0.11070365396368953,
+                "expectancyUsd": -0.08963529180983842,
+                "tradeCount": 915,
+                "winRate": 0.0994535519125683,
+                "returnPct": -0.8201629200600211,
+                "finalEquity": 17.98370799399789,
+                "feesUsd": 14.293289096976771,
+                "signedFundingUsd": 0.44171993939981957,
+                "grossPnlUsd": -68.16472284842527
+              },
+              "participation": {
+                "tsmom": {
+                  "long": 0,
+                  "short": 115,
+                  "netUsd": -20.774412965834593
+                },
+                "pairs_trade": {
+                  "long": 100,
+                  "short": 530,
+                  "netUsd": -46.98930735175131
+                },
+                "adaptive_regime": {
+                  "long": 0,
+                  "short": 86,
+                  "netUsd": -5.603918344558667
+                },
+                "donchian": {
+                  "long": 0,
+                  "short": 23,
+                  "netUsd": -6.314294034564163
+                },
+                "vol_expand": {
+                  "long": 37,
+                  "short": 0,
+                  "netUsd": -1.1509030123623851
+                },
+                "atr_expand": {
+                  "long": 24,
+                  "short": 0,
+                  "netUsd": -1.183456296931015
+                }
+              }
+            },
+            {
+              "name": "2026Q3",
+              "from": "2026-07-01",
+              "to": "2026-10-01",
+              "metrics": {
+                "sharpe": -13.441410563319652,
+                "maxDrawdown": 0.8127736038842713,
+                "profitFactor": 0.10212424164364169,
+                "expectancyUsd": -0.12284558878758949,
+                "tradeCount": 660,
+                "winRate": 0.12424242424242424,
+                "returnPct": -0.8107808859980893,
+                "finalEquity": 18.92191140019107,
+                "feesUsd": 13.248961718139718,
+                "signedFundingUsd": 0.5808360143587439,
+                "grossPnlUsd": -68.40996289602799
+              },
+              "participation": {
+                "tsmom": {
+                  "long": 111,
+                  "short": 372,
+                  "netUsd": -58.89090769324439
+                },
+                "pairs_trade": {
+                  "long": 51,
+                  "short": 37,
+                  "netUsd": -16.234740856246994
+                },
+                "adaptive_regime": {
+                  "long": 0,
+                  "short": 48,
+                  "netUsd": -3.805488740724161
+                },
+                "donchian": {
+                  "long": 12,
+                  "short": 25,
+                  "netUsd": -2.5121923484317565
+                },
+                "vol_expand": {
+                  "long": 4,
+                  "short": 0,
+                  "netUsd": 0.3652410388383851
+                }
+              }
+            }
+          ],
+          "participation": {
+            "vol_expand": {
+              "long": 75,
+              "short": 0,
+              "netUsd": -10.342240218437501
+            },
+            "adaptive_regime": {
+              "long": 0,
+              "short": 176,
+              "netUsd": -16.478469944048587
+            },
+            "tsmom": {
+              "long": 111,
+              "short": 1022,
+              "netUsd": -119.37331575841878
+            },
+            "atr_expand": {
+              "long": 37,
+              "short": 0,
+              "netUsd": -2.2919338195318804
+            },
+            "donchian": {
+              "long": 12,
+              "short": 130,
+              "netUsd": -20.616240850482864
+            },
+            "pairs_trade": {
+              "long": 163,
+              "short": 567,
+              "netUsd": -63.1549074065232
+            }
+          }
+        },
+        "symmetric_confidence": {
+          "aggregate": {
+            "sharpe": -9.546485687360395,
+            "maxDrawdown": 0.9931859757791419,
+            "profitFactor": 0.1632473477736314,
+            "expectancyUsd": -0.1102755300765085,
+            "tradeCount": 2200,
+            "winRate": 0.15,
+            "returnPct": -0.993163148451413,
+            "finalEquity": 0.6836851548587052,
+            "feesUsd": 41.32726654552885,
+            "signedFundingUsd": 2.288718939465033,
+            "grossPnlUsd": -203.56761856225532
+          },
+          "folds": [
+            {
+              "name": "2026Q1_partial",
+              "from": "2026-01-06",
+              "to": "2026-04-01",
+              "metrics": {
+                "sharpe": -9.204688451614603,
+                "maxDrawdown": 0.7791115353087272,
+                "profitFactor": 0.28934115924597503,
+                "expectancyUsd": -0.09766267850899925,
+                "tradeCount": 797,
+                "winRate": 0.2371392722710163,
+                "returnPct": -0.7783715477167223,
+                "finalEquity": 22.162845228327765,
+                "feesUsd": 14.402020142809018,
+                "signedFundingUsd": 0.8210801260978127,
+                "grossPnlUsd": -64.2562147549611
+              },
+              "participation": {
+                "vol_expand": {
+                  "long": 23,
+                  "short": 0,
+                  "netUsd": -9.03986679161118
+                },
+                "adaptive_regime": {
+                  "long": 0,
+                  "short": 36,
+                  "netUsd": -6.665235375607751
+                },
+                "tsmom": {
+                  "long": 0,
+                  "short": 625,
+                  "netUsd": -47.95727908470383
+                },
+                "atr_expand": {
+                  "long": 1,
+                  "short": 0,
+                  "netUsd": -0.19916160852605033
+                },
+                "donchian": {
+                  "long": 0,
+                  "short": 112,
+                  "netUsd": -13.975611911223597
+                }
+              }
+            },
+            {
+              "name": "2026Q2",
+              "from": "2026-04-01",
+              "to": "2026-07-01",
+              "metrics": {
+                "sharpe": -10.184670197621129,
+                "maxDrawdown": 0.8375092524303691,
+                "profitFactor": 0.0905966852013202,
+                "expectancyUsd": -0.10149662428323668,
+                "tradeCount": 825,
+                "winRate": 0.08242424242424243,
+                "returnPct": -0.8373471503367003,
+                "finalEquity": 16.26528496632998,
+                "feesUsd": 14.235066280789173,
+                "signedFundingUsd": 0.6219441550247482,
+                "grossPnlUsd": -70.1215929079057
+              },
+              "participation": {
+                "tsmom": {
+                  "long": 0,
+                  "short": 263,
+                  "netUsd": -43.379104387186565
+                },
+                "pairs_trade": {
+                  "long": 78,
+                  "short": 396,
+                  "netUsd": -29.796663255683576
+                },
+                "adaptive_regime": {
+                  "long": 0,
+                  "short": 46,
+                  "netUsd": -2.6816212209150345
+                },
+                "donchian": {
+                  "long": 0,
+                  "short": 27,
+                  "netUsd": -7.831675978563808
+                },
+                "vol_expand": {
+                  "long": 15,
+                  "short": 0,
+                  "netUsd": -0.04565019132118124
+                }
+              }
+            },
+            {
+              "name": "2026Q3",
+              "from": "2026-07-01",
+              "to": "2026-10-01",
+              "metrics": {
+                "sharpe": -9.135229081689811,
+                "maxDrawdown": 0.8134526932545185,
+                "profitFactor": 0.08262743387072306,
+                "expectancyUsd": -0.14019774457262357,
+                "tradeCount": 578,
+                "winRate": 0.12629757785467127,
+                "returnPct": -0.8103429636297641,
+                "finalEquity": 18.965703637023584,
+                "feesUsd": 12.690180121930613,
+                "signedFundingUsd": 0.8456946583424735,
+                "grossPnlUsd": -69.18981089938832
+              },
+              "participation": {
+                "tsmom": {
+                  "long": 0,
+                  "short": 481,
+                  "netUsd": -67.63746221555878
+                },
+                "pairs_trade": {
+                  "long": 32,
+                  "short": 34,
+                  "netUsd": -11.292014001507264
+                },
+                "adaptive_regime": {
+                  "long": 0,
+                  "short": 19,
+                  "netUsd": -1.5015211541559126
+                },
+                "donchian": {
+                  "long": 0,
+                  "short": 12,
+                  "netUsd": -0.6032989917544207
+                }
+              }
+            }
+          ],
+          "participation": {
+            "vol_expand": {
+              "long": 38,
+              "short": 0,
+              "netUsd": -9.085516982932361
+            },
+            "adaptive_regime": {
+              "long": 0,
+              "short": 101,
+              "netUsd": -10.848377750678695
+            },
+            "tsmom": {
+              "long": 0,
+              "short": 1369,
+              "netUsd": -158.9738456874493
+            },
+            "atr_expand": {
+              "long": 1,
+              "short": 0,
+              "netUsd": -0.19916160852605033
+            },
+            "donchian": {
+              "long": 0,
+              "short": 151,
+              "netUsd": -22.41058688154182
+            },
+            "pairs_trade": {
+              "long": 110,
+              "short": 430,
+              "netUsd": -41.08867725719084
+            }
+          }
+        },
+        "all_pools": {
+          "aggregate": {
+            "sharpe": -11.319227822498982,
+            "maxDrawdown": 0.9916989272692901,
+            "profitFactor": 0.17694897700116716,
+            "expectancyUsd": -0.09134174915957534,
+            "tradeCount": 2602,
+            "winRate": 0.15219062259800153,
+            "returnPct": -0.9916989272692901,
+            "finalEquity": 0.8301072730709902,
+            "feesUsd": 41.45030453683385,
+            "signedFundingUsd": 2.3193106485476007,
+            "grossPnlUsd": -198.54023742492834
+          },
+          "folds": [
+            {
+              "name": "2026Q1_partial",
+              "from": "2026-01-06",
+              "to": "2026-04-01",
+              "metrics": {
+                "sharpe": -9.960303968887958,
+                "maxDrawdown": 0.7261202980693807,
+                "profitFactor": 0.2993894875041045,
+                "expectancyUsd": -0.08613526667489689,
+                "tradeCount": 843,
+                "winRate": 0.23843416370106763,
+                "returnPct": -0.7261202980693806,
+                "finalEquity": 27.387970193061932,
+                "feesUsd": 13.793074506883059,
+                "signedFundingUsd": 0.9180244205743454,
+                "grossPnlUsd": -59.73697972062923
+              },
+              "participation": {
+                "rsi2dip": {
+                  "long": 0,
+                  "short": 264,
+                  "netUsd": -27.3168136731504
+                },
+                "vol_expand": {
+                  "long": 20,
+                  "short": 0,
+                  "netUsd": -6.174428253502066
+                },
+                "tsmom": {
+                  "long": 0,
+                  "short": 470,
+                  "netUsd": -28.970346493787808
+                },
+                "atr_expand": {
+                  "long": 4,
+                  "short": 0,
+                  "netUsd": -0.3588466561360528
+                },
+                "donchian": {
+                  "long": 0,
+                  "short": 85,
+                  "netUsd": -9.791594730361735
+                }
+              }
+            },
+            {
+              "name": "2026Q2",
+              "from": "2026-04-01",
+              "to": "2026-07-01",
+              "metrics": {
+                "sharpe": -12.424562154575735,
+                "maxDrawdown": 0.8400449230331568,
+                "profitFactor": 0.1059109072997253,
+                "expectancyUsd": -0.0829907364019748,
+                "tradeCount": 1012,
+                "winRate": 0.10177865612648221,
+                "returnPct": -0.8398662523879872,
+                "finalEquity": 16.013374761201284,
+                "feesUsd": 14.63401941134377,
+                "signedFundingUsd": 0.6797995166654192,
+                "grossPnlUsd": -70.03240534412036
+              },
+              "participation": {
+                "rsi2dip": {
+                  "long": 0,
+                  "short": 284,
+                  "netUsd": -22.64301761818685
+                },
+                "tsmom": {
+                  "long": 0,
+                  "short": 144,
+                  "netUsd": -21.753549427233644
+                },
+                "donchian": {
+                  "long": 0,
+                  "short": 21,
+                  "netUsd": -5.769152799707815
+                },
+                "pairs_trade": {
+                  "long": 71,
+                  "short": 478,
+                  "netUsd": -33.04562528486854
+                },
+                "vol_expand": {
+                  "long": 14,
+                  "short": 0,
+                  "netUsd": -0.7752801088017719
+                }
+              }
+            },
+            {
+              "name": "2026Q3",
+              "from": "2026-07-01",
+              "to": "2026-10-01",
+              "metrics": {
+                "sharpe": -11.370427929017893,
+                "maxDrawdown": 0.8127190610796549,
+                "profitFactor": 0.11096869339960352,
+                "expectancyUsd": -0.10853089192433518,
+                "tradeCount": 747,
+                "winRate": 0.12315930388219545,
+                "returnPct": -0.8107257626747821,
+                "finalEquity": 18.927423732521785,
+                "feesUsd": 13.023210618607175,
+                "signedFundingUsd": 0.7214867113078391,
+                "grossPnlUsd": -68.77085236017895
+              },
+              "participation": {
+                "tsmom": {
+                  "long": 60,
+                  "short": 339,
+                  "netUsd": -53.312793081149614
+                },
+                "pairs_trade": {
+                  "long": 45,
+                  "short": 41,
+                  "netUsd": -14.00270677253416
+                },
+                "rsi2dip": {
+                  "long": 0,
+                  "short": 228,
+                  "netUsd": -12.837616539073732
+                },
+                "donchian": {
+                  "long": 11,
+                  "short": 23,
+                  "netUsd": -0.9194598747208146
+                }
+              }
+            }
+          ],
+          "participation": {
+            "rsi2dip": {
+              "long": 0,
+              "short": 776,
+              "netUsd": -62.79744783041099
+            },
+            "vol_expand": {
+              "long": 34,
+              "short": 0,
+              "netUsd": -6.949708362303838
+            },
+            "tsmom": {
+              "long": 60,
+              "short": 953,
+              "netUsd": -104.03668900217114
+            },
+            "atr_expand": {
+              "long": 4,
+              "short": 0,
+              "netUsd": -0.3588466561360528
+            },
+            "donchian": {
+              "long": 11,
+              "short": 129,
+              "netUsd": -16.48020740479036
+            },
+            "pairs_trade": {
+              "long": 116,
+              "short": 519,
+              "netUsd": -47.04833205740273
+            }
+          }
+        },
+        "symmetric_all_pools": {
+          "aggregate": {
+            "sharpe": -9.60297546855772,
+            "maxDrawdown": 0.9937543290747446,
+            "profitFactor": 0.1631227543776032,
+            "expectancyUsd": -0.0999017495964805,
+            "tradeCount": 2445,
+            "winRate": 0.1603271983640082,
+            "returnPct": -0.9937360689542758,
+            "finalEquity": 0.6263931045724216,
+            "feesUsd": 42.81713312844659,
+            "signedFundingUsd": 2.642178796546674,
+            "grossPnlUsd": -204.0848234314951
+          },
+          "folds": [
+            {
+              "name": "2026Q1_partial",
+              "from": "2026-01-06",
+              "to": "2026-04-01",
+              "metrics": {
+                "sharpe": -11.007507810224409,
+                "maxDrawdown": 0.7880456884175624,
+                "profitFactor": 0.28050750389657947,
+                "expectancyUsd": -0.08528632991532076,
+                "tradeCount": 924,
+                "winRate": 0.23593073593073594,
+                "returnPct": -0.7880456884175624,
+                "finalEquity": 21.195431158243757,
+                "feesUsd": 15.463966611908816,
+                "signedFundingUsd": 1.0451624015850167,
+                "grossPnlUsd": -64.38576463143255
+              },
+              "participation": {
+                "rsi2dip": {
+                  "long": 0,
+                  "short": 289,
+                  "netUsd": -27.7000141934929
+                },
+                "vol_expand": {
+                  "long": 14,
+                  "short": 0,
+                  "netUsd": -4.296706457718913
+                },
+                "tsmom": {
+                  "long": 0,
+                  "short": 507,
+                  "netUsd": -34.66659794313887
+                },
+                "atr_expand": {
+                  "long": 1,
+                  "short": 0,
+                  "netUsd": -0.1726945329732054
+                },
+                "donchian": {
+                  "long": 0,
+                  "short": 113,
+                  "netUsd": -11.968555714432489
+                }
+              }
+            },
+            {
+              "name": "2026Q2",
+              "from": "2026-04-01",
+              "to": "2026-07-01",
+              "metrics": {
+                "sharpe": -9.704191247178102,
+                "maxDrawdown": 0.8442912380825934,
+                "profitFactor": 0.10477324383257183,
+                "expectancyUsd": -0.0980278437460829,
+                "tradeCount": 861,
+                "winRate": 0.10685249709639953,
+                "returnPct": -0.8440197346537757,
+                "finalEquity": 15.598026534622436,
+                "feesUsd": 14.53064766721377,
+                "signedFundingUsd": 0.7914166393459118,
+                "grossPnlUsd": -70.66274243750948
+              },
+              "participation": {
+                "rsi2dip": {
+                  "long": 0,
+                  "short": 234,
+                  "netUsd": -18.681088481910656
+                },
+                "tsmom": {
+                  "long": 0,
+                  "short": 252,
+                  "netUsd": -38.524162296683684
+                },
+                "donchian": {
+                  "long": 0,
+                  "short": 25,
+                  "netUsd": -6.938884546333902
+                },
+                "pairs_trade": {
+                  "long": 70,
+                  "short": 280,
+                  "netUsd": -20.257838140449273
+                }
+              }
+            },
+            {
+              "name": "2026Q3",
+              "from": "2026-07-01",
+              "to": "2026-10-01",
+              "metrics": {
+                "sharpe": -8.5161727239481,
+                "maxDrawdown": 0.8141822438525191,
+                "profitFactor": 0.0795943102549178,
+                "expectancyUsd": -0.12280793250948607,
+                "tradeCount": 660,
+                "winRate": 0.12424242424242424,
+                "returnPct": -0.8105323545626081,
+                "finalEquity": 18.946764543739192,
+                "feesUsd": 12.82251884932401,
+                "signedFundingUsd": 0.8055997556157397,
+                "grossPnlUsd": -69.03631636255257
+              },
+              "participation": {
+                "tsmom": {
+                  "long": 0,
+                  "short": 411,
+                  "netUsd": -58.41120186450636
+                },
+                "pairs_trade": {
+                  "long": 32,
+                  "short": 39,
+                  "netUsd": -11.435120652892557
+                },
+                "rsi2dip": {
+                  "long": 0,
+                  "short": 178,
+                  "netUsd": -11.206912938861912
+                }
+              }
+            }
+          ],
+          "participation": {
+            "rsi2dip": {
+              "long": 0,
+              "short": 701,
+              "netUsd": -57.588015614265494
+            },
+            "vol_expand": {
+              "long": 14,
+              "short": 0,
+              "netUsd": -4.296706457718913
+            },
+            "tsmom": {
+              "long": 0,
+              "short": 1170,
+              "netUsd": -131.60196210432875
+            },
+            "atr_expand": {
+              "long": 1,
+              "short": 0,
+              "netUsd": -0.1726945329732054
+            },
+            "donchian": {
+              "long": 0,
+              "short": 138,
+              "netUsd": -18.907440260766403
+            },
+            "pairs_trade": {
+              "long": 102,
+              "short": 319,
+              "netUsd": -31.692958793341823
+            }
+          }
+        }
+      },
+      "REVERT": {
+        "baseline": {
+          "aggregate": {
+            "sharpe": -11.46995484759445,
+            "maxDrawdown": 0.9768509451826662,
+            "profitFactor": 0.11777957070603699,
+            "expectancyUsd": -0.08253408920825386,
+            "tradeCount": 2453,
+            "winRate": 0.12474520994700367,
+            "returnPct": -0.9768509451826662,
+            "finalEquity": 2.31490548173338,
+            "feesUsd": 35.766988203376144,
+            "signedFundingUsd": 1.2872144594068813,
+            "grossPnlUsd": -167.9763470838773
+          },
+          "folds": [
+            {
+              "name": "2026Q1_partial",
+              "from": "2026-01-06",
+              "to": "2026-04-01",
+              "metrics": {
+                "sharpe": -9.991290515181186,
+                "maxDrawdown": 0.4554578613649188,
+                "profitFactor": 0.1701365475441425,
+                "expectancyUsd": -0.09752844997107489,
+                "tradeCount": 467,
+                "winRate": 0.19914346895074947,
+                "returnPct": -0.4554578613649187,
+                "finalEquity": 54.45421386350812,
+                "feesUsd": 7.596772567350397,
+                "signedFundingUsd": 0.4177807233108909,
+                "grossPnlUsd": -38.36679429245248
+              },
+              "participation": {
+                "rsi2dip": {
+                  "long": 0,
+                  "short": 413,
+                  "netUsd": -40.97227153827994
+                },
+                "adaptive_regime": {
+                  "long": 0,
+                  "short": 16,
+                  "netUsd": -3.0470407661826595
+                },
+                "pairs_trade": {
+                  "long": 38,
+                  "short": 0,
+                  "netUsd": -1.5264738320293658
+                }
+              }
+            },
+            {
+              "name": "2026Q2",
+              "from": "2026-04-01",
+              "to": "2026-07-01",
+              "metrics": {
+                "sharpe": -13.389801294184599,
+                "maxDrawdown": 0.8472013771034234,
+                "profitFactor": 0.10133843305779389,
+                "expectancyUsd": -0.0744338464383329,
+                "tradeCount": 1138,
+                "winRate": 0.09050966608084358,
+                "returnPct": -0.8470571724682274,
+                "finalEquity": 15.29428275317726,
+                "feesUsd": 15.185546785502494,
+                "signedFundingUsd": 0.48667848170770095,
+                "grossPnlUsd": -70.00684894302788
+              },
+              "participation": {
+                "rsi2dip": {
+                  "long": 0,
+                  "short": 516,
+                  "netUsd": -37.42651011888459
+                },
+                "pairs_trade": {
+                  "long": 131,
+                  "short": 491,
+                  "netUsd": -47.27920712793828
+                }
+              }
+            },
+            {
+              "name": "2026Q3",
+              "from": "2026-07-01",
+              "to": "2026-10-01",
+              "metrics": {
+                "sharpe": -11.959803908677896,
+                "maxDrawdown": 0.7220461744453172,
+                "profitFactor": 0.10130247292787047,
+                "expectancyUsd": -0.08514695453364579,
+                "tradeCount": 848,
+                "winRate": 0.12971698113207547,
+                "returnPct": -0.7220461744453173,
+                "finalEquity": 27.795382555468276,
+                "feesUsd": 12.984668850523292,
+                "signedFundingUsd": 0.382755254388289,
+                "grossPnlUsd": -59.60270384839664
+              },
+              "participation": {
+                "pairs_trade": {
+                  "long": 70,
+                  "short": 67,
+                  "netUsd": -21.52614045700822
+                },
+                "rsi2dip": {
+                  "long": 238,
+                  "short": 467,
+                  "netUsd": -50.32025813719342
+                },
+                "adaptive_regime": {
+                  "long": 6,
+                  "short": 0,
+                  "netUsd": -0.3582188503301339
+                }
+              }
+            }
+          ],
+          "participation": {
+            "rsi2dip": {
+              "long": 238,
+              "short": 1396,
+              "netUsd": -128.71903979435783
+            },
+            "adaptive_regime": {
+              "long": 6,
+              "short": 16,
+              "netUsd": -3.4052596165127933
+            },
+            "pairs_trade": {
+              "long": 239,
+              "short": 558,
+              "netUsd": -70.33182141697584
+            }
+          }
+        },
+        "symmetric_confidence": {
+          "aggregate": {
+            "sharpe": -11.843349268750822,
+            "maxDrawdown": 0.9892666858865389,
+            "profitFactor": 0.11113484878583854,
+            "expectancyUsd": -0.08044308672949715,
+            "tradeCount": 2858,
+            "winRate": 0.13331000699790063,
+            "returnPct": -0.9892666858865388,
+            "finalEquity": 1.0733314113461239,
+            "feesUsd": 39.94384620808325,
+            "signedFundingUsd": 1.9051144594673064,
+            "grossPnlUsd": -191.86761012428627
+          },
+          "folds": [
+            {
+              "name": "2026Q1_partial",
+              "from": "2026-01-06",
+              "to": "2026-04-01",
+              "metrics": {
+                "sharpe": -10.562639232519146,
+                "maxDrawdown": 0.6629361224230391,
+                "profitFactor": 0.1518391210729134,
+                "expectancyUsd": -0.0794887436958082,
+                "tradeCount": 834,
+                "winRate": 0.19424460431654678,
+                "returnPct": -0.662936122423039,
+                "finalEquity": 33.70638775769609,
+                "feesUsd": 10.890166955304036,
+                "signedFundingUsd": 0.7061651062870334,
+                "grossPnlUsd": -56.10961039328703
+              },
+              "participation": {
+                "rsi2dip": {
+                  "long": 0,
+                  "short": 793,
+                  "netUsd": -62.79318057623474
+                },
+                "adaptive_regime": {
+                  "long": 0,
+                  "short": 16,
+                  "netUsd": -2.890423259596807
+                },
+                "pairs_trade": {
+                  "long": 25,
+                  "short": 0,
+                  "netUsd": -0.6100084064724783
+                }
+              }
+            },
+            {
+              "name": "2026Q2",
+              "from": "2026-04-01",
+              "to": "2026-07-01",
+              "metrics": {
+                "sharpe": -13.395380430140609,
+                "maxDrawdown": 0.853672377025501,
+                "profitFactor": 0.10696486596914104,
+                "expectancyUsd": -0.07580121892626632,
+                "tradeCount": 1126,
+                "winRate": 0.10124333925399645,
+                "returnPct": -0.8535217251097601,
+                "finalEquity": 14.647827489023992,
+                "feesUsd": 15.347549776546606,
+                "signedFundingUsd": 0.5474984362314643,
+                "grossPnlUsd": -70.55212117066087
+              },
+              "participation": {
+                "rsi2dip": {
+                  "long": 0,
+                  "short": 610,
+                  "netUsd": -44.681870277310104
+                },
+                "pairs_trade": {
+                  "long": 124,
+                  "short": 392,
+                  "netUsd": -40.670302233665915
+                }
+              }
+            },
+            {
+              "name": "2026Q3",
+              "from": "2026-07-01",
+              "to": "2026-10-01",
+              "metrics": {
+                "sharpe": -11.479268888562522,
+                "maxDrawdown": 0.7826055711962263,
+                "profitFactor": 0.07836115980506053,
+                "expectancyUsd": -0.08714984089044832,
+                "tradeCount": 898,
+                "winRate": 0.11692650334075724,
+                "returnPct": -0.7826055711962263,
+                "finalEquity": 21.739442880377375,
+                "feesUsd": 13.706129476232668,
+                "signedFundingUsd": 0.651450916948808,
+                "grossPnlUsd": -65.20587856033872
+              },
+              "participation": {
+                "pairs_trade": {
+                  "long": 70,
+                  "short": 35,
+                  "netUsd": -20.853059473452824
+                },
+                "rsi2dip": {
+                  "long": 74,
+                  "short": 719,
+                  "netUsd": -57.407497646169716
+                }
+              }
+            }
+          ],
+          "participation": {
+            "rsi2dip": {
+              "long": 74,
+              "short": 2122,
+              "netUsd": -164.8825484997148
+            },
+            "adaptive_regime": {
+              "long": 0,
+              "short": 16,
+              "netUsd": -2.890423259596807
+            },
+            "pairs_trade": {
+              "long": 219,
+              "short": 427,
+              "netUsd": -62.133370113591226
+            }
+          }
+        },
+        "all_pools": {
+          "aggregate": {
+            "sharpe": -11.319227822498982,
+            "maxDrawdown": 0.9916989272692901,
+            "profitFactor": 0.17694897700116716,
+            "expectancyUsd": -0.09134174915957534,
+            "tradeCount": 2602,
+            "winRate": 0.15219062259800153,
+            "returnPct": -0.9916989272692901,
+            "finalEquity": 0.8301072730709902,
+            "feesUsd": 41.45030453683385,
+            "signedFundingUsd": 2.3193106485476007,
+            "grossPnlUsd": -198.54023742492834
+          },
+          "folds": [
+            {
+              "name": "2026Q1_partial",
+              "from": "2026-01-06",
+              "to": "2026-04-01",
+              "metrics": {
+                "sharpe": -9.960303968887958,
+                "maxDrawdown": 0.7261202980693807,
+                "profitFactor": 0.2993894875041045,
+                "expectancyUsd": -0.08613526667489689,
+                "tradeCount": 843,
+                "winRate": 0.23843416370106763,
+                "returnPct": -0.7261202980693806,
+                "finalEquity": 27.387970193061932,
+                "feesUsd": 13.793074506883059,
+                "signedFundingUsd": 0.9180244205743454,
+                "grossPnlUsd": -59.73697972062923
+              },
+              "participation": {
+                "rsi2dip": {
+                  "long": 0,
+                  "short": 264,
+                  "netUsd": -27.3168136731504
+                },
+                "vol_expand": {
+                  "long": 20,
+                  "short": 0,
+                  "netUsd": -6.174428253502066
+                },
+                "tsmom": {
+                  "long": 0,
+                  "short": 470,
+                  "netUsd": -28.970346493787808
+                },
+                "atr_expand": {
+                  "long": 4,
+                  "short": 0,
+                  "netUsd": -0.3588466561360528
+                },
+                "donchian": {
+                  "long": 0,
+                  "short": 85,
+                  "netUsd": -9.791594730361735
+                }
+              }
+            },
+            {
+              "name": "2026Q2",
+              "from": "2026-04-01",
+              "to": "2026-07-01",
+              "metrics": {
+                "sharpe": -12.424562154575735,
+                "maxDrawdown": 0.8400449230331568,
+                "profitFactor": 0.1059109072997253,
+                "expectancyUsd": -0.0829907364019748,
+                "tradeCount": 1012,
+                "winRate": 0.10177865612648221,
+                "returnPct": -0.8398662523879872,
+                "finalEquity": 16.013374761201284,
+                "feesUsd": 14.63401941134377,
+                "signedFundingUsd": 0.6797995166654192,
+                "grossPnlUsd": -70.03240534412036
+              },
+              "participation": {
+                "rsi2dip": {
+                  "long": 0,
+                  "short": 284,
+                  "netUsd": -22.64301761818685
+                },
+                "tsmom": {
+                  "long": 0,
+                  "short": 144,
+                  "netUsd": -21.753549427233644
+                },
+                "donchian": {
+                  "long": 0,
+                  "short": 21,
+                  "netUsd": -5.769152799707815
+                },
+                "pairs_trade": {
+                  "long": 71,
+                  "short": 478,
+                  "netUsd": -33.04562528486854
+                },
+                "vol_expand": {
+                  "long": 14,
+                  "short": 0,
+                  "netUsd": -0.7752801088017719
+                }
+              }
+            },
+            {
+              "name": "2026Q3",
+              "from": "2026-07-01",
+              "to": "2026-10-01",
+              "metrics": {
+                "sharpe": -11.370427929017893,
+                "maxDrawdown": 0.8127190610796549,
+                "profitFactor": 0.11096869339960352,
+                "expectancyUsd": -0.10853089192433518,
+                "tradeCount": 747,
+                "winRate": 0.12315930388219545,
+                "returnPct": -0.8107257626747821,
+                "finalEquity": 18.927423732521785,
+                "feesUsd": 13.023210618607175,
+                "signedFundingUsd": 0.7214867113078391,
+                "grossPnlUsd": -68.77085236017895
+              },
+              "participation": {
+                "tsmom": {
+                  "long": 60,
+                  "short": 339,
+                  "netUsd": -53.312793081149614
+                },
+                "pairs_trade": {
+                  "long": 45,
+                  "short": 41,
+                  "netUsd": -14.00270677253416
+                },
+                "rsi2dip": {
+                  "long": 0,
+                  "short": 228,
+                  "netUsd": -12.837616539073732
+                },
+                "donchian": {
+                  "long": 11,
+                  "short": 23,
+                  "netUsd": -0.9194598747208146
+                }
+              }
+            }
+          ],
+          "participation": {
+            "rsi2dip": {
+              "long": 0,
+              "short": 776,
+              "netUsd": -62.79744783041099
+            },
+            "vol_expand": {
+              "long": 34,
+              "short": 0,
+              "netUsd": -6.949708362303838
+            },
+            "tsmom": {
+              "long": 60,
+              "short": 953,
+              "netUsd": -104.03668900217114
+            },
+            "atr_expand": {
+              "long": 4,
+              "short": 0,
+              "netUsd": -0.3588466561360528
+            },
+            "donchian": {
+              "long": 11,
+              "short": 129,
+              "netUsd": -16.48020740479036
+            },
+            "pairs_trade": {
+              "long": 116,
+              "short": 519,
+              "netUsd": -47.04833205740273
+            }
+          }
+        },
+        "symmetric_all_pools": {
+          "aggregate": {
+            "sharpe": -9.60297546855772,
+            "maxDrawdown": 0.9937543290747446,
+            "profitFactor": 0.1631227543776032,
+            "expectancyUsd": -0.0999017495964805,
+            "tradeCount": 2445,
+            "winRate": 0.1603271983640082,
+            "returnPct": -0.9937360689542758,
+            "finalEquity": 0.6263931045724216,
+            "feesUsd": 42.81713312844659,
+            "signedFundingUsd": 2.642178796546674,
+            "grossPnlUsd": -204.0848234314951
+          },
+          "folds": [
+            {
+              "name": "2026Q1_partial",
+              "from": "2026-01-06",
+              "to": "2026-04-01",
+              "metrics": {
+                "sharpe": -11.007507810224409,
+                "maxDrawdown": 0.7880456884175624,
+                "profitFactor": 0.28050750389657947,
+                "expectancyUsd": -0.08528632991532076,
+                "tradeCount": 924,
+                "winRate": 0.23593073593073594,
+                "returnPct": -0.7880456884175624,
+                "finalEquity": 21.195431158243757,
+                "feesUsd": 15.463966611908816,
+                "signedFundingUsd": 1.0451624015850167,
+                "grossPnlUsd": -64.38576463143255
+              },
+              "participation": {
+                "rsi2dip": {
+                  "long": 0,
+                  "short": 289,
+                  "netUsd": -27.7000141934929
+                },
+                "vol_expand": {
+                  "long": 14,
+                  "short": 0,
+                  "netUsd": -4.296706457718913
+                },
+                "tsmom": {
+                  "long": 0,
+                  "short": 507,
+                  "netUsd": -34.66659794313887
+                },
+                "atr_expand": {
+                  "long": 1,
+                  "short": 0,
+                  "netUsd": -0.1726945329732054
+                },
+                "donchian": {
+                  "long": 0,
+                  "short": 113,
+                  "netUsd": -11.968555714432489
+                }
+              }
+            },
+            {
+              "name": "2026Q2",
+              "from": "2026-04-01",
+              "to": "2026-07-01",
+              "metrics": {
+                "sharpe": -9.704191247178102,
+                "maxDrawdown": 0.8442912380825934,
+                "profitFactor": 0.10477324383257183,
+                "expectancyUsd": -0.0980278437460829,
+                "tradeCount": 861,
+                "winRate": 0.10685249709639953,
+                "returnPct": -0.8440197346537757,
+                "finalEquity": 15.598026534622436,
+                "feesUsd": 14.53064766721377,
+                "signedFundingUsd": 0.7914166393459118,
+                "grossPnlUsd": -70.66274243750948
+              },
+              "participation": {
+                "rsi2dip": {
+                  "long": 0,
+                  "short": 234,
+                  "netUsd": -18.681088481910656
+                },
+                "tsmom": {
+                  "long": 0,
+                  "short": 252,
+                  "netUsd": -38.524162296683684
+                },
+                "donchian": {
+                  "long": 0,
+                  "short": 25,
+                  "netUsd": -6.938884546333902
+                },
+                "pairs_trade": {
+                  "long": 70,
+                  "short": 280,
+                  "netUsd": -20.257838140449273
+                }
+              }
+            },
+            {
+              "name": "2026Q3",
+              "from": "2026-07-01",
+              "to": "2026-10-01",
+              "metrics": {
+                "sharpe": -8.5161727239481,
+                "maxDrawdown": 0.8141822438525191,
+                "profitFactor": 0.0795943102549178,
+                "expectancyUsd": -0.12280793250948607,
+                "tradeCount": 660,
+                "winRate": 0.12424242424242424,
+                "returnPct": -0.8105323545626081,
+                "finalEquity": 18.946764543739192,
+                "feesUsd": 12.82251884932401,
+                "signedFundingUsd": 0.8055997556157397,
+                "grossPnlUsd": -69.03631636255257
+              },
+              "participation": {
+                "tsmom": {
+                  "long": 0,
+                  "short": 411,
+                  "netUsd": -58.41120186450636
+                },
+                "pairs_trade": {
+                  "long": 32,
+                  "short": 39,
+                  "netUsd": -11.435120652892557
+                },
+                "rsi2dip": {
+                  "long": 0,
+                  "short": 178,
+                  "netUsd": -11.206912938861912
+                }
+              }
+            }
+          ],
+          "participation": {
+            "rsi2dip": {
+              "long": 0,
+              "short": 701,
+              "netUsd": -57.588015614265494
+            },
+            "vol_expand": {
+              "long": 14,
+              "short": 0,
+              "netUsd": -4.296706457718913
+            },
+            "tsmom": {
+              "long": 0,
+              "short": 1170,
+              "netUsd": -131.60196210432875
+            },
+            "atr_expand": {
+              "long": 1,
+              "short": 0,
+              "netUsd": -0.1726945329732054
+            },
+            "donchian": {
+              "long": 0,
+              "short": 138,
+              "netUsd": -18.907440260766403
+            },
+            "pairs_trade": {
+              "long": 102,
+              "short": 319,
+              "netUsd": -31.692958793341823
+            }
+          }
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,135 @@
+[
+  {
+    "name": "Entry fee missing from reported net P&L",
+    "status": "PASS",
+    "evidence": {
+      "actualWalletPnl": -0.030000000000001137,
+      "reportedNetPnl": -0.015
+    }
+  },
+  {
+    "name": "Signed funding is reversed in net P&L and omitted from wallet",
+    "status": "PASS",
+    "evidence": {
+      "signedFunding": -0.3,
+      "actualWalletPnl": -0.030000000000001137,
+      "reportedNetPnl": 0.285,
+      "expectedAllCostNet": -0.33
+    }
+  },
+  {
+    "name": "Learned Kelly changes do not change source sizing",
+    "status": "PASS",
+    "evidence": {
+      "before": 17,
+      "afterLearnedKellyZero": 17
+    }
+  },
+  {
+    "name": "SLEEP entries are blocked indirectly by confidence threshold",
+    "status": "PASS",
+    "evidence": {
+      "openOrders": 0,
+      "rawPairConfidence": 1,
+      "maximumSleepConfidence": 0.5,
+      "requiredSingleSignalConfidence": 0.6
+    }
+  },
+  {
+    "name": "Stale quote passes dispatcher entry guard",
+    "status": "PASS",
+    "evidence": {
+      "openOrdersWithStaleQuote": 1
+    }
+  },
+  {
+    "name": "Pending opens can call doOpen while halted and leverage-disabled",
+    "status": "PASS",
+    "evidence": {
+      "positionsAfterHaltedOpen": 1
+    }
+  },
+  {
+    "name": "Isolated liquidation can debit unrelated wallet beyond margin",
+    "status": "PASS",
+    "evidence": {
+      "walletAfterGapLiquidation": 50.449999999999996,
+      "isolatedMargin": 10
+    }
+  },
+  {
+    "name": "EMA mark retains a position already through its raw-price stop",
+    "status": "PASS",
+    "evidence": {
+      "rawPrice": 90,
+      "emaMark": 97.5,
+      "stop": 96,
+      "stillOpen": true
+    }
+  },
+  {
+    "name": "Episode reset discards halt and injects fresh capital after blowup",
+    "status": "PASS",
+    "evidence": {
+      "walletAfterReset": 100,
+      "riskState": "normal",
+      "autoResetSetting": false
+    }
+  },
+  {
+    "name": "Broken empty maintenance tier used by engine_ws throws",
+    "status": "PASS",
+    "evidence": "TypeError reproduced without starting WebSocket engine"
+  },
+  {
+    "name": "Exposure is not bounded by configured maxPositionPct",
+    "status": "PASS",
+    "evidence": {
+      "marginPct": 0.9,
+      "configuredMax": 0.3
+    }
+  },
+  {
+    "name": "Zero/invalid price is not rejected by execution builder",
+    "status": "PASS",
+    "evidence": {
+      "quantityFinite": false
+    }
+  },
+  {
+    "name": "R28 uses 29 daily intervals",
+    "status": "PASS",
+    "evidence": {
+      "actual28IntervalReturn": 0,
+      "sourceSignal": "long"
+    }
+  },
+  {
+    "name": "Flat RSI returns 100 rather than neutral",
+    "status": "PASS",
+    "evidence": {
+      "rsi": 100
+    }
+  },
+  {
+    "name": "API serializes full config without redaction/authentication",
+    "status": "PASS",
+    "evidence": "Static data-flow check: config.json -> v2.config -> public GET"
+  },
+  {
+    "name": "Telegram manual kill overwritten by drawdown assignment",
+    "status": "PASS",
+    "evidence": {
+      "before": "halt",
+      "after": "normal"
+    }
+  },
+  {
+    "name": "Replay metrics include marked drawdown and all completed trades",
+    "status": "PASS",
+    "evidence": {
+      "maxDrawdown": 0.2727272727272727,
+      "profitFactor": 2
+    }
+  }
+]

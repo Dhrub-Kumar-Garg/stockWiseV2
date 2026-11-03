@@ -1,0 +1,378 @@
+[
+  {
+    "path": ".gitignore",
+    "bytes": 91,
+    "sha256": "f6fafdc60d41222e30217939f1c1290ed0271a54c815467b6c653a8c3ab7c4a4",
+    "git_blob_sha256": "98e5bc74c2248d41e0328142e32135f292f14b74a94937ff900a36e03c5d7ad7",
+    "lines": 7,
+    "review": "read in full, line by line"
+  },
+  {
+    "path": "README.md",
+    "bytes": 8355,
+    "sha256": "4a077ccc94a36b6f10409b4a20f76817886c744fe00705109cad53c5a1893ae6",
+    "git_blob_sha256": "58fd3ad15432f65b8f8716dae987a51a9609e4483dd451000cdf7c6697b7e4f9",
+    "lines": 168,
+    "review": "read in full, line by line"
+  },
+  {
+    "path": "config.example.json",
+    "bytes": 3924,
+    "sha256": "182e3ef77383589cb5d400518f5a874f1eca09133849074e6164ce832ce1267b",
+    "git_blob_sha256": "96c0369f144e0a2280164698392563a8032cc565023e4b6b65530e8f455bc522",
+    "lines": 95,
+    "review": "read in full, line by line"
+  },
+  {
+    "path": "data/.gitkeep",
+    "bytes": 3,
+    "sha256": "6bdf66b5bf2a44e658bea2ee86695ab150a06e600bf67cd5cce245ad54962c61",
+    "git_blob_sha256": "e16f1596201850fd4a63680b27f603cb64e67176159be3d8ed78a4403fdb1700",
+    "lines": 1,
+    "review": "read in full, line by line"
+  },
+  {
+    "path": "data/strategies.json",
+    "bytes": 6631,
+    "sha256": "c2c56407b19e7dca835d936ef0057832b14f93687690b870225df04b5c849c2f",
+    "git_blob_sha256": "3abf8643281840680094ac1063b2ee6ff69c1de6593fc39c18709cf0504230cd",
+    "lines": 291,
+    "review": "read in full, line by line"
+  },
+  {
+    "path": "deploy/README.md",
+    "bytes": 3469,
+    "sha256": "1fcfe3e3ad3fd8b54f6e0580b89053416e2be499658b686d0526244c16ff1712",
+    "git_blob_sha256": "f53b234a4a14881e5061b37278e903b68dbfd7de7b15080a5732462288c47e0c",
+    "lines": 100,
+    "review": "read in full, line by line"
+  },
+  {
+    "path": "deploy/setup.sh",
+    "bytes": 3165,
+    "sha256": "47d16a85a096ee3d9a1ef89b505ded92d80f2543d5662061608d0e3f386b047b",
+    "git_blob_sha256": "5ad6c70149eb8c18718725c378ecab4de64088722155c19e49a51199cc155517",
+    "lines": 117,
+    "review": "read in full, line by line"
+  },
+  {
+    "path": "package-lock.json",
+    "bytes": 885,
+    "sha256": "9dad11d806b00d8e92be7002db2a0a4d36e89aaa3448c97cd586b173ad736b28",
+    "git_blob_sha256": "beda73138e102e589b1acbb228bd2bf8f8e6afaa5d44c3bb6aebf7aa2a6912de",
+    "lines": null,
+    "review": "skipped: lockfile (authorized)"
+  },
+  {
+    "path": "package.json",
+    "bytes": 298,
+    "sha256": "326bc0eee9ff14dd4b0d419117383272400f0353f369cbd1e285f0e9a7e84ca1",
+    "git_blob_sha256": "27ab215a37c9a0eb669d222c9711eb90dd1d03233860681b0839fba277b422c2",
+    "lines": 14,
+    "review": "read in full, line by line"
+  },
+  {
+    "path": "scripts/.gitkeep",
+    "bytes": 3,
+    "sha256": "6bdf66b5bf2a44e658bea2ee86695ab150a06e600bf67cd5cce245ad54962c61",
+    "git_blob_sha256": "e16f1596201850fd4a63680b27f603cb64e67176159be3d8ed78a4403fdb1700",
+    "lines": 1,
+    "review": "read in full, line by line"
+  },
+  {
+    "path": "scripts/daemon.mjs",
+    "bytes": 19662,
+    "sha256": "5d18a9df8d0f5e6fa6b95f8bad83d1c2072687fa2520aeec6482bc50b30daa78",
+    "git_blob_sha256": "e12e8f97e884d7bd282c07a698b7c65b8c9c0a37dfb52e72985f13250a99406c",
+    "lines": 510,
+    "review": "read in full, line by line"
+  },
+  {
+    "path": "scripts/fix_loop.mjs",
+    "bytes": 4446,
+    "sha256": "2667bc30597a9002de329cb11d82546f2b1f6c897b84810015b4d2f2009ef1eb",
+    "git_blob_sha256": "8761f3439eaa756e256ff2d4bb2d8c29c76c6f4ec7af8043524ccc7cba11dcf6",
+    "lines": 126,
+    "review": "read in full, line by line"
+  },
+  {
+    "path": "scripts/init.mjs",
+    "bytes": 2060,
+    "sha256": "7e7f3a1d86fe75bfa5c4e02fc1857e02e42475f75268b43d2c47e296edcc87a9",
+    "git_blob_sha256": "af00ff067c921c5d97c80b5648bdaef1a13d8a88275acf75866aec84f6d67154",
+    "lines": 47,
+    "review": "read in full, line by line"
+  },
+  {
+    "path": "scripts/lib.mjs",
+    "bytes": 14684,
+    "sha256": "ddbdc2d3c3d286e798a572a98fb42ed476cd5a6d76a59711e85c67e7124cb53a",
+    "git_blob_sha256": "79c431e4e831dffb42abb4458ad6ccca91f11b5f536cc5c4dcfb4b9db45c501d",
+    "lines": 440,
+    "review": "read in full, line by line"
+  },
+  {
+    "path": "scripts/v2/.gitkeep",
+    "bytes": 3,
+    "sha256": "6bdf66b5bf2a44e658bea2ee86695ab150a06e600bf67cd5cce245ad54962c61",
+    "git_blob_sha256": "e16f1596201850fd4a63680b27f603cb64e67176159be3d8ed78a4403fdb1700",
+    "lines": 1,
+    "review": "read in full, line by line"
+  },
+  {
+    "path": "scripts/v2/analyst.mjs",
+    "bytes": 7781,
+    "sha256": "1009abd78b7c4a34f326a4fb570fda685c0c0f6097ad43ac98a0a4b2e8df3050",
+    "git_blob_sha256": "ec9bda8cc14042501a82dfb96283eb8966a48ad0b44dcd5de8f2cd538bfbb008",
+    "lines": 216,
+    "review": "read in full, line by line"
+  },
+  {
+    "path": "scripts/v2/backtest.mjs",
+    "bytes": 4157,
+    "sha256": "64130ebeb7d75965c8fce91ec7664edade9207d0571d276cbb1502d0440bfa6d",
+    "git_blob_sha256": "695397e7836140de0cefb09c97ff7f4364e25f07277d7e38c6972fad981640c3",
+    "lines": 132,
+    "review": "read in full, line by line"
+  },
+  {
+    "path": "scripts/v2/brain.mjs",
+    "bytes": 20063,
+    "sha256": "d701e365b53882709538edc5570ef4e6cc5cbfaac8602fb9a8891672f7ec6199",
+    "git_blob_sha256": "07f4f882e12f7ff688b6d6379a5fdaeaee7f9adff257c00e7cc7d7edd1d2d90a",
+    "lines": 603,
+    "review": "read in full, line by line"
+  },
+  {
+    "path": "scripts/v2/engine.mjs",
+    "bytes": 31710,
+    "sha256": "8bc77b99d1d3979041281c0427f9990a5efafbe17b93b0347b00de78f35e08bd",
+    "git_blob_sha256": "66eefdaccbf932e25dd938144d77a9add86c17a42c0734765a20851399935f5e",
+    "lines": 757,
+    "review": "read in full, line by line"
+  },
+  {
+    "path": "scripts/v2/engine_ws.mjs",
+    "bytes": 3525,
+    "sha256": "8e38c7fc763b870f57478da6977a501c2abde16d8afc5d85eb2180186e94433f",
+    "git_blob_sha256": "c00e83061d467975ff3359910d09a0bd61b8727c2c967cb2b09dbe2b104f644d",
+    "lines": 83,
+    "review": "read in full, line by line"
+  },
+  {
+    "path": "scripts/v2/episode.mjs",
+    "bytes": 6908,
+    "sha256": "6cd058810aa03f01b1d4f43c8eebff8d15f9b93e6bc7582352f03ae365daf710",
+    "git_blob_sha256": "b24dd70f01394aaa89209758ce54483ddc74e38f33b7404f7303fed6c756ed3a",
+    "lines": 225,
+    "review": "read in full, line by line"
+  },
+  {
+    "path": "scripts/v2/fetch_hist.mjs",
+    "bytes": 2025,
+    "sha256": "6acc7644545b937d3aabe1bd1dd233e3655549fb5ed6ff5a40fa3115aa366b03",
+    "git_blob_sha256": "b355e24b68132b2b3ad4cae0647f68690ee0f7187aa173777824ce335dde0a19",
+    "lines": 65,
+    "review": "read in full, line by line"
+  },
+  {
+    "path": "scripts/v2/init.mjs",
+    "bytes": 2303,
+    "sha256": "d75dd8b6b4dbfb7ee15df3b4d43f820fbefc19232dc76a230875c41bb61ab6b2",
+    "git_blob_sha256": "8a5f6357ef604ecdcf1a16114658737702e69d0e4bf4f33f15d6d37cd4fda25a",
+    "lines": 46,
+    "review": "read in full, line by line"
+  },
+  {
+    "path": "scripts/v2/perp.mjs",
+    "bytes": 4460,
+    "sha256": "b44def1139078e6dd60fce7cd0de3bf12cbe09cd7f46062f664700d65520cf23",
+    "git_blob_sha256": "cb106b1ed4346e3610371685972908947b10cfe5daf61e949101da7a51635d27",
+    "lines": 123,
+    "review": "read in full, line by line"
+  },
+  {
+    "path": "scripts/v2/sizing.mjs",
+    "bytes": 2594,
+    "sha256": "d8229d36e786e569e1f1bb447d188ee2b0acac26587270b73e5178a7625506a2",
+    "git_blob_sha256": "4af148ff920f0d26652104ae58255b3ca56057431a4798098cc0ace713099709",
+    "lines": 60,
+    "review": "read in full, line by line"
+  },
+  {
+    "path": "scripts/v2/store.mjs",
+    "bytes": 1550,
+    "sha256": "2bb9471b27945a888db851342a0fd368ef7feeb1c4224ecf1fe7838eb74a393a",
+    "git_blob_sha256": "c5e8de074973a5e4bf453d6ea66ac74735c8b5e76ae8c70fe45bbe584f7d8121",
+    "lines": 40,
+    "review": "read in full, line by line"
+  },
+  {
+    "path": "scripts/v2/strategies.mjs",
+    "bytes": 42297,
+    "sha256": "2025083efde56aeb2a099dbcfb7154803bebe7849797f2cc6f149da05af14091",
+    "git_blob_sha256": "7d9050944466c63073ace6574e7729600534e19734fe62f1314bdf0104169a24",
+    "lines": 1027,
+    "review": "read in full, line by line"
+  },
+  {
+    "path": "scripts/v2/telegram.mjs",
+    "bytes": 9278,
+    "sha256": "786b2f5f7b231959bb0c6787cf43b6deecc62bdcdfda899954f700548251f4ae",
+    "git_blob_sha256": "0f088cd4848fb4bbf69b2d15ff5e9605bbdc5e8d663a77618d102de687f1df64",
+    "lines": 238,
+    "review": "read in full, line by line"
+  },
+  {
+    "path": "scripts/v2/world.mjs",
+    "bytes": 12434,
+    "sha256": "21889a8c0498c7599f665f3385b18ee95b54408d017b4e016102f4b8507109b6",
+    "git_blob_sha256": "ea29b67e5d4dd568f3c5057cfa0107bd79cdf05c26974c94587c184f7cc39943",
+    "lines": 359,
+    "review": "read in full, line by line"
+  },
+  {
+    "path": "scripts/v2/ws_feed.mjs",
+    "bytes": 1755,
+    "sha256": "1c535fe57bc9de079f9b94e1f80bad1c46f81491b7c8a36bc2fd62289be93068",
+    "git_blob_sha256": "7f9ab2c108ea02c27306a66ac770e0df38f479b00a105b3630fd65c33b188f03",
+    "lines": 60,
+    "review": "read in full, line by line"
+  },
+  {
+    "path": "scripts/world/.gitkeep",
+    "bytes": 3,
+    "sha256": "6bdf66b5bf2a44e658bea2ee86695ab150a06e600bf67cd5cce245ad54962c61",
+    "git_blob_sha256": "e16f1596201850fd4a63680b27f603cb64e67176159be3d8ed78a4403fdb1700",
+    "lines": 1,
+    "review": "read in full, line by line"
+  },
+  {
+    "path": "scripts/world/score.mjs",
+    "bytes": 6426,
+    "sha256": "a4afe39595bef3004ec06773d9df458d8bcdcc5339e167a491ac2b4ac1855bb2",
+    "git_blob_sha256": "8b50b16ddac5c686331b944f9dbe1b7cb59ff812f7757329207581e2ac1ea7d8",
+    "lines": 172,
+    "review": "read in full, line by line"
+  },
+  {
+    "path": "web/app/api/state/route.ts",
+    "bytes": 3480,
+    "sha256": "e5343a1c9ee9757e083ffad065e17cc45ba50f3cd3aa9f06fbcea3891c896f33",
+    "git_blob_sha256": "d81394cf270cc45ad33a42188c0826d29fd3151f9d30de529c65e39cf5f534b4",
+    "lines": 97,
+    "review": "read in full, line by line"
+  },
+  {
+    "path": "web/app/components/DashboardV2.tsx",
+    "bytes": 55978,
+    "sha256": "e5ddfc532ce09693b2e01b3a947a5b35c3c343011eca4c6e6f86ccea509f2798",
+    "git_blob_sha256": "3fd5e5f9762b8531a43a2fbb282f932938d868ff8619ac84a2e8464cf74a4f55",
+    "lines": 1117,
+    "review": "read in full, line by line"
+  },
+  {
+    "path": "web/app/components/Root.tsx",
+    "bytes": 2321,
+    "sha256": "2399c8949607d3417b4dba83062cbcec98c8784aae9433b22a863daab6a752ff",
+    "git_blob_sha256": "97d1e82507c6b5768bb62e067111ac50b2c3d7f2691242c57916bcfc610d6bdc",
+    "lines": 72,
+    "review": "read in full, line by line"
+  },
+  {
+    "path": "web/app/components/visuals.tsx",
+    "bytes": 5151,
+    "sha256": "8868c42f31f59a6f11a0c2ce1cb3a34511e9de1ab5efaa6e77c1dab4e95710f4",
+    "git_blob_sha256": "2ae1b350cd9596e5f9c8b47b87479dee131cb5c91bc762524422c0faa63b4720",
+    "lines": 186,
+    "review": "read in full, line by line"
+  },
+  {
+    "path": "web/app/globals.css",
+    "bytes": 4174,
+    "sha256": "a324d30ac596da9b20a4a24f894f48198a8f4fdad49339bf1e0d9bee260c6b13",
+    "git_blob_sha256": "a7578c68e86b7db2c2f2149c92aeedd13d19f72c475aeec3f16fa98b892cd0e4",
+    "lines": 90,
+    "review": "read in full, line by line"
+  },
+  {
+    "path": "web/app/layout.tsx",
+    "bytes": 1313,
+    "sha256": "48196a345635d5d6a6e86f30707e921e9e32d9ed05bf825a664b86ee2c648566",
+    "git_blob_sha256": "0f285a3863406500458196543d2aebc303f27af1d158e17cfd3ff3e7f896be7e",
+    "lines": 39,
+    "review": "read in full, line by line"
+  },
+  {
+    "path": "web/app/lib/format.ts",
+    "bytes": 1906,
+    "sha256": "7ba3ac2ae00cc0c605932cac4502ecfcf897f3987faa029afed8241b070da9b6",
+    "git_blob_sha256": "7f164df1151cc87b39b8606d93fff94e1c01a6ce068c3757c34734fed2c48024",
+    "lines": 55,
+    "review": "read in full, line by line"
+  },
+  {
+    "path": "web/app/page.tsx",
+    "bytes": 98,
+    "sha256": "015b9f92898f0a6bd8d9e935bfa288e2eab801dd658fc695d7c690cc09c05b45",
+    "git_blob_sha256": "45270d02a2d4e386b00f8d141b6cfd5b3df9217fa9651be251830cf98ad2187d",
+    "lines": 5,
+    "review": "read in full, line by line"
+  },
+  {
+    "path": "web/next-env.d.ts",
+    "bytes": 257,
+    "sha256": "083e23c4c5e7761db151134ea1ef7896120c86c5888cdc8a861f534f7e86d6fd",
+    "git_blob_sha256": "7ad303e40d4fddf44f156129e397511953a71481c5cfd86b1862649aaaf240cc",
+    "lines": 6,
+    "review": "read in full, line by line"
+  },
+  {
+    "path": "web/next.config.ts",
+    "bytes": 109,
+    "sha256": "2530fde99f735a7a52404eb7632bb471925c2e16930a88140faf8ebdb5f6832f",
+    "git_blob_sha256": "ab4c61f6ee100ae43610a18512f1ebcec842bb2405431e1009266173f21cf772",
+    "lines": 5,
+    "review": "read in full, line by line"
+  },
+  {
+    "path": "web/package-lock.json",
+    "bytes": 75000,
+    "sha256": "64b73db521f68f54e7d46392f3d1ea3ab3d1de712ad46d7fa2256a0f1289089d",
+    "git_blob_sha256": "7e35190315add7533512a663fe29e29a4a0949d870f255519aa673db5e39d1f0",
+    "lines": null,
+    "review": "skipped: lockfile (authorized)"
+  },
+  {
+    "path": "web/package.json",
+    "bytes": 541,
+    "sha256": "ad803534abd1dad49b5f08c942af7b4d39d50e657b7257eae67f6fc2205b525a",
+    "git_blob_sha256": "5c37275dcc7a7469fa6057b9b481f89656f517c31f93a3206d17945ecde33e97",
+    "lines": 25,
+    "review": "read in full, line by line"
+  },
+  {
+    "path": "web/postcss.config.mjs",
+    "bytes": 154,
+    "sha256": "7dba083b29a31ffbf9c63e14ae22e93831dcc936c73d78f7a2a5a144066abe5c",
+    "git_blob_sha256": "ab4805b77935e8d8a2036e5de3d3a15d6e21229e8e3a1a4aea10b09327709460",
+    "lines": 8,
+    "review": "read in full, line by line"
+  },
+  {
+    "path": "web/public/avatar.png",
+    "bytes": 175435,
+    "sha256": "14cced132da414119cfacc3791115ca119f9a248ac614ba72a82d17592effad0",
+    "git_blob_sha256": "14cced132da414119cfacc3791115ca119f9a248ac614ba72a82d17592effad0",
+    "lines": null,
+    "review": "binary asset visually inspected and hashed"
+  },
+  {
+    "path": "web/tsconfig.json",
+    "bytes": 739,
+    "sha256": "b9d7320c333d0d789016253ddfab11d3ca6070c567f3410957964b3ea03ccb0d",
+    "git_blob_sha256": "86c57aa7eec3e819fc7f5f7075219d9383d4ce824b751816636e581170b7cc97",
+    "lines": 41,
+    "review": "read in full, line by line"
+  }
+]

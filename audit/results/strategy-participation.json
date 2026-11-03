@@ -1,0 +1,75 @@
+{
+  "TREND": {
+    "scope": "original conditional 2025-H2 baseline, not production",
+    "total": 1424,
+    "sides": {
+      "short": 75,
+      "long": 1349
+    },
+    "primaryStrategy": {
+      "tsmom": {
+        "short": 41,
+        "long": 1104
+      },
+      "donchian": {
+        "long": 128
+      },
+      "mom_trend": {},
+      "orb": {},
+      "ibreakout": {},
+      "atr_expand": {
+        "long": 34,
+        "short": 14
+      },
+      "vol_expand": {
+        "long": 16
+      },
+      "rsi2dip": {},
+      "vwap_revert": {},
+      "orderflow": {},
+      "pairs_trade": {
+        "long": 54
+      },
+      "adaptive_regime": {
+        "short": 20,
+        "long": 13
+      },
+      "oi_diverge": {}
+    }
+  },
+  "REVERT": {
+    "scope": "original conditional 2025-H2 baseline, not production",
+    "total": 1651,
+    "sides": {
+      "short": 303,
+      "long": 1348
+    },
+    "primaryStrategy": {
+      "tsmom": {},
+      "donchian": {},
+      "mom_trend": {},
+      "orb": {},
+      "ibreakout": {},
+      "atr_expand": {},
+      "vol_expand": {},
+      "rsi2dip": {
+        "short": 216,
+        "long": 1260
+      },
+      "vwap_revert": {
+        "long": 2,
+        "short": 3
+      },
+      "orderflow": {},
+      "pairs_trade": {
+        "long": 70,
+        "short": 79
+      },
+      "adaptive_regime": {
+        "long": 16,
+        "short": 5
+      },
+      "oi_diverge": {}
+    }
+  }
+}

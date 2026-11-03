@@ -1,0 +1,26 @@
+[
+  {
+    "name": "Follow-up source content hashes match (LF/CRLF checkout differences allowed)",
+    "status": "PASS"
+  },
+  {
+    "name": "Additional data hashes/counts and strictly pre-October endpoint match manifest",
+    "status": "PASS"
+  },
+  {
+    "name": "Three chronological test folds are nonoverlapping with explicit January warmup",
+    "status": "PASS"
+  },
+  {
+    "name": "Every saved follow-up trade count/expectancy/cash ledger reconciles by independent fold",
+    "status": "PASS"
+  },
+  {
+    "name": "All-pool controls give identical TREND/REVERT outcomes as expected",
+    "status": "PASS"
+  },
+  {
+    "name": "No follow-up profit candidate passes its complete screen",
+    "status": "PASS"
+  }
+]

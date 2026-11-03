@@ -1,0 +1,50 @@
+[
+  {
+    "name": "Changing every future price leaves current signal features identical",
+    "status": "PASS"
+  },
+  {
+    "name": "Signal on first close fills at next opening price, including a gap",
+    "status": "PASS"
+  },
+  {
+    "name": "Both stop and target touched: adverse stop wins",
+    "status": "PASS"
+  },
+  {
+    "name": "Gap through a stop fills at adverse open rather than stop price",
+    "status": "PASS"
+  },
+  {
+    "name": "Final trade is counted and net P&L reconciles to terminal cash",
+    "status": "PASS"
+  },
+  {
+    "name": "Source adapters block external data APIs",
+    "status": "PASS"
+  },
+  {
+    "name": "backtest.json: source SHA256 content matches (LF/CRLF checkout differences allowed)",
+    "status": "PASS"
+  },
+  {
+    "name": "backtest.json: training/test dates do not overlap and final holdout starts later",
+    "status": "PASS"
+  },
+  {
+    "name": "backtest.json: every holdout trade ledger reconciles to reported metrics",
+    "status": "PASS"
+  },
+  {
+    "name": "stress.json: source SHA256 content matches (LF/CRLF checkout differences allowed)",
+    "status": "PASS"
+  },
+  {
+    "name": "stress.json: training/test dates do not overlap and final holdout starts later",
+    "status": "PASS"
+  },
+  {
+    "name": "stress.json: every holdout trade ledger reconciles to reported metrics",
+    "status": "PASS"
+  }
+]

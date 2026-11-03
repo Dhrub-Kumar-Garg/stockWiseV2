@@ -1,0 +1,38 @@
+{
+  "scope": "Public feeds observed from audit machine only, not production server; no headline bodies retained",
+  "results": [
+    {
+      "url": "https://cointelegraph.com/rss",
+      "observedAt": "2026-11-03T10:35:16.151Z",
+      "status": 200,
+      "contentType": "application/xml; charset=utf-8",
+      "elapsedMs": 139,
+      "bytes": 52226,
+      "itemBlocks": 30,
+      "parsedTitles": 30,
+      "newestPublicationUTC": "2026-11-03T10:04:05.000Z"
+    },
+    {
+      "url": "https://decrypt.co/feed",
+      "observedAt": "2026-11-03T10:35:16.151Z",
+      "status": 200,
+      "contentType": "application/xml",
+      "elapsedMs": 84,
+      "bytes": 44159,
+      "itemBlocks": 39,
+      "parsedTitles": 39,
+      "newestPublicationUTC": "2026-11-03T10:18:48.000Z"
+    },
+    {
+      "url": "https://www.federalreserve.gov/feeds/press_all.xml",
+      "observedAt": "2026-11-03T10:35:16.151Z",
+      "status": 200,
+      "contentType": "text/xml",
+      "elapsedMs": 384,
+      "bytes": 14504,
+      "itemBlocks": 20,
+      "parsedTitles": 20,
+      "newestPublicationUTC": null
+    }
+  ]
+}

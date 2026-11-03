@@ -1,0 +1,3002 @@
+{
+  "kind": "CONDITIONAL RESEARCH, NOT DEPLOYED BOT PERFORMANCE",
+  "stress": false,
+  "sourceCommit": "50360996451ddc7ad742372bff398b7938ae0029",
+  "manifest": {
+    "downloaded_at_utc": "2026-11-03T10:03:47.820712+00:00",
+    "source": "Binance public spot archives; USDT treated as USD proxy",
+    "schema": [
+      "open_time_ms",
+      "open",
+      "high",
+      "low",
+      "close",
+      "volume_base"
+    ],
+    "files": [
+      {
+        "file": "BTC_1d.json",
+        "sha256": "eab39ed355f09dc53608b39903aa4d1ae8f3b24ae9d8fc52f99cc04796d65695",
+        "rows": 365,
+        "first": 1672531200000,
+        "last": 1703980800000,
+        "gaps": []
+      },
+      {
+        "file": "BTC_15m.json",
+        "sha256": "88cf90520cfe18602a008fb2a7067b396f73bb48f24cebf5742cf191b6153b8f",
+        "rows": 70176,
+        "first": 1704067200000,
+        "last": 1767224700000,
+        "gaps": []
+      },
+      {
+        "file": "ETH_1d.json",
+        "sha256": "de1396d429461249cf55bb65c2bb0e3fda25d3f3a21ea53f4ac4449b4753d1d4",
+        "rows": 365,
+        "first": 1672531200000,
+        "last": 1703980800000,
+        "gaps": []
+      },
+      {
+        "file": "ETH_15m.json",
+        "sha256": "815d9df0d2ee05d3f5e15b7d9a69fec14a50887ed3d58079ef34eb23b29b50a8",
+        "rows": 70176,
+        "first": 1704067200000,
+        "last": 1767224700000,
+        "gaps": []
+      },
+      {
+        "file": "SOL_1d.json",
+        "sha256": "411e3ff4bcc9d1691c2bb34d9e2b01fb998df7a3ca03c74d1caeac59f1676d7c",
+        "rows": 365,
+        "first": 1672531200000,
+        "last": 1703980800000,
+        "gaps": []
+      },
+      {
+        "file": "SOL_15m.json",
+        "sha256": "7695cdf554b4e57629213df569b433928d8da9534e9e2696e57559bf4cfb46d1",
+        "rows": 70176,
+        "first": 1704067200000,
+        "last": 1767224700000,
+        "gaps": []
+      },
+      {
+        "file": "XRP_1d.json",
+        "sha256": "35533d8f54b8776b1a97cbfe6999afc98981af7b98ea7c860f848d67cedc2b62",
+        "rows": 365,
+        "first": 1672531200000,
+        "last": 1703980800000,
+        "gaps": []
+      },
+      {
+        "file": "XRP_15m.json",
+        "sha256": "21f9d7d59623a765802019025ac31835b37ffea49b4997629b3abe4788651201",
+        "rows": 70176,
+        "first": 1704067200000,
+        "last": 1767224700000,
+        "gaps": []
+      },
+      {
+        "file": "DOGE_1d.json",
+        "sha256": "6ff024847bc1374591ad0e4e18af4350314d280b08bcdda8b5e9a830e505c106",
+        "rows": 365,
+        "first": 1672531200000,
+        "last": 1703980800000,
+        "gaps": []
+      },
+      {
+        "file": "DOGE_15m.json",
+        "sha256": "51f035fbd3b818c8652b1189a1be0082ad4225f99a8d35ad4099ea1cabc618c0",
+        "rows": 70176,
+        "first": 1704067200000,
+        "last": 1767224700000,
+        "gaps": []
+      }
+    ],
+    "archives": [
+      {
+        "url": "https://data.binance.vision/data/spot/monthly/klines/BTCUSDT/15m/BTCUSDT-15m-2024-01.zip",
+        "sha256": "20c617e34b350f61d4bba493154ddec76b9f2ecd449a94410a60ba75efd488ce",
+        "rows": 2976
+      },
+      {
+        "url": "https://data.binance.vision/data/spot/monthly/klines/BTCUSDT/15m/BTCUSDT-15m-2024-02.zip",
+        "sha256": "55066890cd3a76c97c05e94213311b17a4146d697f6abe8762b3edae8495b20e",
+        "rows": 2784
+      },
+      {
+        "url": "https://data.binance.vision/data/spot/monthly/klines/BTCUSDT/15m/BTCUSDT-15m-2024-03.zip",
+        "sha256": "d42824b930c63b31c0217e39d9ef22671a79b695330a63dda68df8ef04dc81c1",
+        "rows": 2976
+      },
+      {
+        "url": "https://data.binance.vision/data/spot/monthly/klines/BTCUSDT/15m/BTCUSDT-15m-2024-04.zip",
+        "sha256": "c9d04ed29b5103131db2f9b7c7dfe1d42f10cc889a01e9cbf0dd23b00f701cab",
+        "rows": 2880
+      },
+      {
+        "url": "https://data.binance.vision/data/spot/monthly/klines/BTCUSDT/15m/BTCUSDT-15m-2024-05.zip",
+        "sha256": "b093a42ba168fbdb34365067a3e0fa714a8856840a9abd12188378b6e54eddb2",
+        "rows": 2976
+      },
+      {
+        "url": "https://data.binance.vision/data/spot/monthly/klines/BTCUSDT/15m/BTCUSDT-15m-2024-06.zip",
+        "sha256": "41e0e7ecf5087b343daa183d2cf9a0f5e33e1f279a1d529e39845223999be0f1",
+        "rows": 2880
+      },
+      {
+        "url": "https://data.binance.vision/data/spot/monthly/klines/BTCUSDT/15m/BTCUSDT-15m-2024-07.zip",
+        "sha256": "cd60b795c1cf5b33e6899b474152a89e0f07953a6dabb9514a3269274ad390d4",
+        "rows": 2976
+      },
+      {
+        "url": "https://data.binance.vision/data/spot/monthly/klines/BTCUSDT/15m/BTCUSDT-15m-2024-08.zip",
+        "sha256": "44e084e916a4c661b2177741d71438916388c0d34554f63cb147973aac13b094",
+        "rows": 2976
+      },
+      {
+        "url": "https://data.binance.vision/data/spot/monthly/klines/BTCUSDT/15m/BTCUSDT-15m-2024-09.zip",
+        "sha256": "2135a835c5b7be91f6015d182b393b115a40aea8a83193a096f23d2c8447b9c0",
+        "rows": 2880
+      },
+      {
+        "url": "https://data.binance.vision/data/spot/monthly/klines/BTCUSDT/15m/BTCUSDT-15m-2024-10.zip",
+        "sha256": "2e5b200be53e7196f1c73b06f3fb33caee04d2efd191b08d45049dd2a287d326",
+        "rows": 2976
+      },
+      {
+        "url": "https://data.binance.vision/data/spot/monthly/klines/BTCUSDT/15m/BTCUSDT-15m-2024-11.zip",
+        "sha256": "4589ca348cb6547a59dab9cafd3ca474631f3817bfe13e692607f1074cbe2818",
+        "rows": 2880
+      },
+      {
+        "url": "https://data.binance.vision/data/spot/monthly/klines/BTCUSDT/15m/BTCUSDT-15m-2024-12.zip",
+        "sha256": "f7df52b68d68c03936b886f6fa056027959e307310d27c05175fd74382e5ec9d",
+        "rows": 2976
+      },
+      {
+        "url": "https://data.binance.vision/data/spot/monthly/klines/BTCUSDT/15m/BTCUSDT-15m-2025-01.zip",
+        "sha256": "e2070d7dfd1ad7ade38589fdaa44366f9bd686fa750259a56b39111f7f49ae73",
+        "rows": 2976
+      },
+      {
+        "url": "https://data.binance.vision/data/spot/monthly/klines/BTCUSDT/15m/BTCUSDT-15m-2025-02.zip",
+        "sha256": "75b92f4005f40dc8f9bb6ac2f48edef0e1fbd3d9603709b25355d11a76bde949",
+        "rows": 2688
+      },
+      {
+        "url": "https://data.binance.vision/data/spot/monthly/klines/BTCUSDT/15m/BTCUSDT-15m-2025-03.zip",
+        "sha256": "ae17d51ad99cc5b7498d9fdb591af40601d001af2f08a0e08c0ac1a514d11445",
+        "rows": 2976
+      },
+      {
+        "url": "https://data.binance.vision/data/spot/monthly/klines/BTCUSDT/15m/BTCUSDT-15m-2025-04.zip",
+        "sha256": "4c5e24448a99a67756d6c692239a97b9ca7607088f0822ac2a38064afe31cd8e",
+        "rows": 2880
+      },
+      {
+        "url": "https://data.binance.vision/data/spot/monthly/klines/BTCUSDT/15m/BTCUSDT-15m-2025-05.zip",
+        "sha256": "3f281b71006c4675852627577e243106492976f1ed8bf63cb477d6c2c587b73c",
+        "rows": 2976
+      },
+      {
+        "url": "https://data.binance.vision/data/spot/monthly/klines/BTCUSDT/15m/BTCUSDT-15m-2025-06.zip",
+        "sha256": "38e4a053cd454454fbd59071a7d83e1c2300cbf33244b2c7b1c8e43b0001e70c",
+        "rows": 2880
+      },
+      {
+        "url": "https://data.binance.vision/data/spot/monthly/klines/BTCUSDT/15m/BTCUSDT-15m-2025-07.zip",
+        "sha256": "fde0f69099200a5c7a9e2df29c4a30192887dee417cc27b75b78ac156b82ce7e",
+        "rows": 2976
+      },
+      {
+        "url": "https://data.binance.vision/data/spot/monthly/klines/BTCUSDT/15m/BTCUSDT-15m-2025-08.zip",
+        "sha256": "be96bc6cc5a7ee230e6991641d997784c9c5fa8a416ef63d09cc39c722debb02",
+        "rows": 2976
+      },
+      {
+        "url": "https://data.binance.vision/data/spot/monthly/klines/BTCUSDT/15m/BTCUSDT-15m-2025-09.zip",
+        "sha256": "b8c6bddf326809830bc5e21043222850699890ea0947d13d1fb98e13339191ca",
+        "rows": 2880
+      },
+      {
+        "url": "https://data.binance.vision/data/spot/monthly/klines/BTCUSDT/15m/BTCUSDT-15m-2025-10.zip",
+        "sha256": "e70fe6171cc61d01a915c7c7c22f325723c1d7d5216223472ed487f72d693524",
+        "rows": 2976
+      },
+      {
+        "url": "https://data.binance.vision/data/spot/monthly/klines/BTCUSDT/15m/BTCUSDT-15m-2025-11.zip",
+        "sha256": "23040caa8960c13e0a4875504bb6042396b9fee5eef2ea08e12c5249f51d61df",
+        "rows": 2880
+      },
+      {
+        "url": "https://data.binance.vision/data/spot/monthly/klines/BTCUSDT/15m/BTCUSDT-15m-2025-12.zip",
+        "sha256": "a263be5b80c459621d1cd20018951289c64e08891b8425a1dd78c0ee1f490cea",
+        "rows": 2976
+      },
+      {
+        "url": "https://data.binance.vision/data/spot/monthly/klines/BTCUSDT/1d/BTCUSDT-1d-2023-01.zip",
+        "sha256": "a9fd53b75add7cc42fb4779a545811606260f79810f3826215d6ebecda11bb36",
+        "rows": 31
+      },
+      {
+        "url": "https://data.binance.vision/data/spot/monthly/klines/BTCUSDT/1d/BTCUSDT-1d-2023-02.zip",
+        "sha256": "13df1e3633f15be3eeba4768d0cc323ef221191002657b53936a6d0fb5e6556f",
+        "rows": 28
+      },
+      {
+        "url": "https://data.binance.vision/data/spot/monthly/klines/BTCUSDT/1d/BTCUSDT-1d-2023-03.zip",
+        "sha256": "1cb1209700ec74fa4592048de2e4ea4a38ab2bd622dfe03f1d6195c249501381",
+        "rows": 31
+      },
+      {
+        "url": "https://data.binance.vision/data/spot/monthly/klines/BTCUSDT/1d/BTCUSDT-1d-2023-04.zip",
+        "sha256": "999e86be73731ebc347c6ada94abceb5e291b65e7f1b4df2ce390af1aa2a4a08",
+        "rows": 30
+      },
+      {
+        "url": "https://data.binance.vision/data/spot/monthly/klines/BTCUSDT/1d/BTCUSDT-1d-2023-05.zip",
+        "sha256": "c343e4689784c29f83d25147a096dd44b6ae5c1063c909f8adda82b56414469d",
+        "rows": 31
+      },
+      {
+        "url": "https://data.binance.vision/data/spot/monthly/klines/BTCUSDT/1d/BTCUSDT-1d-2023-06.zip",
+        "sha256": "634919565c55a29729543d730927ca4b547c0e52d118a38de730f37fdd7617ef",
+        "rows": 30
+      },
+      {
+        "url": "https://data.binance.vision/data/spot/monthly/klines/BTCUSDT/1d/BTCUSDT-1d-2023-07.zip",
+        "sha256": "32363d37de02e6ad8d334ac332c685f8cdf5684733a9f2cfbca40e15e591396b",
+        "rows": 31
+      },
+      {
+        "url": "https://data.binance.vision/data/spot/monthly/klines/BTCUSDT/1d/BTCUSDT-1d-2023-08.zip",
+        "sha256": "8c5e47bfe3f0b0273534379e8ba5c93e69c84d67e8b9a03f293d6621bead2a5f",
+        "rows": 31
+      },
+      {
+        "url": "https://data.binance.vision/data/spot/monthly/klines/BTCUSDT/1d/BTCUSDT-1d-2023-09.zip",
+        "sha256": "2fe68ecad48d6927a9280d89700e991cb6481dc2767698c785f2b2d1c0b14744",
+        "rows": 30
+      },
+      {
+        "url": "https://data.binance.vision/data/spot/monthly/klines/BTCUSDT/1d/BTCUSDT-1d-2023-10.zip",
+        "sha256": "358b83bf0c2a5d5390a4bc4d4ae14fa9df0f56139642ad996c0df0f7bc712400",
+        "rows": 31
+      },
+      {
+        "url": "https://data.binance.vision/data/spot/monthly/klines/BTCUSDT/1d/BTCUSDT-1d-2023-11.zip",
+        "sha256": "fac9823cac7bf56a3a6038c3b79417e949b00c172939e62000451c8c25edd7c1",
+        "rows": 30
+      },
+      {
+        "url": "https://data.binance.vision/data/spot/monthly/klines/BTCUSDT/1d/BTCUSDT-1d-2023-12.zip",
+        "sha256": "056dad65795c9264ef90ee668a4c245e8fec73ebcbb272d28f5596c389913979",
+        "rows": 31
+      },
+      {
+        "url": "https://data.binance.vision/data/spot/monthly/klines/DOGEUSDT/15m/DOGEUSDT-15m-2024-01.zip",
+        "sha256": "356033727c48049867a32bc4de1f2c6f3360454ef92491eb742b89029556fb47",
+        "rows": 2976
+      },
+      {
+        "url": "https://data.binance.vision/data/spot/monthly/klines/DOGEUSDT/15m/DOGEUSDT-15m-2024-02.zip",
+        "sha256": "264472677215a338baa663f725d5d1af6cca8aebf3a76a5c69bd62fe608294cf",
+        "rows": 2784
+      },
+      {
+        "url": "https://data.binance.vision/data/spot/monthly/klines/DOGEUSDT/15m/DOGEUSDT-15m-2024-03.zip",
+        "sha256": "7b49a4c48b11fe52feae07dff16260070fbbea3f847bfc6ddc175999e19f93cb",
+        "rows": 2976
+      },
+      {
+        "url": "https://data.binance.vision/data/spot/monthly/klines/DOGEUSDT/15m/DOGEUSDT-15m-2024-04.zip",
+        "sha256": "6f43060c3fe9028f9959db93c140e6cc66ce622eeedf76cc3047d6758c08c060",
+        "rows": 2880
+      },
+      {
+        "url": "https://data.binance.vision/data/spot/monthly/klines/DOGEUSDT/15m/DOGEUSDT-15m-2024-05.zip",
+        "sha256": "4922cefb27ef958ae19fca0df33eb1d0d78c3e6408292c538381ad3b29e9372e",
+        "rows": 2976
+      },
+      {
+        "url": "https://data.binance.vision/data/spot/monthly/klines/DOGEUSDT/15m/DOGEUSDT-15m-2024-06.zip",
+        "sha256": "6539fc2c53ddab5bd320ed8b376d320392e292212bfa162c6a19de11915e107f",
+        "rows": 2880
+      },
+      {
+        "url": "https://data.binance.vision/data/spot/monthly/klines/DOGEUSDT/15m/DOGEUSDT-15m-2024-07.zip",
+        "sha256": "623c0ea067e95a9af82785cf22a96b34b22a0b3a696a848c3850aef4b1e74876",
+        "rows": 2976
+      },
+      {
+        "url": "https://data.binance.vision/data/spot/monthly/klines/DOGEUSDT/15m/DOGEUSDT-15m-2024-08.zip",
+        "sha256": "dc51143d7cb6ec4b26ede471ff8d26d2813262f952e2d9e839565d84d3bbb7f7",
+        "rows": 2976
+      },
+      {
+        "url": "https://data.binance.vision/data/spot/monthly/klines/DOGEUSDT/15m/DOGEUSDT-15m-2024-09.zip",
+        "sha256": "9fabd568f37322c30c82794a67f6abb23e215fe4578cc21604c40d9bbba82652",
+        "rows": 2880
+      },
+      {
+        "url": "https://data.binance.vision/data/spot/monthly/klines/DOGEUSDT/15m/DOGEUSDT-15m-2024-10.zip",
+        "sha256": "2dee44e09152a405307aa0cfb31a9ae95bbb9bfb74646e053cfec21aeaed6d70",
+        "rows": 2976
+      },
+      {
+        "url": "https://data.binance.vision/data/spot/monthly/klines/DOGEUSDT/15m/DOGEUSDT-15m-2024-11.zip",
+        "sha256": "f50c7419981998dd12578b71c364a75cc9a1907de0cb2c7a2226252da2e7af60",
+        "rows": 2880
+      },
+      {
+        "url": "https://data.binance.vision/data/spot/monthly/klines/DOGEUSDT/15m/DOGEUSDT-15m-2024-12.zip",
+        "sha256": "e34f37270e945faae71357cedffce207af4cacd1d5c80da2e5b621e1b98aaa81",
+        "rows": 2976
+      },
+      {
+        "url": "https://data.binance.vision/data/spot/monthly/klines/DOGEUSDT/15m/DOGEUSDT-15m-2025-01.zip",
+        "sha256": "124efcec4fd945f7acd7047e14157b8970d99a562dd55c4604f2ab29d8f12e35",
+        "rows": 2976
+      },
+      {
+        "url": "https://data.binance.vision/data/spot/monthly/klines/DOGEUSDT/15m/DOGEUSDT-15m-2025-02.zip",
+        "sha256": "0b23340d7a5c6ef1a96ca847829dc183810f87c39f216036f48f23540edc59ea",
+        "rows": 2688
+      },
+      {
+        "url": "https://data.binance.vision/data/spot/monthly/klines/DOGEUSDT/15m/DOGEUSDT-15m-2025-03.zip",
+        "sha256": "21d8caaa67cc8e2aafbdd60d9cd5f8111f57eb00f9fdea6a144378ac16a11761",
+        "rows": 2976
+      },
+      {
+        "url": "https://data.binance.vision/data/spot/monthly/klines/DOGEUSDT/15m/DOGEUSDT-15m-2025-04.zip",
+        "sha256": "4bc2ed1598b2a042202a9740111761461e98e5ae2c34f5f01fc9dbc2dedf2bfa",
+        "rows": 2880
+      },
+      {
+        "url": "https://data.binance.vision/data/spot/monthly/klines/DOGEUSDT/15m/DOGEUSDT-15m-2025-05.zip",
+        "sha256": "df64940db38890a775a4c706107da350b854cee000fad601d79e1868e2f90111",
+        "rows": 2976
+      },
+      {
+        "url": "https://data.binance.vision/data/spot/monthly/klines/DOGEUSDT/15m/DOGEUSDT-15m-2025-06.zip",
+        "sha256": "21658a556a0def29f9d2a88faa883ec768e5599eb675c7aa9b8bfae84c944341",
+        "rows": 2880
+      },
+      {
+        "url": "https://data.binance.vision/data/spot/monthly/klines/DOGEUSDT/15m/DOGEUSDT-15m-2025-07.zip",
+        "sha256": "110e6895d6188cf255f01ba88a7016b13d2bd3e31ae376465bc3e1e03851b000",
+        "rows": 2976
+      },
+      {
+        "url": "https://data.binance.vision/data/spot/monthly/klines/DOGEUSDT/15m/DOGEUSDT-15m-2025-08.zip",
+        "sha256": "3addcd0cb9f96d85ee2d05104e00214c4fbeda1d2c3e58c48cbc5b3a7c9714a4",
+        "rows": 2976
+      },
+      {
+        "url": "https://data.binance.vision/data/spot/monthly/klines/DOGEUSDT/15m/DOGEUSDT-15m-2025-09.zip",
+        "sha256": "618c6b69cd02945ed5f1fc94e87a9a0b06a447e67652e35382f30d6718453f63",
+        "rows": 2880
+      },
+      {
+        "url": "https://data.binance.vision/data/spot/monthly/klines/DOGEUSDT/15m/DOGEUSDT-15m-2025-10.zip",
+        "sha256": "a93b3ba007a8783a07a599e2d9650ce065db693b12a9c53d244c61230ebd177d",
+        "rows": 2976
+      },
+      {
+        "url": "https://data.binance.vision/data/spot/monthly/klines/DOGEUSDT/15m/DOGEUSDT-15m-2025-11.zip",
+        "sha256": "3fbaa6a29321a03bc5d1e94181a11b987451d4266757c16648a0c0a329d9916d",
+        "rows": 2880
+      },
+      {
+        "url": "https://data.binance.vision/data/spot/monthly/klines/DOGEUSDT/15m/DOGEUSDT-15m-2025-12.zip",
+        "sha256": "7940394f4dc9b6d9a7dd01090d4903b27e3236ea774d241a713fa5478b817dd0",
+        "rows": 2976
+      },
+      {
+        "url": "https://data.binance.vision/data/spot/monthly/klines/DOGEUSDT/1d/DOGEUSDT-1d-2023-01.zip",
+        "sha256": "110be6f38eb88e72747502f63b1cdbea6364614ec8c3142a13fa8e882afc54ec",
+        "rows": 31
+      },
+      {
+        "url": "https://data.binance.vision/data/spot/monthly/klines/DOGEUSDT/1d/DOGEUSDT-1d-2023-02.zip",
+        "sha256": "61170b6489f01c9b8b57b168fd5f45a1210710fff9515223e52a38e63e895fce",
+        "rows": 28
+      },
+      {
+        "url": "https://data.binance.vision/data/spot/monthly/klines/DOGEUSDT/1d/DOGEUSDT-1d-2023-03.zip",
+        "sha256": "d5056f06036a390ba38356560e4d5e2f8e4b3de7b64109e9b2d1fa66ba623269",
+        "rows": 31
+      },
+      {
+        "url": "https://data.binance.vision/data/spot/monthly/klines/DOGEUSDT/1d/DOGEUSDT-1d-2023-04.zip",
+        "sha256": "baa64505114b4a671413edebfbe48e4b5bb51c7faa96118dc6f6b418ca600ca0",
+        "rows": 30
+      },
+      {
+        "url": "https://data.binance.vision/data/spot/monthly/klines/DOGEUSDT/1d/DOGEUSDT-1d-2023-05.zip",
+        "sha256": "bbc3af49e33377588cd24dda44aa3ff8e59382f864111424dcbbd149cec06d17",
+        "rows": 31
+      },
+      {
+        "url": "https://data.binance.vision/data/spot/monthly/klines/DOGEUSDT/1d/DOGEUSDT-1d-2023-06.zip",
+        "sha256": "286a6fb905bbada4b9da92842dad5c38dc4cb34dc1b7e01f607acb5863095d29",
+        "rows": 30
+      },
+      {
+        "url": "https://data.binance.vision/data/spot/monthly/klines/DOGEUSDT/1d/DOGEUSDT-1d-2023-07.zip",
+        "sha256": "62619da6dfb98b80a54fd87f3247f7cfed18b0dc065c1b22d461d933a358b0f1",
+        "rows": 31
+      },
+      {
+        "url": "https://data.binance.vision/data/spot/monthly/klines/DOGEUSDT/1d/DOGEUSDT-1d-2023-08.zip",
+        "sha256": "035f3c244805deb299c3cb4cd68a1e900d75a263d0ac84bfcc7b9855e6e3d66c",
+        "rows": 31
+      },
+      {
+        "url": "https://data.binance.vision/data/spot/monthly/klines/DOGEUSDT/1d/DOGEUSDT-1d-2023-09.zip",
+        "sha256": "05e0666a5861e22519d169fc32bbf9abd3ae1557960b28d9d9bc5fbc51971e90",
+        "rows": 30
+      },
+      {
+        "url": "https://data.binance.vision/data/spot/monthly/klines/DOGEUSDT/1d/DOGEUSDT-1d-2023-10.zip",
+        "sha256": "89ca1a44f1625e6097d99de343d7d0e609a19386dd038bbe70516387f28e5c4f",
+        "rows": 31
+      },
+      {
+        "url": "https://data.binance.vision/data/spot/monthly/klines/DOGEUSDT/1d/DOGEUSDT-1d-2023-11.zip",
+        "sha256": "6fc04c33f2ec2003e615e0e0f1d2df3b9e9c0f82a0cb1fd8a50aa89a788064b7",
+        "rows": 30
+      },
+      {
+        "url": "https://data.binance.vision/data/spot/monthly/klines/DOGEUSDT/1d/DOGEUSDT-1d-2023-12.zip",
+        "sha256": "ffef6d265b8cb39530bda23a66787af05fca5002bbb447d58ae89a8878e30471",
+        "rows": 31
+      },
+      {
+        "url": "https://data.binance.vision/data/spot/monthly/klines/ETHUSDT/15m/ETHUSDT-15m-2024-01.zip",
+        "sha256": "a52f64be0752ffd8f1abeed7446045ff2d3c39855e77b636c30ccf2c06ddd008",
+        "rows": 2976
+      },
+      {
+        "url": "https://data.binance.vision/data/spot/monthly/klines/ETHUSDT/15m/ETHUSDT-15m-2024-02.zip",
+        "sha256": "1e02fac59990c6eeec1f37f5e7fffb0e34279834a78c5934896c098380c59d2a",
+        "rows": 2784
+      },
+      {
+        "url": "https://data.binance.vision/data/spot/monthly/klines/ETHUSDT/15m/ETHUSDT-15m-2024-03.zip",
+        "sha256": "0c403af70b056779054d16b81fbd904864738c8026b40622da5ae28632a8f945",
+        "rows": 2976
+      },
+      {
+        "url": "https://data.binance.vision/data/spot/monthly/klines/ETHUSDT/15m/ETHUSDT-15m-2024-04.zip",
+        "sha256": "b2601ce5ceb71d46d3889beaacad971d823393a7dae78e68852e52da758a0c78",
+        "rows": 2880
+      },
+      {
+        "url": "https://data.binance.vision/data/spot/monthly/klines/ETHUSDT/15m/ETHUSDT-15m-2024-05.zip",
+        "sha256": "606e908fe6de46f3bc2e950434093be686fefaf24946d59a897ddc7a48c2b1f3",
+        "rows": 2976
+      },
+      {
+        "url": "https://data.binance.vision/data/spot/monthly/klines/ETHUSDT/15m/ETHUSDT-15m-2024-06.zip",
+        "sha256": "7a79f1af25487217a1b187163a98e2df10c27b4ea2050bddf0199138feae3613",
+        "rows": 2880
+      },
+      {
+        "url": "https://data.binance.vision/data/spot/monthly/klines/ETHUSDT/15m/ETHUSDT-15m-2024-07.zip",
+        "sha256": "9158fc53f283c3c467a411fb4a12d235fe53225904b6c75ac4bcb237cdea364c",
+        "rows": 2976
+      },
+      {
+        "url": "https://data.binance.vision/data/spot/monthly/klines/ETHUSDT/15m/ETHUSDT-15m-2024-08.zip",
+        "sha256": "d69a001670428e83a8dea90d5fb7bacbcd777410e98293318674e0aa90a5daac",
+        "rows": 2976
+      },
+      {
+        "url": "https://data.binance.vision/data/spot/monthly/klines/ETHUSDT/15m/ETHUSDT-15m-2024-09.zip",
+        "sha256": "4ae6d427ed21138f96f8ea47257812640da2000ea72e608f86701c4983f68700",
+        "rows": 2880
+      },
+      {
+        "url": "https://data.binance.vision/data/spot/monthly/klines/ETHUSDT/15m/ETHUSDT-15m-2024-10.zip",
+        "sha256": "ebb1d763fabab7d32025015e0229fccedaf3d768165d03a5df2756995fb75d32",
+        "rows": 2976
+      },
+      {
+        "url": "https://data.binance.vision/data/spot/monthly/klines/ETHUSDT/15m/ETHUSDT-15m-2024-11.zip",
+        "sha256": "fc64a5f1201c6b59f9a3e476e17de2eecf5c2d71141be86bc50cfd10fb43f37f",
+        "rows": 2880
+      },
+      {
+        "url": "https://data.binance.vision/data/spot/monthly/klines/ETHUSDT/15m/ETHUSDT-15m-2024-12.zip",
+        "sha256": "740ceb801c523850370500e757062a0f1fe4070f5750ef173799c6427fe4a4fd",
+        "rows": 2976
+      },
+      {
+        "url": "https://data.binance.vision/data/spot/monthly/klines/ETHUSDT/15m/ETHUSDT-15m-2025-01.zip",
+        "sha256": "84bad649817269f4e97b6c567c5dd177a4e1d21921ce216798406bf5e2dc39bd",
+        "rows": 2976
+      },
+      {
+        "url": "https://data.binance.vision/data/spot/monthly/klines/ETHUSDT/15m/ETHUSDT-15m-2025-02.zip",
+        "sha256": "34f7721028e6a920fdfab4ba101f2ae36ad059928d2f778f062742f8281f7781",
+        "rows": 2688
+      },
+      {
+        "url": "https://data.binance.vision/data/spot/monthly/klines/ETHUSDT/15m/ETHUSDT-15m-2025-03.zip",
+        "sha256": "d92f5ce9a31ba3110bedff7af9cd6e0708ebe1e02e139157ff29bdc22f01fc33",
+        "rows": 2976
+      },
+      {
+        "url": "https://data.binance.vision/data/spot/monthly/klines/ETHUSDT/15m/ETHUSDT-15m-2025-04.zip",
+        "sha256": "106eefead6ee2254283f6b6bc6e1e6d38d7f59bb386131323fefe97dcfffae34",
+        "rows": 2880
+      },
+      {
+        "url": "https://data.binance.vision/data/spot/monthly/klines/ETHUSDT/15m/ETHUSDT-15m-2025-05.zip",
+        "sha256": "cc6d10fe84ceafc6bc5a9d7364ec14d18408ddb7e19113a51dc987315566925b",
+        "rows": 2976
+      },
+      {
+        "url": "https://data.binance.vision/data/spot/monthly/klines/ETHUSDT/15m/ETHUSDT-15m-2025-06.zip",
+        "sha256": "7b9b239a5a4954f9dbdc4e06e596075de0a3af6794952c5b1719d7efb3f60b09",
+        "rows": 2880
+      },
+      {
+        "url": "https://data.binance.vision/data/spot/monthly/klines/ETHUSDT/15m/ETHUSDT-15m-2025-07.zip",
+        "sha256": "53df300524898205f202fc57338be2fea06fd4da2b1cc176c4de6952751176c5",
+        "rows": 2976
+      },
+      {
+        "url": "https://data.binance.vision/data/spot/monthly/klines/ETHUSDT/15m/ETHUSDT-15m-2025-08.zip",
+        "sha256": "f44311feba03aa7b9a81327060a58b60d738f932e73067a5f43caac804829054",
+        "rows": 2976
+      },
+      {
+        "url": "https://data.binance.vision/data/spot/monthly/klines/ETHUSDT/15m/ETHUSDT-15m-2025-09.zip",
+        "sha256": "d9246e0929570bcbae6fce12734c025bf407af3559a02cc99418aca04b02135d",
+        "rows": 2880
+      },
+      {
+        "url": "https://data.binance.vision/data/spot/monthly/klines/ETHUSDT/15m/ETHUSDT-15m-2025-10.zip",
+        "sha256": "ddb2b2851af41e31794d00d663571523a1709b631fd7444933824cb9ad5edd85",
+        "rows": 2976
+      },
+      {
+        "url": "https://data.binance.vision/data/spot/monthly/klines/ETHUSDT/15m/ETHUSDT-15m-2025-11.zip",
+        "sha256": "288889103766ff11ec404e74a92c1e1ceb0884e40d9f653922207dd566f35d20",
+        "rows": 2880
+      },
+      {
+        "url": "https://data.binance.vision/data/spot/monthly/klines/ETHUSDT/15m/ETHUSDT-15m-2025-12.zip",
+        "sha256": "b4270c918a02f78800b6390e94af525f29c8554d27cc13cf6b62537691476df8",
+        "rows": 2976
+      },
+      {
+        "url": "https://data.binance.vision/data/spot/monthly/klines/ETHUSDT/1d/ETHUSDT-1d-2023-01.zip",
+        "sha256": "811ff55e20735e6fff55ef37c0c3e922eb6d26d41fe84fc04b2a03c0179549ad",
+        "rows": 31
+      },
+      {
+        "url": "https://data.binance.vision/data/spot/monthly/klines/ETHUSDT/1d/ETHUSDT-1d-2023-02.zip",
+        "sha256": "2f6cdf5aa6613ab3621dbd730a234935e8909f980f1195f7581abf145e422cce",
+        "rows": 28
+      },
+      {
+        "url": "https://data.binance.vision/data/spot/monthly/klines/ETHUSDT/1d/ETHUSDT-1d-2023-03.zip",
+        "sha256": "dbfe653bf62ebac3e4e2bf5c96160de6c76bcbd76e4979ca2105d11cf2bdf77e",
+        "rows": 31
+      },
+      {
+        "url": "https://data.binance.vision/data/spot/monthly/klines/ETHUSDT/1d/ETHUSDT-1d-2023-04.zip",
+        "sha256": "d316aea182914c088b06d03640812bae72e889a347ed9dcc78bb8ad10ed1bdf9",
+        "rows": 30
+      },
+      {
+        "url": "https://data.binance.vision/data/spot/monthly/klines/ETHUSDT/1d/ETHUSDT-1d-2023-05.zip",
+        "sha256": "a86ef09c35c764e6f0066953074ffb0dc93239afe92e3d73e232fbc95cdeab51",
+        "rows": 31
+      },
+      {
+        "url": "https://data.binance.vision/data/spot/monthly/klines/ETHUSDT/1d/ETHUSDT-1d-2023-06.zip",
+        "sha256": "4932a5fd8853ddf99f3853a501e5f35ffad45a07a466bbf4603ddb7fb4c821ac",
+        "rows": 30
+      },
+      {
+        "url": "https://data.binance.vision/data/spot/monthly/klines/ETHUSDT/1d/ETHUSDT-1d-2023-07.zip",
+        "sha256": "f66293651e4a841fe9bc36cc76483bdb9c1faaa085377fbbd2fd064cd401cd5e",
+        "rows": 31
+      },
+      {
+        "url": "https://data.binance.vision/data/spot/monthly/klines/ETHUSDT/1d/ETHUSDT-1d-2023-08.zip",
+        "sha256": "e694749c085b888401f51002dbd21bc8cf0c4d801d2da311e72d6c1ae97627d4",
+        "rows": 31
+      },
+      {
+        "url": "https://data.binance.vision/data/spot/monthly/klines/ETHUSDT/1d/ETHUSDT-1d-2023-09.zip",
+        "sha256": "c1faa848529e17e15deafb208d817155576ef51e556813109cdb60c0153ac73d",
+        "rows": 30
+      },
+      {
+        "url": "https://data.binance.vision/data/spot/monthly/klines/ETHUSDT/1d/ETHUSDT-1d-2023-10.zip",
+        "sha256": "baadc74c685a63d7ba453531c9f4d1df81a5719200501ab229018352a1be9630",
+        "rows": 31
+      },
+      {
+        "url": "https://data.binance.vision/data/spot/monthly/klines/ETHUSDT/1d/ETHUSDT-1d-2023-11.zip",
+        "sha256": "8faf9f53efe268d25d01b987b3a364cd9f1983703ab2f78486192c29218b1faf",
+        "rows": 30
+      },
+      {
+        "url": "https://data.binance.vision/data/spot/monthly/klines/ETHUSDT/1d/ETHUSDT-1d-2023-12.zip",
+        "sha256": "1778c56d995fe5d32a0816a5214feabcd84d594f4e882315b4e225d6e86e5275",
+        "rows": 31
+      },
+      {
+        "url": "https://data.binance.vision/data/spot/monthly/klines/SOLUSDT/15m/SOLUSDT-15m-2024-01.zip",
+        "sha256": "c8bc410794506f6a2b41f71a8d7b2b79eaff660382723adc515147e2937cbaae",
+        "rows": 2976
+      },
+      {
+        "url": "https://data.binance.vision/data/spot/monthly/klines/SOLUSDT/15m/SOLUSDT-15m-2024-02.zip",
+        "sha256": "a3bb971e3356d20587b26bdc1dc7a96dc4390880203a7cc75c89128211b8ad21",
+        "rows": 2784
+      },
+      {
+        "url": "https://data.binance.vision/data/spot/monthly/klines/SOLUSDT/15m/SOLUSDT-15m-2024-03.zip",
+        "sha256": "5de877302b6d4ef4278b61144545998de0e1ffbaf3067a72459d235e4572479d",
+        "rows": 2976
+      },
+      {
+        "url": "https://data.binance.vision/data/spot/monthly/klines/SOLUSDT/15m/SOLUSDT-15m-2024-04.zip",
+        "sha256": "560412be4cf8f08cd0cdbf5728b8eb91b04271c7fbabe24f731deb8ef4528803",
+        "rows": 2880
+      },
+      {
+        "url": "https://data.binance.vision/data/spot/monthly/klines/SOLUSDT/15m/SOLUSDT-15m-2024-05.zip",
+        "sha256": "89d53b2133d32ea5ad4b19deb4ca65305114aaa97d0e0ab72e6526dc1ce146f2",
+        "rows": 2976
+      },
+      {
+        "url": "https://data.binance.vision/data/spot/monthly/klines/SOLUSDT/15m/SOLUSDT-15m-2024-06.zip",
+        "sha256": "8b586977e7a726331b4f5388899cfb0ed93ba3aa5b12ebb4d6b8fb63bb11ff42",
+        "rows": 2880
+      },
+      {
+        "url": "https://data.binance.vision/data/spot/monthly/klines/SOLUSDT/15m/SOLUSDT-15m-2024-07.zip",
+        "sha256": "6fc3080ad2e5290f34e5a449b10c0cf955d3ae5b894025ddb746fcbfd8ebf34b",
+        "rows": 2976
+      },
+      {
+        "url": "https://data.binance.vision/data/spot/monthly/klines/SOLUSDT/15m/SOLUSDT-15m-2024-08.zip",
+        "sha256": "750343d9175010804ffcfbbc545cb3a31819d4853821797f5a7b2f76f49706ad",
+        "rows": 2976
+      },
+      {
+        "url": "https://data.binance.vision/data/spot/monthly/klines/SOLUSDT/15m/SOLUSDT-15m-2024-09.zip",
+        "sha256": "eac8026cb476d9fdec2350ed7a49c96f91a668be013a623fde898830007c8788",
+        "rows": 2880
+      },
+      {
+        "url": "https://data.binance.vision/data/spot/monthly/klines/SOLUSDT/15m/SOLUSDT-15m-2024-10.zip",
+        "sha256": "63a211e4a72762e3e2253378500ff54b7680f05a26a2855005e2ce5beb1ff5d8",
+        "rows": 2976
+      },
+      {
+        "url": "https://data.binance.vision/data/spot/monthly/klines/SOLUSDT/15m/SOLUSDT-15m-2024-11.zip",
+        "sha256": "6f1a483d55155ba3c87176c7cb918668e888720c3ebdb6a9b3b50e23f5c8e1c2",
+        "rows": 2880
+      },
+      {
+        "url": "https://data.binance.vision/data/spot/monthly/klines/SOLUSDT/15m/SOLUSDT-15m-2024-12.zip",
+        "sha256": "9611468e1addc528e6ccc5bc45ffac7b4caa6c597ac458a6e624012d7173a943",
+        "rows": 2976
+      },
+      {
+        "url": "https://data.binance.vision/data/spot/monthly/klines/SOLUSDT/15m/SOLUSDT-15m-2025-01.zip",
+        "sha256": "de5540631402cdba48c8c189417be5119108e0b2111c521acf4266ed28afc837",
+        "rows": 2976
+      },
+      {
+        "url": "https://data.binance.vision/data/spot/monthly/klines/SOLUSDT/15m/SOLUSDT-15m-2025-02.zip",
+        "sha256": "ea2610be97a0445e7b02e3c0f2cb8b3c2fe409018cb88c841003a9e8ebc4ff15",
+        "rows": 2688
+      },
+      {
+        "url": "https://data.binance.vision/data/spot/monthly/klines/SOLUSDT/15m/SOLUSDT-15m-2025-03.zip",
+        "sha256": "adbfe38294205aa016cdc06d40a3bc77a322d67bbb4a93f7e541a08472b6341b",
+        "rows": 2976
+      },
+      {
+        "url": "https://data.binance.vision/data/spot/monthly/klines/SOLUSDT/15m/SOLUSDT-15m-2025-04.zip",
+        "sha256": "d6d37ee58092dfb4b6246f118f5ad5eaef4099b7f902fd68d6e263ccc4a4412a",
+        "rows": 2880
+      },
+      {
+        "url": "https://data.binance.vision/data/spot/monthly/klines/SOLUSDT/15m/SOLUSDT-15m-2025-05.zip",
+        "sha256": "a011f09b37b80bf45afb985e3b24fefb92b9dba6864c903443e318d1f2f04fd4",
+        "rows": 2976
+      },
+      {
+        "url": "https://data.binance.vision/data/spot/monthly/klines/SOLUSDT/15m/SOLUSDT-15m-2025-06.zip",
+        "sha256": "50bf080b05a55ad7719e54827dbff20ff372b12b3a1942e398871518f1e21454",
+        "rows": 2880
+      },
+      {
+        "url": "https://data.binance.vision/data/spot/monthly/klines/SOLUSDT/15m/SOLUSDT-15m-2025-07.zip",
+        "sha256": "c3e9c2b7907ac2bea9464b50f9897183bbcff28ff54b4cbe3123b9486b2de5f2",
+        "rows": 2976
+      },
+      {
+        "url": "https://data.binance.vision/data/spot/monthly/klines/SOLUSDT/15m/SOLUSDT-15m-2025-08.zip",
+        "sha256": "1b29f0f5491bc02d92f593a3d9ca244c119d65e754989e239fe931ad91ad58d9",
+        "rows": 2976
+      },
+      {
+        "url": "https://data.binance.vision/data/spot/monthly/klines/SOLUSDT/15m/SOLUSDT-15m-2025-09.zip",
+        "sha256": "5b01aec430ca29b1d22c441f21b84ea53ca7fdcf496eb64012d4eb35c5f221d5",
+        "rows": 2880
+      },
+      {
+        "url": "https://data.binance.vision/data/spot/monthly/klines/SOLUSDT/15m/SOLUSDT-15m-2025-10.zip",
+        "sha256": "645e92a6adad218d94653d7e56ac215114d82f131de2ba939a27db7cbf970443",
+        "rows": 2976
+      },
+      {
+        "url": "https://data.binance.vision/data/spot/monthly/klines/SOLUSDT/15m/SOLUSDT-15m-2025-11.zip",
+        "sha256": "942e26aef131097a62a8b1d73fa8ef82d471d6e6a2bf55dc09bdc633a01bf4e7",
+        "rows": 2880
+      },
+      {
+        "url": "https://data.binance.vision/data/spot/monthly/klines/SOLUSDT/15m/SOLUSDT-15m-2025-12.zip",
+        "sha256": "be166ebb5b0e3756ba85e627e659e555f3da1517445ee61c5e1e9eb1a58b3d86",
+        "rows": 2976
+      },
+      {
+        "url": "https://data.binance.vision/data/spot/monthly/klines/SOLUSDT/1d/SOLUSDT-1d-2023-01.zip",
+        "sha256": "09fc042c2ab54d9fc09a414a290b74711bd9c8665a58bb520e56432ed7a3041b",
+        "rows": 31
+      },
+      {
+        "url": "https://data.binance.vision/data/spot/monthly/klines/SOLUSDT/1d/SOLUSDT-1d-2023-02.zip",
+        "sha256": "2e0df24a2aa7ac6790da6a09be2448c50b8eb539a4b68003375c853c4a33ab71",
+        "rows": 28
+      },
+      {
+        "url": "https://data.binance.vision/data/spot/monthly/klines/SOLUSDT/1d/SOLUSDT-1d-2023-03.zip",
+        "sha256": "61dabcc011f27759552fd3ff9f43915f40a286b5287619b56ef2f3e088374432",
+        "rows": 31
+      },
+      {
+        "url": "https://data.binance.vision/data/spot/monthly/klines/SOLUSDT/1d/SOLUSDT-1d-2023-04.zip",
+        "sha256": "c91db96b1be0e068cfaaab5c75cca5e9e92171713f44f1856115687a96c828a0",
+        "rows": 30
+      },
+      {
+        "url": "https://data.binance.vision/data/spot/monthly/klines/SOLUSDT/1d/SOLUSDT-1d-2023-05.zip",
+        "sha256": "a3c74635f90344b9af798ce16e45674e8d7c816641db7a825f4317a6be4647d4",
+        "rows": 31
+      },
+      {
+        "url": "https://data.binance.vision/data/spot/monthly/klines/SOLUSDT/1d/SOLUSDT-1d-2023-06.zip",
+        "sha256": "79c2853d97448e168891e429143111c3b0d8f4f54c7faee18ce3aba1414ac5e4",
+        "rows": 30
+      },
+      {
+        "url": "https://data.binance.vision/data/spot/monthly/klines/SOLUSDT/1d/SOLUSDT-1d-2023-07.zip",
+        "sha256": "5a55d12a72e39bd5b8c4e8230914d9537b2a9d5a865ed0ba6ee53212a9abfbf0",
+        "rows": 31
+      },
+      {
+        "url": "https://data.binance.vision/data/spot/monthly/klines/SOLUSDT/1d/SOLUSDT-1d-2023-08.zip",
+        "sha256": "88917ca3c65a50860c51a4b2b63ff0bc8b89764d164deae347feb287db490e67",
+        "rows": 31
+      },
+      {
+        "url": "https://data.binance.vision/data/spot/monthly/klines/SOLUSDT/1d/SOLUSDT-1d-2023-09.zip",
+        "sha256": "bbfb009f933b02c10e79b3b7fa717163af1838d490a57ca4229194149cd52d42",
+        "rows": 30
+      },
+      {
+        "url": "https://data.binance.vision/data/spot/monthly/klines/SOLUSDT/1d/SOLUSDT-1d-2023-10.zip",
+        "sha256": "6daf020274d54de9e3fbaa4f8c4e8f43b549fe15e6a8fb7759b8ef1716d0a235",
+        "rows": 31
+      },
+      {
+        "url": "https://data.binance.vision/data/spot/monthly/klines/SOLUSDT/1d/SOLUSDT-1d-2023-11.zip",
+        "sha256": "66298306327d421adfe227262c4bb5551ad97ad89e3990a72bbd82c2df44d217",
+        "rows": 30
+      },
+      {
+        "url": "https://data.binance.vision/data/spot/monthly/klines/SOLUSDT/1d/SOLUSDT-1d-2023-12.zip",
+        "sha256": "d07143cfcfec4d988590a30b74be234dbd96238da2560190b9e16a633761b480",
+        "rows": 31
+      },
+      {
+        "url": "https://data.binance.vision/data/spot/monthly/klines/XRPUSDT/15m/XRPUSDT-15m-2024-01.zip",
+        "sha256": "d498ed41d5ca5a4dc2cbc269303857eaa0fe52389032022e529a7d59ce23b749",
+        "rows": 2976
+      },
+      {
+        "url": "https://data.binance.vision/data/spot/monthly/klines/XRPUSDT/15m/XRPUSDT-15m-2024-02.zip",
+        "sha256": "21305d639baf9347f64cf38bf4facc907ca3ea3d5f362a503a71acbff8cad94d",
+        "rows": 2784
+      },
+      {
+        "url": "https://data.binance.vision/data/spot/monthly/klines/XRPUSDT/15m/XRPUSDT-15m-2024-03.zip",
+        "sha256": "5082171f91bc9dd32b59423ded856d7b584ec8e7733bf127334b7d3f29c63553",
+        "rows": 2976
+      },
+      {
+        "url": "https://data.binance.vision/data/spot/monthly/klines/XRPUSDT/15m/XRPUSDT-15m-2024-04.zip",
+        "sha256": "b0bcc998ad1b0c06ec0cd4b5782c52630ec49991fdf728ddeaad292e7b422dcc",
+        "rows": 2880
+      },
+      {
+        "url": "https://data.binance.vision/data/spot/monthly/klines/XRPUSDT/15m/XRPUSDT-15m-2024-05.zip",
+        "sha256": "550baaa6f4f99697b6dfb09474e230e99a98b6ca46a09f62314fc6bfdc950874",
+        "rows": 2976
+      },
+      {
+        "url": "https://data.binance.vision/data/spot/monthly/klines/XRPUSDT/15m/XRPUSDT-15m-2024-06.zip",
+        "sha256": "99ca48bde559b3f9f13542439ae2e3cf3b39a809454d1a3928519fe0da8cc393",
+        "rows": 2880
+      },
+      {
+        "url": "https://data.binance.vision/data/spot/monthly/klines/XRPUSDT/15m/XRPUSDT-15m-2024-07.zip",
+        "sha256": "61412e19f0a57331c90860dd05e1ed3cc21529b4bbc1c5d9816a935580a28cf3",
+        "rows": 2976
+      },
+      {
+        "url": "https://data.binance.vision/data/spot/monthly/klines/XRPUSDT/15m/XRPUSDT-15m-2024-08.zip",
+        "sha256": "4b932b83395b54c7c557e363e4890a6d4a7c9d1ce2b428e42ad92efd444a2e6b",
+        "rows": 2976
+      },
+      {
+        "url": "https://data.binance.vision/data/spot/monthly/klines/XRPUSDT/15m/XRPUSDT-15m-2024-09.zip",
+        "sha256": "75af145d86741de8f37d5db9892c0041eeae9147eeedb7dbd4b48c0d8a9db5a1",
+        "rows": 2880
+      },
+      {
+        "url": "https://data.binance.vision/data/spot/monthly/klines/XRPUSDT/15m/XRPUSDT-15m-2024-10.zip",
+        "sha256": "313dc7dc6a797c3d41737414a75ec654820a4716fab3d54aee75d5c8cf4d6f83",
+        "rows": 2976
+      },
+      {
+        "url": "https://data.binance.vision/data/spot/monthly/klines/XRPUSDT/15m/XRPUSDT-15m-2024-11.zip",
+        "sha256": "6cda22ee2852fa44a659f7ced204ea2d07a0f5223fd743075f15befb0f32bc66",
+        "rows": 2880
+      },
+      {
+        "url": "https://data.binance.vision/data/spot/monthly/klines/XRPUSDT/15m/XRPUSDT-15m-2024-12.zip",
+        "sha256": "81984a9d1bd26bd3fa814b15a079cfaa00d835b88bacecfbcbb172ee3cd3b333",
+        "rows": 2976
+      },
+      {
+        "url": "https://data.binance.vision/data/spot/monthly/klines/XRPUSDT/15m/XRPUSDT-15m-2025-01.zip",
+        "sha256": "327cc306cab3d87acf54d06219a6018a800ed3ccd6740b5b7e78d319cd7d4ec2",
+        "rows": 2976
+      },
+      {
+        "url": "https://data.binance.vision/data/spot/monthly/klines/XRPUSDT/15m/XRPUSDT-15m-2025-02.zip",
+        "sha256": "71648f3f30c4059bae961dcd8be52e1bd317b1f2f0ed399773cfb35112d1a1ba",
+        "rows": 2688
+      },
+      {
+        "url": "https://data.binance.vision/data/spot/monthly/klines/XRPUSDT/15m/XRPUSDT-15m-2025-03.zip",
+        "sha256": "fa1e2d9f39d4707f878913a1d3ff2afa175fec20f86c63172c6f09d03392b5bc",
+        "rows": 2976
+      },
+      {
+        "url": "https://data.binance.vision/data/spot/monthly/klines/XRPUSDT/15m/XRPUSDT-15m-2025-04.zip",
+        "sha256": "5d3bedc10db43d1b30cfec71c981dd7d4a0dd99558a09379ca1d11387a956c5a",
+        "rows": 2880
+      },
+      {
+        "url": "https://data.binance.vision/data/spot/monthly/klines/XRPUSDT/15m/XRPUSDT-15m-2025-05.zip",
+        "sha256": "72ef14a6712c8b1aefdc371300030f1c8a5aee1c080055089453409dbac00de9",
+        "rows": 2976
+      },
+      {
+        "url": "https://data.binance.vision/data/spot/monthly/klines/XRPUSDT/15m/XRPUSDT-15m-2025-06.zip",
+        "sha256": "003776b7d73275458a7afb2c02804db9831e95fc258327762d244d73460f0524",
+        "rows": 2880
+      },
+      {
+        "url": "https://data.binance.vision/data/spot/monthly/klines/XRPUSDT/15m/XRPUSDT-15m-2025-07.zip",
+        "sha256": "85bd09d5d32ae6f096d5574e9d8021b12d1bba65af1f24c47966a47adce0eb91",
+        "rows": 2976
+      },
+      {
+        "url": "https://data.binance.vision/data/spot/monthly/klines/XRPUSDT/15m/XRPUSDT-15m-2025-08.zip",
+        "sha256": "446d06ef390ff95a969d075c7449091f73098d2511a9adb80ea5770fd05eb4a7",
+        "rows": 2976
+      },
+      {
+        "url": "https://data.binance.vision/data/spot/monthly/klines/XRPUSDT/15m/XRPUSDT-15m-2025-09.zip",
+        "sha256": "2f7ac6fb500a5bcbc1e1e8204098c65d9385cc5182b34a200a4ef28f2a5dc839",
+        "rows": 2880
+      },
+      {
+        "url": "https://data.binance.vision/data/spot/monthly/klines/XRPUSDT/15m/XRPUSDT-15m-2025-10.zip",
+        "sha256": "4fe1f1462d33d17c3cdb8532bb42cb19367496af84e5e32bef0de5573eab4294",
+        "rows": 2976
+      },
+      {
+        "url": "https://data.binance.vision/data/spot/monthly/klines/XRPUSDT/15m/XRPUSDT-15m-2025-11.zip",
+        "sha256": "2ec0708037a8707c1ad0e2219b6420e9ea6189fc220e290401f3fa3b9a2cebdd",
+        "rows": 2880
+      },
+      {
+        "url": "https://data.binance.vision/data/spot/monthly/klines/XRPUSDT/15m/XRPUSDT-15m-2025-12.zip",
+        "sha256": "99dae53efb7d6870d4c751d97188ab9ad88b77c8e911e66465bdbb559062f0ca",
+        "rows": 2976
+      },
+      {
+        "url": "https://data.binance.vision/data/spot/monthly/klines/XRPUSDT/1d/XRPUSDT-1d-2023-01.zip",
+        "sha256": "8be26490687e21718f03fc24138a2b2369b67eed27cd2a4df2341bd9de1ff8f1",
+        "rows": 31
+      },
+      {
+        "url": "https://data.binance.vision/data/spot/monthly/klines/XRPUSDT/1d/XRPUSDT-1d-2023-02.zip",
+        "sha256": "3980f23c45e2512de04b3b35dfd3c74847397544c3878a5aa577aee7f0400e6c",
+        "rows": 28
+      },
+      {
+        "url": "https://data.binance.vision/data/spot/monthly/klines/XRPUSDT/1d/XRPUSDT-1d-2023-03.zip",
+        "sha256": "00dc37357422723ce04e7871d05d89454f7ac16758a29b5d6eb990ed8d647589",
+        "rows": 31
+      },
+      {
+        "url": "https://data.binance.vision/data/spot/monthly/klines/XRPUSDT/1d/XRPUSDT-1d-2023-04.zip",
+        "sha256": "9ae8857bfcda35413ece8f8d038ab0ad7a6b810bef0552a008ab162c393d251a",
+        "rows": 30
+      },
+      {
+        "url": "https://data.binance.vision/data/spot/monthly/klines/XRPUSDT/1d/XRPUSDT-1d-2023-05.zip",
+        "sha256": "4d407d9b06d7b8af4263cb6a02dd72d762b82b3fac747044407095661cc4b0a2",
+        "rows": 31
+      },
+      {
+        "url": "https://data.binance.vision/data/spot/monthly/klines/XRPUSDT/1d/XRPUSDT-1d-2023-06.zip",
+        "sha256": "fc2055e68aff582d847adbfdc2fbca7cb9fcbae4811e5068a5f5a41d81212db9",
+        "rows": 30
+      },
+      {
+        "url": "https://data.binance.vision/data/spot/monthly/klines/XRPUSDT/1d/XRPUSDT-1d-2023-07.zip",
+        "sha256": "2e9c69ad1ac561bb0884f934d6a15a87be3d8b657b5852d5a78e7f9119f4f194",
+        "rows": 31
+      },
+      {
+        "url": "https://data.binance.vision/data/spot/monthly/klines/XRPUSDT/1d/XRPUSDT-1d-2023-08.zip",
+        "sha256": "7265881181ea7542fd0fc7c765256a53ad26c0e9ed219be4ee616991b58c5f84",
+        "rows": 31
+      },
+      {
+        "url": "https://data.binance.vision/data/spot/monthly/klines/XRPUSDT/1d/XRPUSDT-1d-2023-09.zip",
+        "sha256": "480c0f760cd26249c93f8df3939376e27df741fd40052f627a1272e00eb1d236",
+        "rows": 30
+      },
+      {
+        "url": "https://data.binance.vision/data/spot/monthly/klines/XRPUSDT/1d/XRPUSDT-1d-2023-10.zip",
+        "sha256": "9c5280a4bee20f99e1c5b808a7eb321768370e82d49c706c71225aa9d2587733",
+        "rows": 31
+      },
+      {
+        "url": "https://data.binance.vision/data/spot/monthly/klines/XRPUSDT/1d/XRPUSDT-1d-2023-11.zip",
+        "sha256": "7c88be1782d857618087bd828bbfd45e828dc9cc7e6e64eda0fa0b70dc107508",
+        "rows": 30
+      },
+      {
+        "url": "https://data.binance.vision/data/spot/monthly/klines/XRPUSDT/1d/XRPUSDT-1d-2023-12.zip",
+        "sha256": "92de6e8836a3f349b485a13664305526a597b90eecc1be9fc1f4cbee51d48f78",
+        "rows": 31
+      }
+    ]
+  },
+  "folds": [
+    [
+      "2024Q3",
+      "2024-07-01",
+      "2024-10-01"
+    ],
+    [
+      "2024Q4",
+      "2024-10-01",
+      "2025-01-01"
+    ],
+    [
+      "2025Q1",
+      "2025-01-01",
+      "2025-04-01"
+    ],
+    [
+      "2025Q2",
+      "2025-04-01",
+      "2025-07-01"
+    ]
+  ],
+  "sourceHashes": {
+    "scripts/lib.mjs": "ddbdc2d3c3d286e798a572a98fb42ed476cd5a6d76a59711e85c67e7124cb53a",
+    "scripts/v2/strategies.mjs": "2025083efde56aeb2a099dbcfb7154803bebe7849797f2cc6f149da05af14091",
+    "scripts/v2/sizing.mjs": "d8229d36e786e569e1f1bb447d188ee2b0acac26587270b73e5178a7625506a2",
+    "scripts/v2/engine.mjs": "8bc77b99d1d3979041281c0427f9990a5efafbe17b93b0347b00de78f35e08bd",
+    "scripts/v2/brain.mjs": "d701e365b53882709538edc5570ef4e6cc5cbfaac8602fb9a8891672f7ec6199",
+    "scripts/v2/episode.mjs": "6cd058810aa03f01b1d4f43c8eebff8d15f9b93e6bc7582352f03ae365daf710",
+    "scripts/v2/perp.mjs": "b44def1139078e6dd60fce7cd0de3bf12cbe09cd7f46062f664700d65520cf23",
+    "audit/backtest.mjs": "9b422315868480b7ed692f56864d01a21258373ea0b189cb3f29ba3f7d98dec4",
+    "audit/source_adapter.mjs": "00255bd2ef0daf9843ffe51b9470cec0f5da3fc0761f48e8e5333d12305f406c",
+    "audit/EXPERIMENT_PLAN.md": "fd294699e19a40e48de0a5f68e6b7219ce1b306c2d16c4d38e167b015e33c783"
+  },
+  "training": {
+    "TREND": {
+      "2024-07-01": {
+        "tsmom": {
+          "n": 1142,
+          "p": 0.329246935201401,
+          "payoff": 0.8052119001509651,
+          "netMean": -0.06185094978522358,
+          "riskFraction": 0
+        },
+        "adaptive_regime": {
+          "n": 35,
+          "p": 0.37142857142857144,
+          "payoff": 1.0886722346491917,
+          "netMean": -0.014407522892643836,
+          "riskFraction": 0
+        },
+        "pairs_trade": {
+          "n": 126,
+          "p": 0.047619047619047616,
+          "payoff": 0.6052843565767383,
+          "netMean": -0.026300594047530077,
+          "riskFraction": 0
+        },
+        "donchian": {
+          "n": 159,
+          "p": 0.3522012578616352,
+          "payoff": 0.6628326766746817,
+          "netMean": -0.044653816051397587,
+          "riskFraction": 0
+        },
+        "atr_expand": {
+          "n": 10,
+          "p": 0.3,
+          "payoff": 0.5442569480062943,
+          "netMean": -0.05643551208781631,
+          "riskFraction": 0
+        },
+        "vol_expand": {
+          "n": 3,
+          "p": 0,
+          "payoff": 0,
+          "netMean": -0.06921565299345121,
+          "riskFraction": 0
+        }
+      },
+      "2024-10-01": {
+        "tsmom": {
+          "n": 1142,
+          "p": 0.329246935201401,
+          "payoff": 0.8052119001509651,
+          "netMean": -0.06185094978522358,
+          "riskFraction": 0
+        },
+        "adaptive_regime": {
+          "n": 35,
+          "p": 0.37142857142857144,
+          "payoff": 1.0886722346491917,
+          "netMean": -0.014407522892643836,
+          "riskFraction": 0
+        },
+        "pairs_trade": {
+          "n": 170,
+          "p": 0.08823529411764706,
+          "payoff": 0.783551355004577,
+          "netMean": -0.02654371928975587,
+          "riskFraction": 0
+        },
+        "donchian": {
+          "n": 159,
+          "p": 0.3522012578616352,
+          "payoff": 0.6628326766746817,
+          "netMean": -0.044653816051397587,
+          "riskFraction": 0
+        },
+        "atr_expand": {
+          "n": 10,
+          "p": 0.3,
+          "payoff": 0.5442569480062943,
+          "netMean": -0.05643551208781631,
+          "riskFraction": 0
+        },
+        "vol_expand": {
+          "n": 3,
+          "p": 0,
+          "payoff": 0,
+          "netMean": -0.06921565299345121,
+          "riskFraction": 0
+        }
+      },
+      "2025-01-01": {
+        "tsmom": {
+          "n": 1142,
+          "p": 0.329246935201401,
+          "payoff": 0.8052119001509651,
+          "netMean": -0.06185094978522358,
+          "riskFraction": 0
+        },
+        "adaptive_regime": {
+          "n": 35,
+          "p": 0.37142857142857144,
+          "payoff": 1.0886722346491917,
+          "netMean": -0.014407522892643836,
+          "riskFraction": 0
+        },
+        "pairs_trade": {
+          "n": 223,
+          "p": 0.10762331838565023,
+          "payoff": 1.0437703655183552,
+          "netMean": -0.024868535105702774,
+          "riskFraction": 0
+        },
+        "donchian": {
+          "n": 159,
+          "p": 0.3522012578616352,
+          "payoff": 0.6628326766746817,
+          "netMean": -0.044653816051397587,
+          "riskFraction": 0
+        },
+        "atr_expand": {
+          "n": 10,
+          "p": 0.3,
+          "payoff": 0.5442569480062943,
+          "netMean": -0.05643551208781631,
+          "riskFraction": 0
+        },
+        "vol_expand": {
+          "n": 3,
+          "p": 0,
+          "payoff": 0,
+          "netMean": -0.06921565299345121,
+          "riskFraction": 0
+        }
+      },
+      "2025-04-01": {
+        "tsmom": {
+          "n": 1142,
+          "p": 0.329246935201401,
+          "payoff": 0.8052119001509651,
+          "netMean": -0.06185094978522358,
+          "riskFraction": 0
+        },
+        "adaptive_regime": {
+          "n": 35,
+          "p": 0.37142857142857144,
+          "payoff": 1.0886722346491917,
+          "netMean": -0.014407522892643836,
+          "riskFraction": 0
+        },
+        "pairs_trade": {
+          "n": 223,
+          "p": 0.10762331838565023,
+          "payoff": 1.0437703655183552,
+          "netMean": -0.024868535105702774,
+          "riskFraction": 0
+        },
+        "donchian": {
+          "n": 159,
+          "p": 0.3522012578616352,
+          "payoff": 0.6628326766746817,
+          "netMean": -0.044653816051397587,
+          "riskFraction": 0
+        },
+        "atr_expand": {
+          "n": 10,
+          "p": 0.3,
+          "payoff": 0.5442569480062943,
+          "netMean": -0.05643551208781631,
+          "riskFraction": 0
+        },
+        "vol_expand": {
+          "n": 3,
+          "p": 0,
+          "payoff": 0,
+          "netMean": -0.06921565299345121,
+          "riskFraction": 0
+        }
+      },
+      "2025-07-01": {
+        "tsmom": {
+          "n": 1142,
+          "p": 0.329246935201401,
+          "payoff": 0.8052119001509651,
+          "netMean": -0.06185094978522358,
+          "riskFraction": 0
+        },
+        "adaptive_regime": {
+          "n": 35,
+          "p": 0.37142857142857144,
+          "payoff": 1.0886722346491917,
+          "netMean": -0.014407522892643836,
+          "riskFraction": 0
+        },
+        "pairs_trade": {
+          "n": 223,
+          "p": 0.10762331838565023,
+          "payoff": 1.0437703655183552,
+          "netMean": -0.024868535105702774,
+          "riskFraction": 0
+        },
+        "donchian": {
+          "n": 159,
+          "p": 0.3522012578616352,
+          "payoff": 0.6628326766746817,
+          "netMean": -0.044653816051397587,
+          "riskFraction": 0
+        },
+        "atr_expand": {
+          "n": 10,
+          "p": 0.3,
+          "payoff": 0.5442569480062943,
+          "netMean": -0.05643551208781631,
+          "riskFraction": 0
+        },
+        "vol_expand": {
+          "n": 3,
+          "p": 0,
+          "payoff": 0,
+          "netMean": -0.06921565299345121,
+          "riskFraction": 0
+        }
+      }
+    },
+    "REVERT": {
+      "2024-07-01": {
+        "rsi2dip": {
+          "n": 1470,
+          "p": 0.3034013605442177,
+          "payoff": 0.8181914009890731,
+          "netMean": -0.03790775069777286,
+          "riskFraction": 0
+        },
+        "pairs_trade": {
+          "n": 372,
+          "p": 0.17473118279569894,
+          "payoff": 1.832360863701197,
+          "netMean": -0.05347182730498472,
+          "riskFraction": 0
+        },
+        "adaptive_regime": {
+          "n": 12,
+          "p": 0.25,
+          "payoff": 0.5610960874916529,
+          "netMean": -0.08559530881862416,
+          "riskFraction": 0
+        },
+        "vwap_revert": {
+          "n": 2,
+          "p": 0,
+          "payoff": 0,
+          "netMean": -0.04716100601613786,
+          "riskFraction": 0
+        }
+      },
+      "2024-10-01": {
+        "rsi2dip": {
+          "n": 1533,
+          "p": 0.2987606001304631,
+          "payoff": 0.8083906449038151,
+          "netMean": -0.03784591819719119,
+          "riskFraction": 0
+        },
+        "pairs_trade": {
+          "n": 427,
+          "p": 0.18501170960187355,
+          "payoff": 1.6726658746359613,
+          "netMean": -0.04981098691209777,
+          "riskFraction": 0
+        },
+        "adaptive_regime": {
+          "n": 12,
+          "p": 0.25,
+          "payoff": 0.5610960874916529,
+          "netMean": -0.08559530881862416,
+          "riskFraction": 0
+        },
+        "vwap_revert": {
+          "n": 2,
+          "p": 0,
+          "payoff": 0,
+          "netMean": -0.04716100601613786,
+          "riskFraction": 0
+        }
+      },
+      "2025-01-01": {
+        "rsi2dip": {
+          "n": 1533,
+          "p": 0.2987606001304631,
+          "payoff": 0.8083906449038151,
+          "netMean": -0.03784591819719119,
+          "riskFraction": 0
+        },
+        "pairs_trade": {
+          "n": 597,
+          "p": 0.18425460636515914,
+          "payoff": 1.465265096880898,
+          "netMean": -0.04239625405239014,
+          "riskFraction": 0
+        },
+        "adaptive_regime": {
+          "n": 12,
+          "p": 0.25,
+          "payoff": 0.5610960874916529,
+          "netMean": -0.08559530881862416,
+          "riskFraction": 0
+        },
+        "vwap_revert": {
+          "n": 2,
+          "p": 0,
+          "payoff": 0,
+          "netMean": -0.04716100601613786,
+          "riskFraction": 0
+        }
+      },
+      "2025-04-01": {
+        "rsi2dip": {
+          "n": 1533,
+          "p": 0.2987606001304631,
+          "payoff": 0.8083906449038151,
+          "netMean": -0.03784591819719119,
+          "riskFraction": 0
+        },
+        "pairs_trade": {
+          "n": 597,
+          "p": 0.18425460636515914,
+          "payoff": 1.465265096880898,
+          "netMean": -0.04239625405239014,
+          "riskFraction": 0
+        },
+        "adaptive_regime": {
+          "n": 12,
+          "p": 0.25,
+          "payoff": 0.5610960874916529,
+          "netMean": -0.08559530881862416,
+          "riskFraction": 0
+        },
+        "vwap_revert": {
+          "n": 2,
+          "p": 0,
+          "payoff": 0,
+          "netMean": -0.04716100601613786,
+          "riskFraction": 0
+        }
+      },
+      "2025-07-01": {
+        "rsi2dip": {
+          "n": 1533,
+          "p": 0.2987606001304631,
+          "payoff": 0.8083906449038151,
+          "netMean": -0.03784591819719119,
+          "riskFraction": 0
+        },
+        "pairs_trade": {
+          "n": 597,
+          "p": 0.18425460636515914,
+          "payoff": 1.465265096880898,
+          "netMean": -0.04239625405239014,
+          "riskFraction": 0
+        },
+        "adaptive_regime": {
+          "n": 12,
+          "p": 0.25,
+          "payoff": 0.5610960874916529,
+          "netMean": -0.08559530881862416,
+          "riskFraction": 0
+        },
+        "vwap_revert": {
+          "n": 2,
+          "p": 0,
+          "payoff": 0,
+          "netMean": -0.04716100601613786,
+          "riskFraction": 0
+        }
+      }
+    }
+  },
+  "costs": {
+    "takerFeePerSide": 0.0005,
+    "slippagePlusHalfSpreadPerSide": 0.0012,
+    "modeledFundingPer8h": 0.0001
+  },
+  "results": {
+    "TREND": {
+      "baseline": {
+        "aggregate": {
+          "sharpe": -13.105868641199976,
+          "maxDrawdown": 0.9968073992951066,
+          "profitFactor": 0.44563953650153615,
+          "expectancyUsd": -0.05917686686930202,
+          "tradeCount": 5078,
+          "winRate": 0.29972430090586843,
+          "returnPct": -0.9966498242688367,
+          "finalEquity": 0.33501757311632074,
+          "feesUsd": 91.83740630405481,
+          "signedFundingUsd": -0.6656265344341686,
+          "grossPnlUsd": -207.9970971238263
+        },
+        "folds": [
+          {
+            "name": "2024Q3",
+            "sharpe": -13.927712536902776,
+            "maxDrawdown": 0.8077783601534858,
+            "profitFactor": 0.427312042455649,
+            "expectancyUsd": -0.061739443706929416,
+            "tradeCount": 1293,
+            "winRate": 0.28306264501160094,
+            "returnPct": -0.7982910071305954,
+            "finalEquity": 20.170899286940458,
+            "feesUsd": 22.94504484551555,
+            "signedFundingUsd": -0.011593154385653132,
+            "grossPnlUsd": -56.87246271315867
+          },
+          {
+            "name": "2024Q4",
+            "sharpe": -14.027025173371607,
+            "maxDrawdown": 0.7820057259693759,
+            "profitFactor": 0.3744051262086398,
+            "expectancyUsd": -0.06052251729702739,
+            "tradeCount": 1287,
+            "winRate": 0.2898212898212898,
+            "returnPct": -0.7789247976127425,
+            "finalEquity": 22.107520238725748,
+            "feesUsd": 24.005501085432744,
+            "signedFundingUsd": -0.256859492032522,
+            "grossPnlUsd": -53.630119183808866
+          },
+          {
+            "name": "2025Q1",
+            "sharpe": -9.51079446813267,
+            "maxDrawdown": 0.6330629590205037,
+            "profitFactor": 0.5639779276494665,
+            "expectancyUsd": -0.04994945179330911,
+            "tradeCount": 1265,
+            "winRate": 0.34466403162055337,
+            "returnPct": -0.63186056518536,
+            "finalEquity": 36.813943481463994,
+            "feesUsd": 20.97560400146081,
+            "signedFundingUsd": -0.22342355644208026,
+            "grossPnlUsd": -41.9870289606331
+          },
+          {
+            "name": "2025Q2",
+            "sharpe": -14.993792144397737,
+            "maxDrawdown": 0.799360859785019,
+            "profitFactor": 0.40267546675694366,
+            "expectancyUsd": -0.06455190021852797,
+            "tradeCount": 1233,
+            "winRate": 0.28142741281427414,
+            "returnPct": -0.7959249296944502,
+            "finalEquity": 20.407507030554978,
+            "feesUsd": 23.911256371645944,
+            "signedFundingUsd": -0.17375033157391526,
+            "grossPnlUsd": -55.50748626622522
+          }
+        ],
+        "holdout": {
+          "sharpe": -9.046151743234159,
+          "maxDrawdown": 0.8120505038752727,
+          "profitFactor": 0.4560562155720022,
+          "expectancyUsd": -0.05698707132084671,
+          "tradeCount": 1424,
+          "winRate": 0.29002808988764045,
+          "returnPct": -0.8114958956088575,
+          "finalEquity": 18.85041043911425,
+          "feesUsd": 31.93901016171232,
+          "signedFundingUsd": -0.5365805832641364,
+          "grossPnlUsd": -48.67399881590924
+        }
+      },
+      "ledger_wiring": {
+        "aggregate": {
+          "sharpe": -12.67639511422689,
+          "maxDrawdown": 0.9987855681737615,
+          "profitFactor": 0.4480034024287618,
+          "expectancyUsd": -0.06589329544681581,
+          "tradeCount": 4872,
+          "winRate": 0.30008210180623973,
+          "returnPct": -0.9987141939574702,
+          "finalEquity": 0.12858060425298448,
+          "feesUsd": 96.79066865861238,
+          "signedFundingUsd": -0.705427735742569,
+          "grossPnlUsd": -223.53603902253184
+        },
+        "folds": [
+          {
+            "name": "2024Q3",
+            "sharpe": -13.003870166037373,
+            "maxDrawdown": 0.8521961664782539,
+            "profitFactor": 0.4310741800989391,
+            "expectancyUsd": -0.06869350732724679,
+            "tradeCount": 1228,
+            "winRate": 0.28664495114006516,
+            "returnPct": -0.8435562699785896,
+            "finalEquity": 15.644373002141043,
+            "feesUsd": 24.236615461673992,
+            "signedFundingUsd": -0.023137546896404286,
+            "grossPnlUsd": -60.095873989288584
+          },
+          {
+            "name": "2024Q4",
+            "sharpe": -14.038569937524336,
+            "maxDrawdown": 0.8322450690974742,
+            "profitFactor": 0.3586570382837081,
+            "expectancyUsd": -0.07072372992278826,
+            "tradeCount": 1172,
+            "winRate": 0.2815699658703072,
+            "returnPct": -0.8288821146950779,
+            "finalEquity": 17.11178853049221,
+            "feesUsd": 24.06510928603394,
+            "signedFundingUsd": -0.26210381471295213,
+            "grossPnlUsd": -58.56099836876102
+          },
+          {
+            "name": "2025Q1",
+            "sharpe": -9.31589331755035,
+            "maxDrawdown": 0.6969040557548278,
+            "profitFactor": 0.5641411814542909,
+            "expectancyUsd": -0.05495654825833832,
+            "tradeCount": 1266,
+            "winRate": 0.3459715639810427,
+            "returnPct": -0.6957499009505617,
+            "finalEquity": 30.425009904943828,
+            "feesUsd": 23.078996569855263,
+            "signedFundingUsd": -0.27483345877184023,
+            "grossPnlUsd": -46.22116006642932
+          },
+          {
+            "name": "2025Q2",
+            "sharpe": -14.450964105992263,
+            "maxDrawdown": 0.8451728878255839,
+            "profitFactor": 0.41697817362844075,
+            "expectancyUsd": -0.06982861264880855,
+            "tradeCount": 1206,
+            "winRate": 0.2835820895522388,
+            "returnPct": -0.842133068544631,
+            "finalEquity": 15.786693145536898,
+            "feesUsd": 25.409947341048866,
+            "signedFundingUsd": -0.14535291536137257,
+            "grossPnlUsd": -58.6580065980529
+          }
+        ],
+        "holdout": {
+          "sharpe": -8.614788824902575,
+          "maxDrawdown": 0.842569047747129,
+          "profitFactor": 0.4721398982491503,
+          "expectancyUsd": -0.06158816040211889,
+          "tradeCount": 1367,
+          "winRate": 0.3013899049012436,
+          "returnPct": -0.8419101526969652,
+          "finalEquity": 15.80898473030348,
+          "feesUsd": 34.26969074870197,
+          "signedFundingUsd": -0.5725165822689503,
+          "grossPnlUsd": -49.348807938725756
+        },
+        "quartersBeaten": 0,
+        "screenPassed": false
+      },
+      "fractional_kelly": {
+        "aggregate": {
+          "sharpe": null,
+          "maxDrawdown": 0,
+          "profitFactor": null,
+          "expectancyUsd": null,
+          "tradeCount": 0,
+          "winRate": null,
+          "returnPct": 0,
+          "finalEquity": 100,
+          "feesUsd": 0,
+          "signedFundingUsd": 0,
+          "grossPnlUsd": 0
+        },
+        "folds": [
+          {
+            "name": "2024Q3",
+            "sharpe": null,
+            "maxDrawdown": 0,
+            "profitFactor": null,
+            "expectancyUsd": null,
+            "tradeCount": 0,
+            "winRate": null,
+            "returnPct": 0,
+            "finalEquity": 100,
+            "feesUsd": 0,
+            "signedFundingUsd": 0,
+            "grossPnlUsd": 0
+          },
+          {
+            "name": "2024Q4",
+            "sharpe": null,
+            "maxDrawdown": 0,
+            "profitFactor": null,
+            "expectancyUsd": null,
+            "tradeCount": 0,
+            "winRate": null,
+            "returnPct": 0,
+            "finalEquity": 100,
+            "feesUsd": 0,
+            "signedFundingUsd": 0,
+            "grossPnlUsd": 0
+          },
+          {
+            "name": "2025Q1",
+            "sharpe": null,
+            "maxDrawdown": 0,
+            "profitFactor": null,
+            "expectancyUsd": null,
+            "tradeCount": 0,
+            "winRate": null,
+            "returnPct": 0,
+            "finalEquity": 100,
+            "feesUsd": 0,
+            "signedFundingUsd": 0,
+            "grossPnlUsd": 0
+          },
+          {
+            "name": "2025Q2",
+            "sharpe": null,
+            "maxDrawdown": 0,
+            "profitFactor": null,
+            "expectancyUsd": null,
+            "tradeCount": 0,
+            "winRate": null,
+            "returnPct": 0,
+            "finalEquity": 100,
+            "feesUsd": 0,
+            "signedFundingUsd": 0,
+            "grossPnlUsd": 0
+          }
+        ],
+        "holdout": {
+          "sharpe": null,
+          "maxDrawdown": 0,
+          "profitFactor": null,
+          "expectancyUsd": null,
+          "tradeCount": 0,
+          "winRate": null,
+          "returnPct": 0,
+          "finalEquity": 100,
+          "feesUsd": 0,
+          "signedFundingUsd": 0,
+          "grossPnlUsd": 0
+        },
+        "quartersBeaten": 0,
+        "screenPassed": false
+      },
+      "exposure_cap": {
+        "aggregate": {
+          "sharpe": -16.707766508514595,
+          "maxDrawdown": 0.9723637272687097,
+          "profitFactor": 0.4404178706312101,
+          "expectancyUsd": -0.029134003249028644,
+          "tradeCount": 7946,
+          "winRate": 0.31412031210672037,
+          "returnPct": -0.9717969116567358,
+          "finalEquity": 2.8203088343264273,
+          "feesUsd": 68.04736947316,
+          "signedFundingUsd": -0.3873485512092233,
+          "grossPnlUsd": -163.06407179241222
+        },
+        "folds": [
+          {
+            "name": "2024Q3",
+            "sharpe": -17.204018707988038,
+            "maxDrawdown": 0.6332050030255487,
+            "profitFactor": 0.42411415699821453,
+            "expectancyUsd": -0.03153639593055673,
+            "tradeCount": 1984,
+            "winRate": 0.2908266129032258,
+            "returnPct": -0.6256820952622435,
+            "finalEquity": 37.43179047377564,
+            "feesUsd": 16.85054586791328,
+            "signedFundingUsd": 0.032312701964221105,
+            "grossPnlUsd": -45.749976360275326
+          },
+          {
+            "name": "2024Q4",
+            "sharpe": -19.392106014862385,
+            "maxDrawdown": 0.6736006522688996,
+            "profitFactor": 0.41946752286120964,
+            "expectancyUsd": -0.027439367699577544,
+            "tradeCount": 2453,
+            "winRate": 0.32123929881777413,
+            "returnPct": -0.673087689670639,
+            "finalEquity": 32.6912310329361,
+            "feesUsd": 20.34003130879512,
+            "signedFundingUsd": -0.24738854514547332,
+            "grossPnlUsd": -46.72134911312324
+          },
+          {
+            "name": "2025Q1",
+            "sharpe": -11.658619373596403,
+            "maxDrawdown": 0.40174029797719596,
+            "profitFactor": 0.555442295520535,
+            "expectancyUsd": -0.024997428822765545,
+            "tradeCount": 1604,
+            "winRate": 0.34413965087281795,
+            "returnPct": -0.40095875831716155,
+            "finalEquity": 59.90412416828384,
+            "feesUsd": 13.078701721121732,
+            "signedFundingUsd": -0.06939835928334932,
+            "grossPnlUsd": -26.94777575131085
+          },
+          {
+            "name": "2025Q2",
+            "sharpe": -19.257919307688493,
+            "maxDrawdown": 0.6184282839589809,
+            "profitFactor": 0.37800195812128656,
+            "expectancyUsd": -0.03229707899830794,
+            "tradeCount": 1905,
+            "winRate": 0.30393700787401573,
+            "returnPct": -0.6152593549177643,
+            "finalEquity": 38.47406450822356,
+            "feesUsd": 17.778090575329937,
+            "signedFundingUsd": -0.10287434874462172,
+            "grossPnlUsd": -43.644970567701975
+          }
+        ],
+        "holdout": {
+          "sharpe": -12.798136197499622,
+          "maxDrawdown": 0.7527780151212063,
+          "profitFactor": 0.42647450992464225,
+          "expectancyUsd": -0.02448779867355478,
+          "tradeCount": 3073,
+          "winRate": 0.3130491376505044,
+          "returnPct": -0.752510053238345,
+          "finalEquity": 24.748994676165502,
+          "feesUsd": 25.957814669334986,
+          "signedFundingUsd": -0.48166322122276267,
+          "grossPnlUsd": -48.811527433276396
+        },
+        "quartersBeaten": 0,
+        "screenPassed": false
+      },
+      "kill_switch": {
+        "aggregate": {
+          "sharpe": -3.5198577799513875,
+          "maxDrawdown": 0.3441495510317202,
+          "profitFactor": 0.6020932382476495,
+          "expectancyUsd": -0.07354329744215472,
+          "tradeCount": 456,
+          "winRate": 0.3508771929824561,
+          "returnPct": -0.2966969434754262,
+          "finalEquity": 70.33030565245738,
+          "feesUsd": 12.991909132610544,
+          "signedFundingUsd": 0.05873276106399458,
+          "grossPnlUsd": -20.602567262076
+        },
+        "folds": [
+          {
+            "name": "2024Q3",
+            "sharpe": -1.6848477061033615,
+            "maxDrawdown": 0.1020357461805092,
+            "profitFactor": 0.8463603801600226,
+            "expectancyUsd": -0.03195304325523397,
+            "tradeCount": 116,
+            "winRate": 0.3793103448275862,
+            "returnPct": -0.03706553017607139,
+            "finalEquity": 96.29344698239287,
+            "feesUsd": 4.6052330537305295,
+            "signedFundingUsd": 0.10849483020738944,
+            "grossPnlUsd": 0.7901852059160026
+          },
+          {
+            "name": "2024Q4",
+            "sharpe": -4.600283151004811,
+            "maxDrawdown": 0.1001211270399611,
+            "profitFactor": 0.22926302627817638,
+            "expectancyUsd": -0.1724905793225154,
+            "tradeCount": 56,
+            "winRate": 0.2857142857142857,
+            "returnPct": -0.09659472442060912,
+            "finalEquity": 90.34052755793908,
+            "feesUsd": 1.9490112955064787,
+            "signedFundingUsd": -0.006333123420211462,
+            "grossPnlUsd": -7.704128023134173
+          },
+          {
+            "name": "2025Q1",
+            "sharpe": -3.458627348326124,
+            "maxDrawdown": 0.10593957256019289,
+            "profitFactor": 0.6894042043351272,
+            "expectancyUsd": -0.0507437832147393,
+            "tradeCount": 203,
+            "winRate": 0.3842364532019704,
+            "returnPct": -0.10300987992592014,
+            "finalEquity": 89.69901200740799,
+            "feesUsd": 4.353674332300917,
+            "signedFundingUsd": -0.07607814969335537,
+            "grossPnlUsd": -5.871235510597803
+          },
+          {
+            "name": "2025Q2",
+            "sharpe": -4.488141308529027,
+            "maxDrawdown": 0.10223656025037486,
+            "profitFactor": 0.3173923757141459,
+            "expectancyUsd": -0.12183617507854898,
+            "tradeCount": 81,
+            "winRate": 0.2716049382716049,
+            "returnPct": -0.09868730181362384,
+            "finalEquity": 90.13126981863762,
+            "feesUsd": 2.0839904510726126,
+            "signedFundingUsd": 0.032649203970172,
+            "grossPnlUsd": -7.817388934260025
+          }
+        ],
+        "holdout": {
+          "sharpe": -3.4728463727172705,
+          "maxDrawdown": 0.10223914696475883,
+          "profitFactor": 0.19774428936690058,
+          "expectancyUsd": -0.1051180369443761,
+          "tradeCount": 95,
+          "winRate": 0.28421052631578947,
+          "returnPct": -0.09986213509715758,
+          "finalEquity": 90.01378649028425,
+          "feesUsd": 3.5259888133906387,
+          "signedFundingUsd": -0.042032490380463944,
+          "grossPnlUsd": -6.418192205944633
+        },
+        "quartersBeaten": 0,
+        "screenPassed": false
+      },
+      "no_unhedged_pairs": {
+        "aggregate": {
+          "sharpe": -12.738495255023118,
+          "maxDrawdown": 0.9968237259016743,
+          "profitFactor": 0.43753484055338365,
+          "expectancyUsd": -0.061937737720170305,
+          "tradeCount": 4854,
+          "winRate": 0.3046971569839308,
+          "returnPct": -0.9966669566966445,
+          "finalEquity": 0.33330433033554424,
+          "feesUsd": 90.71966518847901,
+          "signedFundingUsd": -0.904734378158095,
+          "grossPnlUsd": -209.02137932706836
+        },
+        "folds": [
+          {
+            "name": "2024Q3",
+            "sharpe": -13.476812337916227,
+            "maxDrawdown": 0.809038788561978,
+            "profitFactor": 0.4188084815989779,
+            "expectancyUsd": -0.06453701740505502,
+            "tradeCount": 1239,
+            "winRate": 0.29055690072639223,
+            "returnPct": -0.7996136456486309,
+            "finalEquity": 20.038635435136907,
+            "feesUsd": 22.515923288616168,
+            "signedFundingUsd": -0.06320053391563624,
+            "grossPnlUsd": -57.382240742331426
+          },
+          {
+            "name": "2024Q4",
+            "sharpe": -13.421311418155284,
+            "maxDrawdown": 0.7804252300231576,
+            "profitFactor": 0.38239499770907504,
+            "expectancyUsd": -0.06157578332398631,
+            "tradeCount": 1266,
+            "winRate": 0.31200631911532384,
+            "returnPct": -0.7795494168816678,
+            "finalEquity": 22.045058311833223,
+            "feesUsd": 24.30107779114564,
+            "signedFundingUsd": -0.3474969618953629,
+            "grossPnlUsd": -53.30636693512567
+          },
+          {
+            "name": "2025Q1",
+            "sharpe": -9.316474490844342,
+            "maxDrawdown": 0.6366170053713741,
+            "profitFactor": 0.5436463577403637,
+            "expectancyUsd": -0.053350014366766715,
+            "tradeCount": 1186,
+            "winRate": 0.33979763912310285,
+            "returnPct": -0.6327311703898528,
+            "finalEquity": 36.72688296101472,
+            "feesUsd": 20.03911653730326,
+            "signedFundingUsd": -0.30408908081825603,
+            "grossPnlUsd": -42.929911420863846
+          },
+          {
+            "name": "2025Q2",
+            "sharpe": -14.770560152850972,
+            "maxDrawdown": 0.7980224070099496,
+            "profitFactor": 0.3983407109747657,
+            "expectancyUsd": -0.06832016818718067,
+            "tradeCount": 1163,
+            "winRate": 0.2760103181427343,
+            "returnPct": -0.7945635560169102,
+            "finalEquity": 20.543644398308984,
+            "feesUsd": 23.86354757141398,
+            "signedFundingUsd": -0.18994780152884022,
+            "grossPnlUsd": -55.402860228748125
+          }
+        ],
+        "holdout": {
+          "sharpe": -8.8282090623187,
+          "maxDrawdown": 0.8112969669151521,
+          "profitFactor": 0.4560081156814549,
+          "expectancyUsd": -0.05762596557899506,
+          "tradeCount": 1407,
+          "winRate": 0.2899786780383795,
+          "returnPct": -0.8107973356964611,
+          "finalEquity": 18.920266430353895,
+          "feesUsd": 31.896176786192335,
+          "signedFundingUsd": -0.5327686979377604,
+          "grossPnlUsd": -48.65078808551586
+        },
+        "quartersBeaten": 0,
+        "screenPassed": false
+      },
+      "mtf_filter": {
+        "aggregate": {
+          "sharpe": -13.17152251727632,
+          "maxDrawdown": 0.9894808389083217,
+          "profitFactor": 0.4877116160112332,
+          "expectancyUsd": -0.06110908991835351,
+          "tradeCount": 4360,
+          "winRate": 0.31077981651376146,
+          "returnPct": -0.9889795984267679,
+          "finalEquity": 1.1020401573232181,
+          "feesUsd": 84.94432147912718,
+          "signedFundingUsd": -0.6025393131429273,
+          "grossPnlUsd": -180.88877125175168
+        },
+        "folds": [
+          {
+            "name": "2024Q3",
+            "sharpe": -12.913182784358124,
+            "maxDrawdown": 0.7335806839780225,
+            "profitFactor": 0.5021248504265936,
+            "expectancyUsd": -0.06343641799043549,
+            "tradeCount": 1136,
+            "winRate": 0.29401408450704225,
+            "returnPct": -0.7206377083713473,
+            "finalEquity": 27.93622916286527,
+            "feesUsd": 21.54894965155693,
+            "signedFundingUsd": 0.02718553859957508,
+            "grossPnlUsd": -50.54200672417749
+          },
+          {
+            "name": "2024Q4",
+            "sharpe": -16.863483306103877,
+            "maxDrawdown": 0.7256385165488327,
+            "profitFactor": 0.4270872273186621,
+            "expectancyUsd": -0.06120855099005287,
+            "tradeCount": 1185,
+            "winRate": 0.30886075949367087,
+            "returnPct": -0.7253213292321274,
+            "finalEquity": 27.467867076787254,
+            "feesUsd": 22.91025272952107,
+            "signedFundingUsd": -0.39369645136966086,
+            "grossPnlUsd": -49.22818374232172
+          },
+          {
+            "name": "2025Q1",
+            "sharpe": -8.45760977669678,
+            "maxDrawdown": 0.5145250880301181,
+            "profitFactor": 0.584769352654517,
+            "expectancyUsd": -0.05215808385715354,
+            "tradeCount": 985,
+            "winRate": 0.34517766497461927,
+            "returnPct": -0.5137571259929625,
+            "finalEquity": 48.62428740070375,
+            "feesUsd": 18.116188294932915,
+            "signedFundingUsd": -0.14202946527056118,
+            "grossPnlUsd": -33.117494839092586
+          },
+          {
+            "name": "2025Q2",
+            "sharpe": -15.592073510701944,
+            "maxDrawdown": 0.7100741514059045,
+            "profitFactor": 0.43635986161596024,
+            "expectancyUsd": -0.06685390482388757,
+            "tradeCount": 1054,
+            "winRate": 0.29886148007590135,
+            "returnPct": -0.7046401568437765,
+            "finalEquity": 29.535984315622354,
+            "feesUsd": 22.36893080311616,
+            "signedFundingUsd": -0.09399893510228007,
+            "grossPnlUsd": -48.001085946158994
+          }
+        ],
+        "holdout": {
+          "sharpe": -10.872818644359985,
+          "maxDrawdown": 0.791505485645673,
+          "profitFactor": 0.455591056025452,
+          "expectancyUsd": -0.05617567132752089,
+          "tradeCount": 1408,
+          "winRate": 0.2940340909090909,
+          "returnPct": -0.7909534522914958,
+          "finalEquity": 20.904654770850414,
+          "feesUsd": 29.87937194347191,
+          "signedFundingUsd": -0.5957580914586894,
+          "grossPnlUsd": -48.620215194219
+        },
+        "quartersBeaten": 0,
+        "screenPassed": false
+      },
+      "hold_24h": {
+        "aggregate": {
+          "sharpe": -2.561595285150772,
+          "maxDrawdown": 0.8756673287410726,
+          "profitFactor": 0.7999971128841037,
+          "expectancyUsd": -0.0933104036370952,
+          "tradeCount": 1459,
+          "winRate": 0.3708019191226868,
+          "returnPct": -0.8304377051872834,
+          "finalEquity": 16.956229481271656,
+          "feesUsd": 38.17885874812087,
+          "signedFundingUsd": -2.417380747610415,
+          "grossPnlUsd": -95.54363941079096
+        },
+        "folds": [
+          {
+            "name": "2024Q3",
+            "sharpe": -4.819375195584278,
+            "maxDrawdown": 0.6852787862196006,
+            "profitFactor": 0.6424387728332955,
+            "expectancyUsd": -0.1616468817698847,
+            "tradeCount": 353,
+            "winRate": 0.3342776203966006,
+            "returnPct": -0.5706134926476959,
+            "finalEquity": 42.93865073523041,
+            "feesUsd": 8.170430606321961,
+            "signedFundingUsd": 0.4130929374757066,
+            "grossPnlUsd": -49.304011595923065
+          },
+          {
+            "name": "2024Q4",
+            "sharpe": -0.5709221836160909,
+            "maxDrawdown": 0.42662730653397374,
+            "profitFactor": 0.934004499528089,
+            "expectancyUsd": -0.03724739815289944,
+            "tradeCount": 495,
+            "winRate": 0.3939393939393939,
+            "returnPct": -0.1843746208568514,
+            "finalEquity": 81.56253791431486,
+            "feesUsd": 15.952576127633026,
+            "signedFundingUsd": -2.495499864144687,
+            "grossPnlUsd": 0.010613906092494463
+          },
+          {
+            "name": "2025Q1",
+            "sharpe": -2.462992009635268,
+            "maxDrawdown": 0.3768805890539283,
+            "profitFactor": 0.7912161105782287,
+            "expectancyUsd": -0.08789047915202175,
+            "tradeCount": 303,
+            "winRate": 0.3795379537953795,
+            "returnPct": -0.2663081518306244,
+            "finalEquity": 73.36918481693756,
+            "feesUsd": 6.398837973818288,
+            "signedFundingUsd": -0.17264649100820584,
+            "grossPnlUsd": -20.0593307182361
+          },
+          {
+            "name": "2025Q2",
+            "sharpe": -3.3992900282058214,
+            "maxDrawdown": 0.46239392002683366,
+            "profitFactor": 0.7021299179762196,
+            "expectancyUsd": -0.11042289731495156,
+            "tradeCount": 308,
+            "winRate": 0.36688311688311687,
+            "returnPct": -0.34010252373005034,
+            "finalEquity": 65.98974762699497,
+            "feesUsd": 7.657014040347637,
+            "signedFundingUsd": -0.1623273299332258,
+            "grossPnlUsd": -26.190911002724217
+          }
+        ],
+        "holdout": {
+          "sharpe": -1.125664646418225,
+          "maxDrawdown": 0.6663066717172059,
+          "profitFactor": 0.865309960249639,
+          "expectancyUsd": -0.06037505471250945,
+          "tradeCount": 702,
+          "winRate": 0.4444444444444444,
+          "returnPct": -0.4238328840818174,
+          "finalEquity": 57.61671159181826,
+          "feesUsd": 22.61327076343447,
+          "signedFundingUsd": -3.157977739094523,
+          "grossPnlUsd": -16.612039905652672
+        },
+        "quartersBeaten": 0,
+        "screenPassed": false
+      },
+      "cooldown_4h": {
+        "aggregate": {
+          "sharpe": -12.917999967858382,
+          "maxDrawdown": 0.9640051054377939,
+          "profitFactor": 0.44465292447327887,
+          "expectancyUsd": -0.06693704201623094,
+          "tradeCount": 3299,
+          "winRate": 0.32070324340709305,
+          "returnPct": -0.9628438130446431,
+          "finalEquity": 3.715618695535696,
+          "feesUsd": 67.31659905418988,
+          "signedFundingUsd": -0.3893907009790199,
+          "grossPnlUsd": -153.11931185637735
+        },
+        "folds": [
+          {
+            "name": "2024Q3",
+            "sharpe": -9.221205396857547,
+            "maxDrawdown": 0.5613232918292381,
+            "profitFactor": 0.5122481861078562,
+            "expectancyUsd": -0.06144397472469635,
+            "tradeCount": 891,
+            "winRate": 0.3176206509539843,
+            "returnPct": -0.5474658147970424,
+            "finalEquity": 45.25341852029577,
+            "feesUsd": 18.832336498044075,
+            "signedFundingUsd": 0.08975935283029737,
+            "grossPnlUsd": -36.00400433449058
+          },
+          {
+            "name": "2024Q4",
+            "sharpe": -16.488647818493085,
+            "maxDrawdown": 0.6351891497916448,
+            "profitFactor": 0.43093946709510045,
+            "expectancyUsd": -0.0634395447905505,
+            "tradeCount": 999,
+            "winRate": 0.32732732732732733,
+            "returnPct": -0.6337610524576005,
+            "finalEquity": 36.62389475423994,
+            "feesUsd": 19.766617651403795,
+            "signedFundingUsd": -0.2816939254167078,
+            "grossPnlUsd": -43.327793668939414
+          },
+          {
+            "name": "2025Q1",
+            "sharpe": -10.638547040149787,
+            "maxDrawdown": 0.40308340301039114,
+            "profitFactor": 0.5126424127463164,
+            "expectancyUsd": -0.06258550055493022,
+            "tradeCount": 642,
+            "winRate": 0.3598130841121495,
+            "returnPct": -0.4017989135626514,
+            "finalEquity": 59.820108643734855,
+            "feesUsd": 12.541161737783582,
+            "signedFundingUsd": -0.09801391555465289,
+            "grossPnlUsd": -27.54071570292694
+          },
+          {
+            "name": "2025Q2",
+            "sharpe": -19.06737568901307,
+            "maxDrawdown": 0.626946575695911,
+            "profitFactor": 0.31727337008096146,
+            "expectancyUsd": -0.0815159368054977,
+            "tradeCount": 767,
+            "winRate": 0.28292046936114734,
+            "returnPct": -0.6252272352981694,
+            "finalEquity": 37.47727647018307,
+            "feesUsd": 16.176483166958484,
+            "signedFundingUsd": -0.09944221283795644,
+            "grossPnlUsd": -46.24679815002035
+          }
+        ],
+        "holdout": {
+          "sharpe": -10.451344810497172,
+          "maxDrawdown": 0.7373200611510232,
+          "profitFactor": 0.4292826447982685,
+          "expectancyUsd": -0.05937454510849072,
+          "tradeCount": 1239,
+          "winRate": 0.3099273607748184,
+          "returnPct": -0.7356506138942014,
+          "finalEquity": 26.434938610579856,
+          "feesUsd": 25.544837208044765,
+          "signedFundingUsd": -0.503386771761402,
+          "grossPnlUsd": -47.516837409613885
+        },
+        "quartersBeaten": 0,
+        "screenPassed": false
+      }
+    },
+    "REVERT": {
+      "baseline": {
+        "aggregate": {
+          "sharpe": -13.547662303773956,
+          "maxDrawdown": 0.9750833120294824,
+          "profitFactor": 0.33708725413922097,
+          "expectancyUsd": -0.05190526605463225,
+          "tradeCount": 4603,
+          "winRate": 0.3000217249619813,
+          "returnPct": -0.9749395398954581,
+          "finalEquity": 2.5060460104541917,
+          "feesUsd": 61.38002747204195,
+          "signedFundingUsd": 0.04724211955147902,
+          "grossPnlUsd": -177.58715429698162
+        },
+        "folds": [
+          {
+            "name": "2024Q3",
+            "sharpe": -13.601805722097877,
+            "maxDrawdown": 0.5918090204000896,
+            "profitFactor": 0.27307616400823165,
+            "expectancyUsd": -0.05955327878296375,
+            "tradeCount": 990,
+            "winRate": 0.2878787878787879,
+            "returnPct": -0.5895774599513417,
+            "finalEquity": 41.042254004865825,
+            "feesUsd": 13.663869611067518,
+            "signedFundingUsd": 0.08250830022699225,
+            "grossPnlUsd": -45.37638468429354
+          },
+          {
+            "name": "2024Q4",
+            "sharpe": -15.745388238520139,
+            "maxDrawdown": 0.6938616951829963,
+            "profitFactor": 0.25894466029016744,
+            "expectancyUsd": -0.053044908632271424,
+            "tradeCount": 1308,
+            "winRate": 0.25535168195718655,
+            "returnPct": -0.693827404910111,
+            "finalEquity": 30.6172595089889,
+            "feesUsd": 17.888450994659614,
+            "signedFundingUsd": 0.12923486699777365,
+            "grossPnlUsd": -51.623524363349205
+          },
+          {
+            "name": "2025Q1",
+            "sharpe": -11.334762095591627,
+            "maxDrawdown": 0.5324475731916324,
+            "profitFactor": 0.48116162141084096,
+            "expectancyUsd": -0.043434913831407296,
+            "tradeCount": 1223,
+            "winRate": 0.36140637775960754,
+            "returnPct": -0.5312089961581101,
+            "finalEquity": 46.87910038418898,
+            "feesUsd": 15.137614607241204,
+            "signedFundingUsd": -0.1884623448237767,
+            "grossPnlUsd": -37.794822663746146
+          },
+          {
+            "name": "2025Q2",
+            "sharpe": -13.492341590730401,
+            "maxDrawdown": 0.5787681284892302,
+            "profitFactor": 0.31015764333841855,
+            "expectancyUsd": -0.053104023611382535,
+            "tradeCount": 1082,
+            "winRate": 0.2957486136783734,
+            "returnPct": -0.5745855354751599,
+            "finalEquity": 42.54144645248402,
+            "feesUsd": 14.690092259073575,
+            "signedFundingUsd": 0.023961297150489957,
+            "grossPnlUsd": -42.792422585592895
+          }
+        ],
+        "holdout": {
+          "sharpe": -10.9821680240753,
+          "maxDrawdown": 0.7322966425130963,
+          "profitFactor": 0.2833404274016098,
+          "expectancyUsd": -0.04432850097798553,
+          "tradeCount": 1651,
+          "winRate": 0.2919442761962447,
+          "returnPct": -0.7318635511465399,
+          "finalEquity": 26.813644885346005,
+          "feesUsd": 19.893917990319025,
+          "signedFundingUsd": -0.29655297491456983,
+          "grossPnlUsd": -52.99588414942055
+        }
+      },
+      "ledger_wiring": {
+        "aggregate": {
+          "sharpe": -13.582722845114283,
+          "maxDrawdown": 0.9883077672427892,
+          "profitFactor": 0.3396322682189032,
+          "expectancyUsd": -0.0570542233391517,
+          "tradeCount": 4663,
+          "winRate": 0.30152262491957965,
+          "returnPct": -0.9882165526574961,
+          "finalEquity": 1.1783447342503932,
+          "feesUsd": 68.38669117532018,
+          "signedFundingUsd": 0.06204400535452581,
+          "grossPnlUsd": -197.71919626049868
+        },
+        "folds": [
+          {
+            "name": "2024Q3",
+            "sharpe": -13.945663735028086,
+            "maxDrawdown": 0.6662764604668063,
+            "profitFactor": 0.26955428681955673,
+            "expectancyUsd": -0.06542747375188784,
+            "tradeCount": 1015,
+            "winRate": 0.2857142857142857,
+            "returnPct": -0.6640888585816628,
+            "finalEquity": 33.59111414183372,
+            "feesUsd": 15.205467056407501,
+            "signedFundingUsd": 0.08418725187656045,
+            "grossPnlUsd": -51.28760605363505
+          },
+          {
+            "name": "2024Q4",
+            "sharpe": -15.495859453521854,
+            "maxDrawdown": 0.7560230199706522,
+            "profitFactor": 0.2643141358214637,
+            "expectancyUsd": -0.05705586617383268,
+            "tradeCount": 1325,
+            "winRate": 0.2611320754716981,
+            "returnPct": -0.7559902268032845,
+            "finalEquity": 24.40097731967154,
+            "feesUsd": 19.586016997128752,
+            "signedFundingUsd": 0.15911147145792137,
+            "grossPnlUsd": -56.17211715465755
+          },
+          {
+            "name": "2025Q1",
+            "sharpe": -11.371980872681274,
+            "maxDrawdown": 0.5990357978690953,
+            "profitFactor": 0.48217475384259223,
+            "expectancyUsd": -0.048638001190477904,
+            "tradeCount": 1229,
+            "winRate": 0.36126932465419037,
+            "returnPct": -0.5977610346309719,
+            "finalEquity": 40.22389653690281,
+            "feesUsd": 17.04951540503271,
+            "signedFundingUsd": -0.21072467303218978,
+            "grossPnlUsd": -42.51586338503249
+          },
+          {
+            "name": "2025Q2",
+            "sharpe": -13.50956494014105,
+            "maxDrawdown": 0.6471158971123695,
+            "profitFactor": 0.3146345215398024,
+            "expectancyUsd": -0.05873841995326587,
+            "tradeCount": 1094,
+            "winRate": 0.2979890310786106,
+            "returnPct": -0.6425983142887257,
+            "finalEquity": 35.740168571127434,
+            "feesUsd": 16.54569171675117,
+            "signedFundingUsd": 0.02946995505223432,
+            "grossPnlUsd": -47.743609667173764
+          }
+        ],
+        "holdout": {
+          "sharpe": -11.128389305833188,
+          "maxDrawdown": 0.7917967398757494,
+          "profitFactor": 0.28517753714543376,
+          "expectancyUsd": -0.048305316763918915,
+          "tradeCount": 1637,
+          "winRate": 0.28649969456322544,
+          "returnPct": -0.7907580354253526,
+          "finalEquity": 20.92419645746474,
+          "feesUsd": 21.481759319921583,
+          "signedFundingUsd": -0.31641125743497406,
+          "grossPnlUsd": -57.27763296517881
+        },
+        "quartersBeaten": 0,
+        "screenPassed": false
+      },
+      "fractional_kelly": {
+        "aggregate": {
+          "sharpe": null,
+          "maxDrawdown": 0,
+          "profitFactor": null,
+          "expectancyUsd": null,
+          "tradeCount": 0,
+          "winRate": null,
+          "returnPct": 0,
+          "finalEquity": 100,
+          "feesUsd": 0,
+          "signedFundingUsd": 0,
+          "grossPnlUsd": 0
+        },
+        "folds": [
+          {
+            "name": "2024Q3",
+            "sharpe": null,
+            "maxDrawdown": 0,
+            "profitFactor": null,
+            "expectancyUsd": null,
+            "tradeCount": 0,
+            "winRate": null,
+            "returnPct": 0,
+            "finalEquity": 100,
+            "feesUsd": 0,
+            "signedFundingUsd": 0,
+            "grossPnlUsd": 0
+          },
+          {
+            "name": "2024Q4",
+            "sharpe": null,
+            "maxDrawdown": 0,
+            "profitFactor": null,
+            "expectancyUsd": null,
+            "tradeCount": 0,
+            "winRate": null,
+            "returnPct": 0,
+            "finalEquity": 100,
+            "feesUsd": 0,
+            "signedFundingUsd": 0,
+            "grossPnlUsd": 0
+          },
+          {
+            "name": "2025Q1",
+            "sharpe": null,
+            "maxDrawdown": 0,
+            "profitFactor": null,
+            "expectancyUsd": null,
+            "tradeCount": 0,
+            "winRate": null,
+            "returnPct": 0,
+            "finalEquity": 100,
+            "feesUsd": 0,
+            "signedFundingUsd": 0,
+            "grossPnlUsd": 0
+          },
+          {
+            "name": "2025Q2",
+            "sharpe": null,
+            "maxDrawdown": 0,
+            "profitFactor": null,
+            "expectancyUsd": null,
+            "tradeCount": 0,
+            "winRate": null,
+            "returnPct": 0,
+            "finalEquity": 100,
+            "feesUsd": 0,
+            "signedFundingUsd": 0,
+            "grossPnlUsd": 0
+          }
+        ],
+        "holdout": {
+          "sharpe": null,
+          "maxDrawdown": 0,
+          "profitFactor": null,
+          "expectancyUsd": null,
+          "tradeCount": 0,
+          "winRate": null,
+          "returnPct": 0,
+          "finalEquity": 100,
+          "feesUsd": 0,
+          "signedFundingUsd": 0,
+          "grossPnlUsd": 0
+        },
+        "quartersBeaten": 0,
+        "screenPassed": false
+      },
+      "exposure_cap": {
+        "aggregate": {
+          "sharpe": -13.770550342588356,
+          "maxDrawdown": 0.9203316626772241,
+          "profitFactor": 0.34524164807696706,
+          "expectancyUsd": -0.037168896619415324,
+          "tradeCount": 4992,
+          "winRate": 0.3056891025641026,
+          "returnPct": -0.919986851379781,
+          "finalEquity": 8.001314862021903,
+          "feesUsd": 48.759101570003956,
+          "signedFundingUsd": 0.01856205389596672,
+          "grossPnlUsd": -136.8065924080125
+        },
+        "folds": [
+          {
+            "name": "2024Q3",
+            "sharpe": -14.077135443561714,
+            "maxDrawdown": 0.45785514093131824,
+            "profitFactor": 0.2674643816536462,
+            "expectancyUsd": -0.04434597418948074,
+            "tradeCount": 1028,
+            "winRate": 0.2830739299610895,
+            "returnPct": -0.45587661466786233,
+            "finalEquity": 54.41233853321377,
+            "feesUsd": 10.47096937288589,
+            "signedFundingUsd": 0.06322198417956157,
+            "grossPnlUsd": -35.17991407807986
+          },
+          {
+            "name": "2024Q4",
+            "sharpe": -16.473135678313042,
+            "maxDrawdown": 0.570745425541456,
+            "profitFactor": 0.29885126128853706,
+            "expectancyUsd": -0.0361210994893669,
+            "tradeCount": 1580,
+            "winRate": 0.28354430379746837,
+            "returnPct": -0.5707133719319951,
+            "finalEquity": 42.92866280680049,
+            "feesUsd": 15.58272111506414,
+            "signedFundingUsd": 0.07586949282811398,
+            "grossPnlUsd": -41.56448557096379
+          },
+          {
+            "name": "2025Q1",
+            "sharpe": -11.256236811636049,
+            "maxDrawdown": 0.397187278348684,
+            "profitFactor": 0.48496770362435604,
+            "expectancyUsd": -0.031166238302255823,
+            "tradeCount": 1271,
+            "winRate": 0.36034618410700237,
+            "returnPct": -0.3961228888216708,
+            "finalEquity": 60.38771111783292,
+            "feesUsd": 11.537764180939114,
+            "signedFundingUsd": -0.143123764622418,
+            "grossPnlUsd": -27.931400936605616
+          },
+          {
+            "name": "2025Q2",
+            "sharpe": -13.365114324924713,
+            "maxDrawdown": 0.4367561264157391,
+            "profitFactor": 0.31134133556541904,
+            "expectancyUsd": -0.03888216027130976,
+            "tradeCount": 1113,
+            "winRate": 0.29559748427672955,
+            "returnPct": -0.4327584438196801,
+            "finalEquity": 56.72415561803199,
+            "feesUsd": 11.167646901114933,
+            "signedFundingUsd": 0.022594341510709336,
+            "grossPnlUsd": -32.130791822363534
+          }
+        ],
+        "holdout": {
+          "sharpe": -11.810066239977218,
+          "maxDrawdown": 0.6415640350748424,
+          "profitFactor": 0.2883105071074315,
+          "expectancyUsd": -0.03130052891532568,
+          "tradeCount": 2047,
+          "winRate": 0.2989741084513923,
+          "returnPct": -0.640721826896717,
+          "finalEquity": 35.92781731032831,
+          "feesUsd": 17.398745234672433,
+          "signedFundingUsd": -0.23926603927572176,
+          "grossPnlUsd": -46.434171415723526
+        },
+        "quartersBeaten": 0,
+        "screenPassed": false
+      },
+      "kill_switch": {
+        "aggregate": {
+          "sharpe": -5.174369694731753,
+          "maxDrawdown": 0.3426174375221802,
+          "profitFactor": 0.2542364259188268,
+          "expectancyUsd": -0.08177427173586461,
+          "tradeCount": 487,
+          "winRate": 0.26078028747433263,
+          "returnPct": -0.3426174375221802,
+          "finalEquity": 65.73825624778198,
+          "feesUsd": 8.340421477557097,
+          "signedFundingUsd": 0.033679251968664614,
+          "grossPnlUsd": -31.51732810977761
+        },
+        "folds": [
+          {
+            "name": "2024Q3",
+            "sharpe": -6.086857751761078,
+            "maxDrawdown": 0.10009360481820735,
+            "profitFactor": 0.1611387800740776,
+            "expectancyUsd": -0.10879739654152877,
+            "tradeCount": 92,
+            "winRate": 0.25,
+            "returnPct": -0.1000936048182074,
+            "finalEquity": 89.99063951817926,
+            "feesUsd": 1.72301035302671,
+            "signedFundingUsd": 0.023952117872844556,
+            "grossPnlUsd": -8.310302246666778
+          },
+          {
+            "name": "2024Q4",
+            "sharpe": -4.747419856673788,
+            "maxDrawdown": 0.100444621579678,
+            "profitFactor": 0.056987858800062054,
+            "expectancyUsd": -0.12388131259319476,
+            "tradeCount": 81,
+            "winRate": 0.1111111111111111,
+            "returnPct": -0.10034386320048772,
+            "finalEquity": 89.96561367995123,
+            "feesUsd": 1.7552542227227044,
+            "signedFundingUsd": 0.01829465468436525,
+            "grossPnlUsd": -8.297426752010438
+          },
+          {
+            "name": "2025Q1",
+            "sharpe": -4.918694680519827,
+            "maxDrawdown": 0.10036120267959588,
+            "profitFactor": 0.23792421453146276,
+            "expectancyUsd": -0.08558100289159315,
+            "tradeCount": 115,
+            "winRate": 0.3217391304347826,
+            "returnPct": -0.09841815332533344,
+            "finalEquity": 90.15818466746666,
+            "feesUsd": 2.021976892644272,
+            "signedFundingUsd": -0.03240808184264089,
+            "grossPnlUsd": -7.787430358046307
+          },
+          {
+            "name": "2025Q2",
+            "sharpe": -5.127554637755614,
+            "maxDrawdown": 0.10309419586532202,
+            "profitFactor": 0.4451805462034525,
+            "expectancyUsd": -0.0499422522661478,
+            "tradeCount": 199,
+            "winRate": 0.2914572864321608,
+            "returnPct": -0.0993850820096327,
+            "finalEquity": 90.06149179903673,
+            "feesUsd": 2.840180009163407,
+            "signedFundingUsd": 0.023840561254095703,
+            "grossPnlUsd": -7.122168753054099
+          }
+        ],
+        "holdout": {
+          "sharpe": -4.475189053970722,
+          "maxDrawdown": 0.1006132616272741,
+          "profitFactor": 0.3483440786874512,
+          "expectancyUsd": -0.06011417142107643,
+          "tradeCount": 166,
+          "winRate": 0.3373493975903614,
+          "returnPct": -0.09978952455898682,
+          "finalEquity": 90.02104754410132,
+          "feesUsd": 3.059506238122341,
+          "signedFundingUsd": 0.02647622655744909,
+          "grossPnlUsd": -6.945922444333782
+        },
+        "quartersBeaten": 0,
+        "screenPassed": false
+      },
+      "no_unhedged_pairs": {
+        "aggregate": {
+          "sharpe": -12.376070174466225,
+          "maxDrawdown": 0.9467078735823005,
+          "profitFactor": 0.35777545627139545,
+          "expectancyUsd": -0.05062399930005127,
+          "tradeCount": 4098,
+          "winRate": 0.32430453879941434,
+          "returnPct": -0.9463615964563842,
+          "finalEquity": 5.363840354361583,
+          "feesUsd": 53.82066842090053,
+          "signedFundingUsd": -0.3063327850895451,
+          "grossPnlUsd": -153.33014792561966
+        },
+        "folds": [
+          {
+            "name": "2024Q3",
+            "sharpe": -12.417076284219418,
+            "maxDrawdown": 0.535605242695975,
+            "profitFactor": 0.2296845308089395,
+            "expectancyUsd": -0.06298006296337802,
+            "tradeCount": 846,
+            "winRate": 0.28132387706855794,
+            "returnPct": -0.5328113326701784,
+            "finalEquity": 46.71886673298216,
+            "feesUsd": 11.262431352788356,
+            "signedFundingUsd": 0.009672933635040553,
+            "grossPnlUsd": -42.02837484786446
+          },
+          {
+            "name": "2024Q4",
+            "sharpe": -13.736876711449362,
+            "maxDrawdown": 0.5099790357782025,
+            "profitFactor": 0.3877805621438735,
+            "expectancyUsd": -0.04457378924615396,
+            "tradeCount": 1144,
+            "winRate": 0.33653846153846156,
+            "returnPct": -0.5099241489760014,
+            "finalEquity": 49.007585102399865,
+            "feesUsd": 14.592519876795352,
+            "signedFundingUsd": -0.08576149601127592,
+            "grossPnlUsd": -36.31413352479345
+          },
+          {
+            "name": "2025Q1",
+            "sharpe": -10.741103680578185,
+            "maxDrawdown": 0.5092521158465372,
+            "profitFactor": 0.4483081234956612,
+            "expectancyUsd": -0.04547467256273091,
+            "tradeCount": 1117,
+            "winRate": 0.36078782452999103,
+            "returnPct": -0.507952092525706,
+            "finalEquity": 49.20479074742941,
+            "feesUsd": 13.79679012025083,
+            "signedFundingUsd": -0.24692320546020036,
+            "grossPnlUsd": -36.75149592685935
+          },
+          {
+            "name": "2025Q2",
+            "sharpe": -12.99093586250181,
+            "maxDrawdown": 0.5289058014396708,
+            "profitFactor": 0.33261734059415,
+            "expectancyUsd": -0.052864169237559065,
+            "tradeCount": 991,
+            "winRate": 0.3057517658930373,
+            "returnPct": -0.5238839171442087,
+            "finalEquity": 47.61160828557914,
+            "feesUsd": 14.168927071065928,
+            "signedFundingUsd": 0.016678982746890513,
+            "grossPnlUsd": -38.23614362610203
+          }
+        ],
+        "holdout": {
+          "sharpe": -10.627438554036893,
+          "maxDrawdown": 0.7179559049852755,
+          "profitFactor": 0.2762175267526331,
+          "expectancyUsd": -0.04483892222433881,
+          "tradeCount": 1599,
+          "winRate": 0.2864290181363352,
+          "returnPct": -0.7169743663671766,
+          "finalEquity": 28.30256336328234,
+          "feesUsd": 19.2974673602396,
+          "signedFundingUsd": -0.29698447688982693,
+          "grossPnlUsd": -52.102984799588455
+        },
+        "quartersBeaten": 0,
+        "screenPassed": false
+      },
+      "mtf_filter": {
+        "aggregate": {
+          "sharpe": -11.858563597716055,
+          "maxDrawdown": 0.7893680977546437,
+          "profitFactor": 0.3477311098176054,
+          "expectancyUsd": -0.05532479839863262,
+          "tradeCount": 2330,
+          "winRate": 0.29656652360515023,
+          "returnPct": -0.7892864238345647,
+          "finalEquity": 21.071357616543533,
+          "feesUsd": 35.82549301642729,
+          "signedFundingUsd": -0.25617672393981883,
+          "grossPnlUsd": -92.82511052844676
+        },
+        "folds": [
+          {
+            "name": "2024Q3",
+            "sharpe": -11.538042786262908,
+            "maxDrawdown": 0.31798722060030205,
+            "profitFactor": 0.21901993436985487,
+            "expectancyUsd": -0.07387161091044789,
+            "tradeCount": 428,
+            "winRate": 0.2523364485981308,
+            "returnPct": -0.316170494696717,
+            "finalEquity": 68.3829505303283,
+            "feesUsd": 7.063319097866544,
+            "signedFundingUsd": 0.015441989766709942,
+            "grossPnlUsd": -24.56917236157191
+          },
+          {
+            "name": "2024Q4",
+            "sharpe": -13.13648654476792,
+            "maxDrawdown": 0.34187585048239,
+            "profitFactor": 0.3712435946897178,
+            "expectancyUsd": -0.049393372051358964,
+            "tradeCount": 692,
+            "winRate": 0.3179190751445087,
+            "returnPct": -0.3418021345954061,
+            "finalEquity": 65.81978654045939,
+            "feesUsd": 10.047094832726067,
+            "signedFundingUsd": -0.10546570101357036,
+            "grossPnlUsd": -24.027652925800766
+          },
+          {
+            "name": "2025Q1",
+            "sharpe": -8.854926733875121,
+            "maxDrawdown": 0.2991996791385506,
+            "profitFactor": 0.4440550543687984,
+            "expectancyUsd": -0.04792469479431302,
+            "tradeCount": 621,
+            "winRate": 0.3365539452495974,
+            "returnPct": -0.2976123546726839,
+            "finalEquity": 70.23876453273161,
+            "feesUsd": 8.99680954295448,
+            "signedFundingUsd": -0.17303200402169797,
+            "grossPnlUsd": -20.591393920292177
+          },
+          {
+            "name": "2025Q2",
+            "sharpe": -15.906910391313945,
+            "maxDrawdown": 0.3371881168227457,
+            "profitFactor": 0.322879637918274,
+            "expectancyUsd": -0.05661847516525162,
+            "tradeCount": 589,
+            "winRate": 0.2614601018675722,
+            "returnPct": -0.3334828187233313,
+            "finalEquity": 66.65171812766687,
+            "feesUsd": 9.718269542880119,
+            "signedFundingUsd": 0.006878991328739679,
+            "grossPnlUsd": -23.636891320781814
+          }
+        ],
+        "holdout": {
+          "sharpe": -11.107185190261081,
+          "maxDrawdown": 0.5970178534348412,
+          "profitFactor": 0.248313805477868,
+          "expectancyUsd": -0.04970227691070142,
+          "tradeCount": 1200,
+          "winRate": 0.265,
+          "returnPct": -0.596427322928418,
+          "finalEquity": 40.3572677071582,
+          "feesUsd": 15.987638952852176,
+          "signedFundingUsd": -0.24151845598227834,
+          "grossPnlUsd": -43.41357488400727
+        },
+        "quartersBeaten": 0,
+        "screenPassed": false
+      },
+      "hold_24h": {
+        "aggregate": {
+          "sharpe": -4.613403381734667,
+          "maxDrawdown": 0.694980117299886,
+          "profitFactor": 0.6129156249349339,
+          "expectancyUsd": -0.07774399717409869,
+          "tradeCount": 1301,
+          "winRate": 0.30284396617986165,
+          "returnPct": -0.6904289846583673,
+          "finalEquity": 30.957101534163264,
+          "feesUsd": 21.93077904110079,
+          "signedFundingUsd": 0.11834747656653664,
+          "grossPnlUsd": -79.332508758968
+        },
+        "folds": [
+          {
+            "name": "2024Q3",
+            "sharpe": -5.822441239482207,
+            "maxDrawdown": 0.31452419800805087,
+            "profitFactor": 0.4407321643442194,
+            "expectancyUsd": -0.12808887259382412,
+            "tradeCount": 230,
+            "winRate": 0.32608695652173914,
+            "returnPct": -0.2946044069657954,
+            "finalEquity": 70.53955930342046,
+            "feesUsd": 3.57842942165715,
+            "signedFundingUsd": 0.23592564684427994,
+            "grossPnlUsd": -26.117936921766674
+          },
+          {
+            "name": "2024Q4",
+            "sharpe": -4.773110585691562,
+            "maxDrawdown": 0.33680142352909453,
+            "profitFactor": 0.6384949244186895,
+            "expectancyUsd": -0.06186867273560815,
+            "tradeCount": 471,
+            "winRate": 0.2611464968152866,
+            "returnPct": -0.29140144858471384,
+            "finalEquity": 70.85985514152861,
+            "feesUsd": 9.352798331375281,
+            "signedFundingUsd": 0.04894559415986231,
+            "grossPnlUsd": -19.836292121256008
+          },
+          {
+            "name": "2025Q1",
+            "sharpe": -3.2394495472502203,
+            "maxDrawdown": 0.20116097951764084,
+            "profitFactor": 0.762014941866605,
+            "expectancyUsd": -0.04975281920592988,
+            "tradeCount": 384,
+            "winRate": 0.3125,
+            "returnPct": -0.19105082575077215,
+            "finalEquity": 80.89491742492278,
+            "feesUsd": 5.346709898555396,
+            "signedFundingUsd": -0.2730830527679798,
+            "grossPnlUsd": -13.485289623753685
+          },
+          {
+            "name": "2025Q2",
+            "sharpe": -4.704716420130289,
+            "maxDrawdown": 0.2621844208873674,
+            "profitFactor": 0.5089845553248534,
+            "expectancyUsd": -0.10851514904339928,
+            "tradeCount": 216,
+            "winRate": 0.35185185185185186,
+            "returnPct": -0.23439272193374194,
+            "finalEquity": 76.5607278066258,
+            "feesUsd": 3.652841389512928,
+            "signedFundingUsd": 0.10655928833037397,
+            "grossPnlUsd": -19.89299009219169
+          }
+        ],
+        "holdout": {
+          "sharpe": -3.230981257363925,
+          "maxDrawdown": 0.3763700971166072,
+          "profitFactor": 0.6457214655793455,
+          "expectancyUsd": -0.06773874907559355,
+          "tradeCount": 464,
+          "winRate": 0.3426724137931034,
+          "returnPct": -0.3143077957107545,
+          "finalEquity": 68.56922042892455,
+          "feesUsd": 7.008309894395794,
+          "signedFundingUsd": -0.5157760079488555,
+          "grossPnlUsd": -23.906693668730767
+        },
+        "quartersBeaten": 0,
+        "screenPassed": false
+      },
+      "cooldown_4h": {
+        "aggregate": {
+          "sharpe": -11.971703103095319,
+          "maxDrawdown": 0.7771943694573215,
+          "profitFactor": 0.31917846193702937,
+          "expectancyUsd": -0.06623321219523792,
+          "tradeCount": 1884,
+          "winRate": 0.3078556263269639,
+          "returnPct": -0.7771209357229418,
+          "finalEquity": 22.287906427705813,
+          "feesUsd": 30.458311614803517,
+          "signedFundingUsd": 0.03172307439596953,
+          "grossPnlUsd": -94.35678323542038
+        },
+        "folds": [
+          {
+            "name": "2024Q3",
+            "sharpe": -12.143247708666003,
+            "maxDrawdown": 0.2947514701061762,
+            "profitFactor": 0.2537036010328034,
+            "expectancyUsd": -0.0722430073789651,
+            "tradeCount": 408,
+            "winRate": 0.29901960784313725,
+            "returnPct": -0.2947514701061762,
+            "finalEquity": 70.52485298938238,
+            "feesUsd": 6.985976235223097,
+            "signedFundingUsd": 0.06891761848754499,
+            "grossPnlUsd": -22.558088393882183
+          },
+          {
+            "name": "2024Q4",
+            "sharpe": -13.743192734583419,
+            "maxDrawdown": 0.3678352147537425,
+            "profitFactor": 0.33236846167648004,
+            "expectancyUsd": -0.06221010542201927,
+            "tradeCount": 591,
+            "winRate": 0.3011844331641286,
+            "returnPct": -0.36766172304413336,
+            "finalEquity": 63.23382769558667,
+            "feesUsd": 9.819674099597076,
+            "signedFundingUsd": 0.02986546563724743,
+            "grossPnlUsd": -26.976363670453523
+          },
+          {
+            "name": "2025Q1",
+            "sharpe": -8.9100077968,
+            "maxDrawdown": 0.28106534908324227,
+            "profitFactor": 0.42517548098620983,
+            "expectancyUsd": -0.05848732691621736,
+            "tradeCount": 463,
+            "winRate": 0.367170626349892,
+            "returnPct": -0.27079632362208683,
+            "finalEquity": 72.92036763779132,
+            "feesUsd": 6.780897483052579,
+            "signedFundingUsd": -0.09452424294816529,
+            "grossPnlUsd": -20.204210636207915
+          },
+          {
+            "name": "2025Q2",
+            "sharpe": -13.89885361193526,
+            "maxDrawdown": 0.31523119573132397,
+            "profitFactor": 0.24386179318975376,
+            "expectancyUsd": -0.07455549786395287,
+            "tradeCount": 422,
+            "winRate": 0.26066350710900477,
+            "returnPct": -0.31462420098588106,
+            "finalEquity": 68.53757990141189,
+            "feesUsd": 6.871763796930676,
+            "signedFundingUsd": 0.027464233219342587,
+            "grossPnlUsd": -24.618120534876766
+          }
+        ],
+        "holdout": {
+          "sharpe": -9.795480990624272,
+          "maxDrawdown": 0.4980357038189809,
+          "profitFactor": 0.3058141395193551,
+          "expectancyUsd": -0.05440229822907663,
+          "tradeCount": 905,
+          "winRate": 0.30939226519337015,
+          "returnPct": -0.49234079897314353,
+          "finalEquity": 50.76592010268565,
+          "feesUsd": 12.95376183751234,
+          "signedFundingUsd": -0.16282169848107883,
+          "grossPnlUsd": -36.11749636132089
+        },
+        "quartersBeaten": 0,
+        "screenPassed": false
+      }
+    }
+  }
+}
