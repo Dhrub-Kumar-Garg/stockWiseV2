@@ -5,7 +5,7 @@ import {freshV2State} from './episode.mjs';
 import {operatorPause,evaluateRisk} from './risk.mjs';
 import {budgetOrder, rankOrders} from './portfolio.mjs';
 import {sizeOrder} from './sizing.mjs';
-import {SEED_STRATEGIES, runStrategies} from './strategies.mjs';
+import {SEED_STRATEGIES, runStrategies, recordDecision} from './strategies.mjs';
 import {quoteUsable} from './market_data.mjs';
 
 export function createPaperState(cfg, at = Date.now()) {
@@ -77,6 +77,7 @@ export function paperTick(state, quotes, cfg, {at = Date.now(), evaluate = runSt
       margin:order.marginUsd,leverage:order.leverage,tiers:cfg.v2.maintenanceTiers[market],meta:{...order,trade_id:order.id,regime:state.regime}});
     pos.openedAt = at; pos.lastFundingTs = at; pos.lastBorrowTs = at; pos.lastMark = q.price; pos.riskBudgetUsd = order.riskBudgetUsd;
     A.recordEntry(state,pos,cfg.v2.perpFees.taker,at); state.positions[order.symbol] = pos;
+    recordDecision(state,{ts:at,strategy_id:order.strategy_id,symbol:order.symbol,side:order.side,stage:'filled',reason:'primary_fill'});
     events.push({type:'fill',id:order.id,trade_id:order.id,symbol:order.symbol,side:order.side,strategy_id:order.strategy_id,
       price:pos.entryPrice,margin:pos.initialMargin,notional:pos.notional,leverage:pos.leverage,fee:pos.entryFee,ts:at});
     A.equityAt(state,valid); risk = evaluateRisk(state,cfg,at);
@@ -88,7 +89,7 @@ export function paperTick(state, quotes, cfg, {at = Date.now(), evaluate = runSt
     const id = order.trade_id || `${order.strategy_id || 'manual'}:${order.op}:${order.symbol}:${at}`;
     if (order.op === 'open') {
       const reserved = sizeOrder(state,order,valid,cfg,{now:at,ledger:state.strategies});
-      if (!reserved.marginUsd) {events.push({type:'reject',id,reason:reserved.rejected,ts:at}); continue;}
+      if (!reserved.marginUsd) {recordDecision(state,{ts:at,strategy_id:order.strategy_id,symbol:order.symbol,side:order.side,stage:'vetoed',reason:reserved.rejected});events.push({type:'reject',id,reason:reserved.rejected,ts:at}); continue;}
       state.orderReservations[id] = {...reserved,id,status:'reserved'};
     }
     state.intents.push({...order,id,decisionAt:at,decisionSourceTs:q.sourceTs,expiresAt:at+cfg.v2.execution.orderTtlMs});
@@ -112,5 +113,6 @@ export function signalsFor(state, cfg, at = Date.now()) {
     totalPnlPct:deposits>0?(state.equity-deposits)/deposits:0,peakEquity:state.peakEquity,maxDrawdownPct:state.maxDrawdownPct,
     riskState:state.riskState,regime:state.regime,generation:state.generation,aggression:state.aggression,lifetime:state.lifetime,
     grossLeverage:state.equity>0?positions.reduce((s,p)=>s+p.notional,0)/state.equity:0,health:state.health,positions,
+    decisionTraces:state.decisionTraces || [],decisionCounters:Object.entries(state.decisionCounters || {}).map(([strategy_id,c])=>({strategy_id,...c})),
     analyst:state.analyst || {mode:'SLEEP',direction_bias:'NEUTRAL',stale:true},world:state.world || {}};
 }

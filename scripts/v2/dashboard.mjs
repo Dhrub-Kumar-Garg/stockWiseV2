@@ -16,6 +16,8 @@ const rows = (value, keys, limit = 100) => Array.isArray(value) ? value.slice(-l
 export function dashboardDTO(input = {}, serverTs = Date.now()) {
   const sig = input.signals || {};
   const signals = scalars(sig, 'ts iso version mode episodeNum equity walletBalance startingCapital totalPnl totalNetPnl totalPnlPct progressPct goalGap realizedPnlEpisode peakEquity maxDrawdownPct riskState regime generation fundingRate investedNotional grossLeverage');
+  signals.decisionTraces=rows(sig.decisionTraces,'ts symbol strategy_id side pool market stage reason rawConfidence',100);
+  signals.decisionCounters=rows(sig.decisionCounters,'strategy_id evaluated raw vetoed selected filled lastAt lastReason',100);
   signals.health = scalars(sig.health, 'status validQuotes totalQuotes lastTick');
   signals.goal = scalars(sig.goal, 'target deadlineHours startEquity startedAt');
   signals.aggression = scalars(sig.aggression, 'kellyFraction leverageCap leverageCeiling unlockedLevel');

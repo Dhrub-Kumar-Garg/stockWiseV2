@@ -811,12 +811,19 @@ function EvolutionTab({ generations }: any) {
 //  STRATEGIES TAB
 // ════════════════════════════════════════════════════════════════════════════
 
-function StrategiesTab({ strategies }: any) {
+function StrategiesTab({ strategies, counters = [], traces = [] }: any) {
   const strats = (strategies || []) as any[];
   const allEarly = strats.every((s: any) => s.status === "candidate" && (!s.learned || s.learned.n < 5));
 
   return (
     <Section title="Strategy Book" intro="A strategy only earns active after it proves a real edge (statistical gates + Deflated Sharpe). Losers get retired.">
+      <div className="panel p-4 text-xs overflow-auto">
+        <h3>Strategy coverage — paper decisions</h3>
+        <p>Raw signals, selections and fills are separate counts. Confirmations receive no fill credit.</p>
+        <table><thead><tr><th>Strategy</th><th>Evaluated</th><th>Raw</th><th>Vetoed</th><th>Selected</th><th>Filled</th><th>Last reason</th></tr></thead>
+        <tbody>{counters.map((c: any) => <tr key={c.strategy_id}><td>{c.strategy_id}</td><td>{c.evaluated}</td><td>{c.raw}</td><td>{c.vetoed}</td><td>{c.selected}</td><td>{c.filled}</td><td>{c.lastReason}</td></tr>)}</tbody></table>
+        <details><summary>Recent decision reasons</summary>{traces.slice(-50).reverse().map((t: any,i: number)=><p key={i}>{t.symbol} · {t.strategy_id} · {t.stage}: {t.reason}</p>)}</details>
+      </div>
       {allEarly && (
         <div className="card-quiet p-4 text-sm text-inksoft mb-4 flex items-center gap-2">
           <span>🔍</span>
@@ -1045,7 +1052,7 @@ export default function DashboardV2({ data, connectionError = false }: { data: a
       case "positions": return <PositionsTab sig={sig} />;
       case "episodes": return <EpisodesTab episodes={episodes} sig={sig} />;
       case "evolution": return <EvolutionTab generations={generations} />;
-      case "strategies": return <StrategiesTab strategies={strategies} />;
+      case "strategies": return <StrategiesTab strategies={strategies} counters={sig.decisionCounters || []} traces={sig.decisionTraces || []} />;
       case "world": return <WorldTab world={world} />;
       case "lessons": return <LessonsTab memory={memory} />;
       case "trades": return <TradesTab trades={trades} />;

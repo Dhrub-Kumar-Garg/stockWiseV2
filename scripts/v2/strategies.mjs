@@ -281,7 +281,7 @@ function sigOrb(q, strat) {
   if (q.market !== "us") return null;
   if (!q.sessionStart || !q.price) return null;
 
-  const nowTs = now();
+  const nowTs = q.observedAt ?? now();
   const sym = q.symbol;
 
   // Normalize sessionStart to ms (Yahoo returns seconds)
@@ -859,173 +859,70 @@ export function strategyExit(pos, q, eq, regime) {
  *
  * Returns an array of order objects.
  */
-export function runStrategies(state, eq, cfg, context = {}) {
-  const strategies = context.strategies || ensureStrategies();
-  const v2 = cfg.v2;
-  const orders = [];
-  const nowTs = context.now ?? now();
-  const maxPos = v2.strategies.maxConcurrentPositions;
-
-  // ── Phase 1: Exits ──
-  for (const [symbol, pos] of Object.entries(state.positions)) {
-    const q = eq[symbol];
-    if (!q || !q.closes?.length) continue;
-    const result = strategyExit(pos, q, eq, state.regime);
-    if (result) {
-      orders.push({ op: "close", symbol, reason: result.reason });
-    }
+// Every symbol/strategy receives a reason; shadow evaluation is independent of capital.
+export function evaluateCandidates(state,eq,cfg,{strategies=state.strategies||SEED_STRATEGIES,now:at=Date.now()}={}) {
+  const rows=[];
+  for(const item of cfg.watchlist)for(const strat of strategies) {
+    const q=eq[item.symbol],row={ts:at,symbol:item.symbol,strategy_id:strat.id,pool:strat.pool,market:item.market,stage:'evaluated',reason:'no_signal',signal:null};
+    if(strat.status==='retired')row.reason='retired';
+    else if(!strat.markets.includes(item.market))row.reason='unsupported_market';
+    else if(!cfg.v2.leverage?.[item.market]?.enabled)row.reason='market_disabled';
+    else if(!q||!quoteUsable(q,at,cfg.v2.data?.maxQuoteAgeMs??30000))row.reason='missing_or_stale_quote';
+    else if(item.market!=='crypto'&&q.marketState!=='REGULAR')row.reason='session_closed';
+    else if(!q.closes?.length)row.reason='history_missing';
+    else if(['orderflow','oi_diverge'].includes(strat.id)&&!q.flow)row.reason='flow_history_missing';
+    else if(strat.id==='orb'&&!q.sessionStart)row.reason='session_open_missing';
+    else {try {row.signal=SIGNAL_FN[strat.id]?.({...q,symbol:item.symbol,market:item.market,observedAt:at},strat,eq)||null;row.reason=row.signal?'raw_signal':'no_signal';}catch{row.reason='signal_error';}}
+    if(row.signal){row.side=row.signal.side;row.rawConfidence=row.signal.confidence;}
+    rows.push(row);
   }
-
-  // ── Phase 2: Entries ──
-  const openCount = Object.keys(state.positions).length;
-  let newOpens = 0;
-
-  // ── AI ANALYST MODE ROUTING ──────────────────────────────────────────────
-  const analyst = context.analyst || readAnalystDecision();
-  const aiMode = (analyst.mode || "REVERT").toUpperCase();  // Default to REVERT, not SLEEP
-  const aiBias = (analyst.direction_bias || "NEUTRAL").toUpperCase();
-  const aiAggression = analyst.aggression || 0.4;
-
-  // SLEEP mode: still allow stat-arb (pairs_trade) with reduced sizing
-  const isSleepMode = aiMode === "SLEEP";
-
-  // Determine which strategy pool to activate
-  const activePool = aiMode === "TREND" ? "trend" : "revert"; // REVERT is the safe default
-
-  // ── NEWS SENTIMENT FILTER ────────────────────────────────────────────────
-  // Read world data to adjust confidence based on news mood
-  const worldData = context.world || readJSON(V2.world, null);
-  const newsMood = worldData?.newsMood?.mean_s ?? 0;
-  const fearGreed = worldData?.fearGreedCrypto?.value ?? 50;
-
-  // ── LOSS-STREAK BREAKER: Pause 30 min after 4 consecutive losses ──
-  const recentTrades = (state.recentTradeResults || []).slice(-6);
-  const revTrades = [...recentTrades].reverse();
-  const firstWinIdx = revTrades.findIndex(r => r >= 0);
-  const lossStreak = firstWinIdx === -1 ? revTrades.length : firstWinIdx;
-  if (lossStreak >= 4) {
-    const lastTradeTs = state.lastTradeCloseTs || 0;
-    if ((nowTs - lastTradeTs) < 30 * 60_000) return orders;  // 30 min cooldown
+  return rows;
+}
+export function recordDecision(state,row) {
+  state.decisionCounters||={};const c=state.decisionCounters[row.strategy_id]||={evaluated:0,raw:0,vetoed:0,selected:0,filled:0};
+  if(row.stage==='evaluated'){c.evaluated++;if(row.signal)c.raw++;}
+  if(row.stage==='vetoed')c.vetoed++;
+  if(row.stage==='selected')c.selected++;
+  if(row.stage==='filled')c.filled++;
+  c.lastAt=row.ts;c.lastReason=row.reason;
+  const {signal,...trace}=row;state.decisionTraces=[...(state.decisionTraces||[]),trace].slice(-500);
+}
+export function runStrategies(state,eq,cfg,context={}) {
+  const at=context.now??Date.now(),strategies=context.strategies||state.strategies||SEED_STRATEGIES,orders=[];
+  for(const [symbol,pos] of Object.entries(state.positions)){
+    const q=eq[symbol];if(!q?.closes?.length)continue;
+    const exit=strategyExit(pos,q,eq,state.regime);if(exit)orders.push({op:'close',symbol,reason:exit.reason});
   }
-
-  const watchlist = cfg.watchlist || [];
-
-  for (const item of watchlist) {
-    const { symbol, market } = item;
-
-    // Respect max concurrent positions
-    if (openCount + newOpens >= maxPos) break;
-
-    // One position per symbol
-    if (state.positions[symbol]) continue;
-
-    // Re-entry cooldown (2 minutes)
-    const cooldownEnd = _cooldowns.get(symbol) || 0;
-    if (nowTs < cooldownEnd) continue;
-
-    // Market must be enabled in leverage config
-    if (!v2.leverage?.[market]?.enabled) continue;
-
-    // Must have valid, non-stale data
-    const q = eq[symbol];
-    if (!q || !q.closes?.length || !quoteUsable(q, nowTs, cfg.v2.data?.maxQuoteAgeMs ?? 30000)) continue;
-
-    // Non-crypto markets must be in regular session
-    if (market !== "crypto" && q.marketState !== "REGULAR") continue;
-
-    // ── Confluence filter: collect signals from ACTIVE POOL only ──
-    const longSignals = [];
-    const shortSignals = [];
-
-    for (const strat of strategies) {
-      if (strat.status === "retired") continue;
-      if (!strat.markets.includes(market)) continue;
-
-      // In SLEEP mode, only allow stat-arb (pairs_trade) strategies
-      if (isSleepMode && strat.id !== "pairs_trade") continue;
-
-      // V3: Only run strategies in the active pool (or "both" pool)
-      const pool = strat.pool || "trend";
-      if (!isSleepMode && pool !== "both" && pool !== activePool) continue;
-
-      const sigFn = SIGNAL_FN[strat.id];
-      if (!sigFn) continue;
-
-      const sig = sigFn(q, strat, eq);
-      if (!sig) continue;
-
-      // V3: Direction bias from AI analyst — skip signals against the bias
-      if (aiBias === "LONG" && sig.side === "short") continue;
-      if (aiBias === "SHORT" && sig.side === "long") continue;
-
-      // ── NEWS SENTIMENT ADJUSTMENT ──
-      let adjustedConfidence = sig.confidence;
-      if (sig.side === "long") {
-        if (newsMood < -0.3) adjustedConfidence *= 0.7;  // bearish news = reduce long confidence
-        if (newsMood > 0.3)  adjustedConfidence *= 1.2;  // bullish news = boost long confidence
-        if (fearGreed < 25)  adjustedConfidence *= 1.3;  // extreme fear = contrarian buy boost
-        if (fearGreed > 80)  adjustedConfidence *= 0.5;  // extreme greed = risky to go long
-      }
-      if (sig.side === "short") {
-        if (newsMood > 0.3)  adjustedConfidence *= 0.7;  // bullish news = reduce short confidence
-        if (newsMood < -0.3) adjustedConfidence *= 1.2;  // bearish news = boost short confidence
-        if (fearGreed > 80)  adjustedConfidence *= 1.3;  // extreme greed = contrarian short boost
-        if (fearGreed < 25)  adjustedConfidence *= 0.5;  // extreme fear = risky to go short
-      }
-      adjustedConfidence = clamp(adjustedConfidence, 0.05, 1.0);
-
-      // In SLEEP mode, reduce confidence further
-      if (isSleepMode) adjustedConfidence *= 0.5;
-
-      const stratConf = strat.learned?.confidence ?? 0.2;
-      const score = adjustedConfidence * (0.5 + stratConf);
-      const entry = { strat, sig: { ...sig, confidence: adjustedConfidence }, score };
-
-      if (sig.side === "long")  longSignals.push(entry);
-      if (sig.side === "short") shortSignals.push(entry);
-    }
-
-    // V4: Allow single-signal entries for high-confidence setups (>= 0.6)
-    // Still prefer 2+ confluence when available
-    let chosenSignals = null;
-    if (longSignals.length >= 2 && longSignals.length >= shortSignals.length) {
-      chosenSignals = longSignals;
-    } else if (shortSignals.length >= 2) {
-      chosenSignals = shortSignals;
-    } else {
-      // Single-signal entry: only for high-confidence signals
-      const bestLong = longSignals.length ? longSignals.sort((a, b) => b.score - a.score)[0] : null;
-      const bestShort = shortSignals.length ? shortSignals.sort((a, b) => b.score - a.score)[0] : null;
-      const best = (bestLong && bestShort)
-        ? (bestLong.score >= bestShort.score ? bestLong : bestShort)
-        : (bestLong || bestShort);
-      if (best && best.sig.confidence >= 0.6) chosenSignals = [best];
-    }
-
-    if (chosenSignals && chosenSignals.length >= 1) {
-      chosenSignals.sort((a, b) => b.score - a.score);
-      const best = chosenSignals[0];
-      const confirmIds = chosenSignals.map(s => s.strat.id).join("+");
-      const side = best.sig.side;
-
-      orders.push({
-        op: "open",
-        symbol,
-        side,
-        leverage: clamp(best.sig.baseLev || best.strat.baseLev, 1, state.aggression.leverageCap),
-        strategy_id: best.strat.id,
-        setup_tag: best.strat.setup_tag,
-        stopPct: best.sig.stopPct ?? best.strat.stopPct,
-        targetPct: best.sig.targetPct ?? best.strat.targetPct,
-        confidence: best.sig.confidence,
-        reason: `[${chosenSignals.length}× confluence: ${confirmIds}] ${best.sig.reason}`,
-        trade_id: `${best.strat.id}_${symbol}_${nowTs}`,
-        sizePct: null,
-      });
-      _cooldowns.set(symbol, nowTs + 2 * 60 * 1000);
-      newOpens++;
-    }
+  const analyst=context.analyst||{mode:'SLEEP',direction_bias:'NEUTRAL'},mode=analyst.mode||'SLEEP';
+  const world=context.world||{},mood=world.newsMood?.mean_s??0,fg=world.fearGreedCrypto?.value??50;
+  const rows=evaluateCandidates(state,eq,cfg,{strategies,now:at});
+  for(const row of rows) {
+    recordDecision(state,row);if(!row.signal)continue;
+    let reason=null;
+    if(state.positions[row.symbol])reason='symbol_occupied';
+    else if((state.lastClosed?.[row.symbol]||0)+120000>at)reason='reentry_cooldown';
+    else if(mode==='SLEEP'&&row.strategy_id!=='pairs_trade')reason='analyst_sleep';
+    else if(mode!=='SLEEP'&&row.pool!=='both'&&row.pool!==(mode==='TREND'?'trend':'revert'))reason='inactive_pool';
+    else if(analyst.direction_bias==='LONG'&&row.side==='short'||analyst.direction_bias==='SHORT'&&row.side==='long')reason='analyst_side_veto';
+    if(reason){row.blocked=true;recordDecision(state,{...row,stage:'vetoed',reason});continue;}
+    let confidence=row.signal.confidence;
+    if(row.side==='long'){if(mood<-.3)confidence*=.7;if(mood>.3)confidence*=1.2;if(fg<25)confidence*=1.3;if(fg>80)confidence*=.5;}
+    else{if(mood>.3)confidence*=.7;if(mood<-.3)confidence*=1.2;if(fg>80)confidence*=1.3;if(fg<25)confidence*=.5;}
+    row.score=clamp(confidence,.05,1)*(mode==='SLEEP'?.5:1);
   }
-
+  let available=cfg.v2.strategies.maxConcurrentPositions-Object.keys(state.positions).length;
+  for(const item of [...cfg.watchlist].sort((a,b)=>a.symbol.localeCompare(b.symbol))) {
+    const eligible=rows.filter(r=>r.symbol===item.symbol&&r.signal&&!r.blocked),long=eligible.filter(r=>r.side==='long'),short=eligible.filter(r=>r.side==='short');
+    let chosen=long.length>=2&&long.length>=short.length?long:short.length>=2?short:eligible.filter(r=>r.score>=.6).sort((a,b)=>b.score-a.score).slice(0,1);
+    if(!available)chosen=[];
+    for(const r of eligible)if(!chosen.includes(r))recordDecision(state,{...r,stage:'vetoed',reason:available?'confluence_or_score':'position_slots'});
+    if(!chosen.length)continue;
+    chosen.sort((a,b)=>b.score-a.score||a.strategy_id.localeCompare(b.strategy_id));const best=chosen[0],strat=strategies.find(s=>s.id===best.strategy_id),sig=best.signal;
+    orders.push({op:'open',symbol:item.symbol,market:item.market,side:sig.side,leverage:sig.baseLev||strat.baseLev,strategy_id:strat.id,
+      confirming_ids:chosen.slice(1).map(r=>r.strategy_id),setup_tag:strat.setup_tag,stopPct:sig.stopPct,targetPct:sig.targetPct,
+      confidence:best.score,reason:sig.reason,trade_id:`${strat.id}:${item.symbol}:${at}`});
+    for(const r of chosen)recordDecision(state,{...r,stage:'selected',reason:r===best?'primary':'confirmation'});
+    available--;
+  }
   return orders;
 }
