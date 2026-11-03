@@ -1,3 +1,4 @@
+import {quoteUsable, alignPair} from "./market_data.mjs";
 // scripts/v2/strategies.mjs — Deterministic strategy library
 // Reads enriched quotes, emits open/close orders with next-tick fills.
 // No looking into the future. No faking signals.
@@ -148,6 +149,7 @@ const _fundingCache = {};   // symbol → { timestamps: [], rates: [] }
 export function cacheOiSnapshot(symbol, oi, fundingRate) {
   if (!_oiCache[symbol]) _oiCache[symbol] = { ts: [], oi: [] };
   const c = _oiCache[symbol];
+  if (c.ts.at(-1) === now()) return;
   c.ts.push(now());
   c.oi.push(oi);
   // Keep last 100 snapshots (~50 min at 30s cycles)
@@ -640,7 +642,9 @@ function sigPairsTrade(q, strat, eq) {
     const otherQ = eq[symB];
     if (!otherQ || !otherQ.closes) continue;
 
-    const zScore = calcSpreadZScore(q.closes, otherQ.closes, 50);
+    const aligned = alignPair(q.dailyBars, otherQ.dailyBars, 50);
+    if (!aligned.length) continue;
+    const zScore = calcSpreadZScore(aligned.map(p => p[0].c), aligned.map(p => p[1].c), 50);
     if (zScore === null) continue;
 
     // Dynamic confidence: |z| / 3.0 (lower divisor = more confident at moderate z)
@@ -924,7 +928,7 @@ export function runStrategies(state, eq, cfg, histCache) {
 
     // Must have valid, non-stale data
     const q = eq[symbol];
-    if (!q || !q.closes?.length || !isFinite(q.price)) continue;
+    if (!q || !q.closes?.length || !quoteUsable(q, nowTs, cfg.v2.data?.maxQuoteAgeMs ?? 30000)) continue;
 
     // Non-crypto markets must be in regular session
     if (market !== "crypto" && q.marketState !== "REGULAR") continue;

@@ -172,9 +172,9 @@ Remember: respond with ONLY valid JSON.`;
 /**
  * Read the current analyst decision from disk.
  */
-export function readAnalystDecision() {
+export function readAnalystDecision({nowTs = now(), maxAgeMs = 30*60000} = {}) {
   const decision = readJSON(ANALYST_FILE, null);
-  if (!decision) return { ...DEFAULT_DECISION };
+  if (!decision || !["TREND","REVERT","SLEEP"].includes(decision.mode) || !["LONG","SHORT","NEUTRAL"].includes(decision.direction_bias) || !Number.isFinite(decision.ts) || decision.ts > nowTs || nowTs-decision.ts > maxAgeMs) return { ...DEFAULT_DECISION, stale: true };
   return decision;
 }
 

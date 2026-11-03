@@ -7,7 +7,7 @@
 
 import {
   loadConfig, log, ensureData, now, iso,
-  fetchQuote, fetchHistory, indicators, regime as computeRegime,
+  fetchQuote, fetchHistory, fetchHistoryBars, fetchFxSnapshot, indicators, regime as computeRegime,
 } from "./lib.mjs";
 import {
   V2, readJSON, writeJSON, appendJSONL, round, clamp,
@@ -31,6 +31,8 @@ import {evaluateRisk, canOpen} from "./v2/risk.mjs";
 
 import {budgetOrder, rankOrders} from "./v2/portfolio.mjs";
 
+import {quoteUsable, toUsd, timestampedReturns} from "./v2/market_data.mjs";
+
 const ONCE = process.argv.includes("--once");
 
 // ── History cache ──────────────────────────────────────────────────────────
@@ -42,7 +44,7 @@ async function cachedHistory(sym, range, interval, ttlMs) {
   const key = `${sym}_${range}_${interval}`;
   if (_histTs[key] && (now() - _histTs[key]) < ttlMs) return _hist[key] || [];
   try {
-    const data = await fetchHistory(sym, range, interval);
+    const data = await fetchHistoryBars(sym, range, interval);
     if (data.length) { _hist[key] = data; _histTs[key] = now(); }
   } catch { /* use stale */ }
   return _hist[key] || [];
@@ -114,21 +116,23 @@ async function cycle(state, cfg) {
 
   // ── 1. Fetch live quotes & enrich ──────────────────────────────────────
   const eq = {};
+  const fx = await fetchFxSnapshot();
   for (const item of cfg.watchlist) {
     try {
-      const q = await fetchQuote(item.symbol);
+      const q = toUsd(await fetchQuote(item.symbol), fx);
       if (!q.ok) continue;
 
-      const closes = await cachedHistory(item.symbol, "1y", "1d", histTtl);
+      const dailyBars = await cachedHistory(item.symbol, "1y", "1d", histTtl);
+      const closes = dailyBars.map(b => b.c/(q.fx || 1));
       const ind = closes.length >= 20 ? indicators(closes) : {};
 
       // 15m bars for crypto intraday strategies
       let closesIntraday = null;
       if (item.market === "crypto") {
-        closesIntraday = await cachedHistory(item.symbol, "5d", "15m", histTtl);
+        closesIntraday = (await cachedHistory(item.symbol, "5d", "15m", histTtl)).map(b => b.c/(q.fx || 1));
       }
 
-      eq[item.symbol] = { ...q, ...ind, closes, closesIntraday, market: item.market };
+      eq[item.symbol] = { ...q, ...ind, closes, dailyBars, returns: timestampedReturns(dailyBars), closesIntraday, market: item.market };
     } catch { /* skip failed symbol */ }
   }
 
@@ -146,7 +150,7 @@ async function cycle(state, cfg) {
       try {
         const q = await fetchQuote(idx.symbol);
         if (q.ok) {
-          const closes = await cachedHistory(idx.symbol, "1y", "1d", histTtl);
+          const closes = (await cachedHistory(idx.symbol, "1y", "1d", histTtl)).map(b => b.c);
           const ind = closes.length >= 20 ? indicators(closes) : {};
           indexQuotes[idx.symbol] = { ...q, ...ind, closes };
         }
@@ -186,7 +190,7 @@ async function cycle(state, cfg) {
 
   for (const [sym, pos] of Object.entries(state.positions)) {
     const q = eq[sym];
-    if (!q) continue;
+    if (!quoteUsable(q, now(), cfg.v2.data?.maxQuoteAgeMs ?? 30000)) continue;
 
     // Mark to market
     const snap = markPosition(pos, q.price);
@@ -342,7 +346,7 @@ async function cycle(state, cfg) {
 function executeOpen(state, order, q, cfg) {
   order = budgetOrder(state, order, {[order.symbol]: q}, cfg, now());
   if (!order.marginUsd) return;
-  if (!canOpen(state, cfg, now())) return;
+  if (!canOpen(state, cfg, now()) || !quoteUsable(q, now(), cfg.v2.data?.maxQuoteAgeMs ?? 30000)) return;
   const v2 = cfg.v2;
   const market = (cfg.watchlist.find((w) => w.symbol === order.symbol) || {}).market || "crypto";
 

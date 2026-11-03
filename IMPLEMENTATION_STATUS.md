@@ -13,7 +13,7 @@ on positive cost-net evidence. Historical audit reports describe the old revisio
 | 3. Persistent risk locks | Complete | Operator/day/DD locks survive restart and episode; no cash replenishment |
 | 4. Exposure budgets | Complete | Leverage, gross/net/cluster/correlation, stop risk, cash and reservations tested |
 | 5. Evidence-based sizing | Complete | Cost-net causal samples, quarter Kelly, no floors/goal chasing, nested ledger zero respected |
-| 6. Timestamp/currency integrity | Pending | |
+| 6. Timestamp/currency integrity | Complete | Closed OHLC, gaps/duplicates, quote/FX age, currency and event-time pairing tested |
 | 7. One entrypoint and truthful UI | Pending | |
 | 8. Durable paper order lifecycle | Pending | |
 | 9. Versioned causal evaluation | Pending | |

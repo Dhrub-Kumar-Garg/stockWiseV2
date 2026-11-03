@@ -1,3 +1,4 @@
+import {parseYahooBars} from "./v2/market_data.mjs";
 // scripts/lib.mjs — FabInvests shared toolbox
 // Pure Node ESM · zero third-party deps · keyless, free data only.
 
@@ -133,10 +134,11 @@ export async function fetchQuote(symbol) {
     const changePct = prevClose ? (price - prevClose) / prevClose : 0;
     return {
       symbol,
+      sourceTs: meta.regularMarketTime * 1000, receivedAt: Date.now(), source: "yahoo",
       price,
       prevClose,
       changePct,
-      marketState: meta.marketState || "UNKNOWN",
+      marketState: meta.marketState || (Date.now()/1000 >= meta.currentTradingPeriod?.regular?.start && Date.now()/1000 < meta.currentTradingPeriod?.regular?.end ? "REGULAR" : "CLOSED"),
       currency: meta.currency || "USD",
       sessionStart:
         meta.currentTradingPeriod?.regular?.start ?? null,
@@ -153,6 +155,7 @@ export async function fetchQuote(symbol) {
         const price = parseFloat(data.data.amount);
         return {
           symbol,
+          sourceTs: Date.now(), receivedAt: Date.now(), source: "coinbase-observed",
           price,
           prevClose: price,
           changePct: 0,
@@ -171,25 +174,21 @@ export async function fetchQuote(symbol) {
  * Fetch daily close history for a symbol.
  * Returns an array of numeric closes (nulls filtered out).
  */
+export async function fetchHistoryBars(symbol, range = "1y", interval = "1d", asOf = Date.now()) {
+  const intervalMs = {"1d":86400000,"15m":900000,"1m":60000}[interval];
+  if (!intervalMs) throw new Error("Unsupported history interval");
+  const payload = await getJSON(YH(symbol, range, interval));
+  return parseYahooBars(payload, {asOf, intervalMs, continuous: symbol.endsWith("-USD")});
+}
 export async function fetchHistory(symbol, range = "6mo", interval = "1d") {
-  try {
-    const url = YH(symbol, range, interval);
-    const data = await getJSON(url);
-    const closes = data.chart.result[0].indicators.quote[0].close;
-    return closes.filter((c) => c != null && isFinite(c));
-  } catch {
-    return [];
-  }
+  try { return (await fetchHistoryBars(symbol, range, interval)).map(b => b.c); } catch { return []; }
 }
-
-/** USD → INR rate from Yahoo USDINR=X; fallback 83.0. */
-export async function fetchFx() {
-  try {
-    const q = await fetchQuote("USDINR=X");
-    if (q.ok && q.price > 0) return q.price;
-  } catch { /* fallback */ }
-  return 83.0;
+export async function fetchFxSnapshot() {
+  const q = await fetchQuote("USDINR=X"), at = Date.now();
+  return q.ok && q.price > 0 && Number.isFinite(q.sourceTs) && q.sourceTs <= at && at-q.sourceTs <= 86400000
+    ? {price: q.price, ts: q.sourceTs, receivedAt: q.receivedAt} : null;
 }
+export async function fetchFx() { return (await fetchFxSnapshot())?.price ?? null; }
 
 // ── Indicators ─────────────────────────────────────────────────────────────
 /** Simple moving average of the last n values. */

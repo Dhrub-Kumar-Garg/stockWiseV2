@@ -273,6 +273,11 @@
     "learning": {
       "minTrades": 30,
       "kellyFraction": 0.25
+    },
+    "data": {
+      "maxQuoteAgeMs": 30000,
+      "maxFxAgeMs": 86400000,
+      "historyTtlMs": 60000
     }
   }
 }

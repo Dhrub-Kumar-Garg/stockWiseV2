@@ -15,7 +15,7 @@ import {
 } from "./store.mjs";
 import {
   loadConfig, log, ensureData,
-  fetchQuote, fetchFx, fetchHistory,
+  fetchQuote, fetchFx, fetchFxSnapshot, fetchHistory, fetchHistoryBars,
   indicators, regime as computeRegime,
 } from "../lib.mjs";
 import * as P from "./perp.mjs";
@@ -43,6 +43,8 @@ import {evaluateRisk, canOpen} from "./risk.mjs";
 
 import {budgetOrder, rankOrders} from "./portfolio.mjs";
 
+import {quoteUsable, toUsd, timestampedReturns} from "./market_data.mjs";
+
 const ONCE = process.argv.includes("--once");
 
 // ── Caches (persist across cycles) ─────────────────────────────────────────
@@ -60,7 +62,7 @@ if (!ONCE) {
 }
 const _hist    = {};          // key → close array
 const _histTs  = {};          // key → fetch timestamp
-let   _fxRate  = 83;          // USD/INR fallback
+let   _fxRate  = null;          // USD/INR fallback
 let   _lastBrainTs = 0;
 let   _lastAnalystTs = 0;      // AI analyst timer
 
@@ -92,7 +94,7 @@ async function refreshHistory(sym, range, interval, ttlMs) {
   const key = `${sym}|${range}|${interval}`;
   if (_histTs[key] && (now() - _histTs[key]) < ttlMs) return _hist[key] || [];
   try {
-    const data = await fetchHistory(sym, range, interval);
+    const data = await fetchHistoryBars(sym, range, interval);
     if (data.length) { _hist[key] = data; _histTs[key] = now(); }
   } catch { /* keep stale */ }
   return _hist[key] || [];
@@ -107,15 +109,17 @@ async function buildEnriched(cfg, histTtl) {
     const q = _quotes[item.symbol];
     if (!q || !q.ok) continue;
 
-    const closes = await refreshHistory(item.symbol, "1y", "1d", histTtl);
+    const dailyBars = await refreshHistory(item.symbol, "1y", "1d", histTtl);
+    const closes = dailyBars.map(b => b.c);
     const ind = closes.length >= 20 ? indicators(closes) : {};
 
     let closesIntraday = null;
     if (item.market === "crypto") {
-      closesIntraday = await refreshHistory(item.symbol, "5d", "15m", 10 * 60_000);
+      closesIntraday = (await refreshHistory(item.symbol, "5d", "15m", 60_000)).map(b => b.c);
     }
 
-    eq[item.symbol] = { ...q, ...ind, closes, closesIntraday, market: item.market };
+    const usd = toUsd(q, _fxRate);
+    eq[item.symbol] = { ...usd, ...ind, dailyBars, returns: timestampedReturns(dailyBars), closes: closes.map(p => p/(usd.fx || 1)), closesIntraday: closesIntraday?.map(p => p/(usd.fx || 1)), market: item.market };
   }
 
   // Index enrichment for regime
@@ -123,7 +127,7 @@ async function buildEnriched(cfg, histTtl) {
     if (eq[idx.symbol]) continue;
     const q = _quotes[idx.symbol];
     if (!q || !q.ok) continue;
-    const closes = await refreshHistory(idx.symbol, "1y", "1d", histTtl);
+    const closes = (await refreshHistory(idx.symbol, "1y", "1d", histTtl)).map(b => b.c);
     const ind = closes.length >= 20 ? indicators(closes) : {};
     eq[idx.symbol] = { ...q, ...ind, closes, market: "index" };
   }
@@ -144,10 +148,10 @@ function markAndManage(state, eq, cfg) {
   for (const sym of Object.keys(state.positions)) {
     const pos = state.positions[sym];
     const q   = eq[sym];
-    if (!q) continue;
+    if (!quoteUsable(q, now(), cfg.v2.data?.maxQuoteAgeMs ?? 30000)) continue;
 
     // 1. EMA mark
-    pos.emaMark = P.emaUpdate(pos.emaMark ?? pos.entryPrice, q.price, alpha);
+    pos.emaMark = q.price; pos.lastMark = q.price;
     const mark  = pos.emaMark;
 
     // 2. Funding (crypto, every 8 h)
@@ -216,7 +220,7 @@ function markAndManage(state, eq, cfg) {
 function doOpen(state, order, q, cfg) {
   order = budgetOrder(state, order, {[order.symbol]: q}, cfg, now());
   if (!order.marginUsd) return;
-  if (!canOpen(state, cfg, now())) return;
+  if (!canOpen(state, cfg, now()) || !quoteUsable(q, now(), cfg.v2.data?.maxQuoteAgeMs ?? 30000)) return;
   const v2     = cfg.v2;
   const market = (cfg.watchlist.find((w) => w.symbol === order.symbol) || {}).market || "crypto";
 
@@ -568,7 +572,7 @@ async function cycle(state, cfg) {
   ];
   const uniqueSyms = [...new Set(allSyms)];
 
-  _fxRate = await fetchFx();
+  _fxRate = await fetchFxSnapshot();
   await fetchAllQuotes(uniqueSyms);
 
   if (!Object.keys(_quotes).length) { log("No quotes — skipping cycle."); return; }
@@ -722,7 +726,7 @@ async function cycle(state, cfg) {
     const q = _quotes[sym];
     if (q?.ok) priceMap[sym] = { price: q.price, changePct: round(q.changePct || 0, 4), stale: !!q.stale };
   }
-  writeJSON(V2.prices, { ts: now(), fx: _fxRate, prices: priceMap });
+  writeJSON(V2.prices, { ts: now(), fx: _fxRate?.price ?? null, prices: priceMap });
 
   // Equity row
   const { totalMargin, totalUPnl } = recalcEquity(state, eq);
