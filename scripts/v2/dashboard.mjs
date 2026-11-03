@@ -25,7 +25,7 @@ export function dashboardDTO(input = {}, serverTs = Date.now()) {
   signals.positions = rows(sig.positions, 'symbol name market side leverage notional margin entry mark liqPrice uPnl roiPct fundingAccrued strategy_id setup_tag stopPct targetPct reason');
   signals.watch = rows(sig.watch, 'symbol name market icon price changePct trend rsi bias stale');
   signals.analyst = scalars(sig.analyst, 'mode direction_bias aggression reasoning ts stale');
-  signals.world = {...scalars(sig.world, 'regime risk_posture fundingRate whaleCrowd oiUsd thesis deep_due'),
+  signals.world = {newsHealth:rows(sig.world?.newsHealth,'source status lastSuccess ageMs count',20),news:rows(sig.world?.news,'id title source kind url publishedAt observedAt',20),...scalars(sig.world, 'regime risk_posture fundingRate whaleCrowd oiUsd thesis deep_due'),
     fearGreedCrypto: scalars(sig.world?.fearGreedCrypto, 'value band'), fearGreedStocks: scalars(sig.world?.fearGreedStocks, 'value band'),
     newsMood: scalars(sig.world?.newsMood, 'mean_s dispersion impact n mixed'),
     headlines: Array.isArray(sig.world?.headlines) ? sig.world.headlines.slice(0, 5).filter(x => typeof x === 'string').map(x => x.slice(0, 250)) : [],

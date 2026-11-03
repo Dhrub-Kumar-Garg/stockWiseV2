@@ -1,3 +1,4 @@
+import {createWorldCollector} from './world.mjs';
 import {SnapshotWorker} from './http.mjs';
 import fs from 'node:fs';
 import path from 'node:path';
@@ -46,11 +47,15 @@ export async function runCLI(args = process.argv.slice(2)) {
     if (args.includes('--initialize')) return;
     const feed=new SnapshotWorker(()=>collectQuotes(cfg,Date.now(),args.includes('--mock')),{ttlMs:10000});
     if(args.includes('--once'))await feed.refresh();
-    let nextDecision=0;
+    let nextDecision=0,lastWorld=0;
+    const worldWorker=new SnapshotWorker(createWorldCollector(),{ttlMs:600000});
     do {
       const began=Date.now(); feed.refresh();
       const snapshot=feed.snapshot(), quotes=snapshot.value || {};
-      const result=store.transact(state=>paperTick(state,quotes,cfg,{at:Date.now(),...(began<nextDecision?{evaluate:()=>[]}:{})}),publish);
+      if(!args.includes('--mock'))worldWorker.refresh();
+      const worldSnapshot=worldWorker.snapshot();
+      if(worldSnapshot.updatedAt>lastWorld){store.archiveObservation('world',worldSnapshot.value,worldSnapshot.updatedAt);lastWorld=worldSnapshot.updatedAt;}
+      const result=store.transact(state=>{state.world=worldSnapshot.value||{};return paperTick(state,quotes,cfg,{at:Date.now(),context:{world:state.world},...(began<nextDecision?{evaluate:()=>[]}:{})});},publish);
       if(began>=nextDecision)nextDecision=began+cfg.v2.strategies.loopSeconds*1000;
       const state=result.state;
       console.log(JSON.stringify({mode:'paper',cycle:state.cycles,equity:state.equity,risk:state.riskState,health:state.health.status}));

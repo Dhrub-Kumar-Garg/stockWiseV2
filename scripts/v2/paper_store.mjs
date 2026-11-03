@@ -15,6 +15,7 @@ export class PaperStore {
     fs.mkdirSync(this.directory,{recursive:true,mode:0o700});
     this.db=new DatabaseSync(path.join(this.directory,'paper.sqlite'));
     this.db.exec(`PRAGMA journal_mode=WAL; PRAGMA synchronous=FULL; PRAGMA busy_timeout=5000;
+      CREATE TABLE IF NOT EXISTS observations(id TEXT PRIMARY KEY, observed INTEGER NOT NULL, source TEXT NOT NULL, body TEXT NOT NULL);
       CREATE TABLE IF NOT EXISTS snapshot(id INTEGER PRIMARY KEY CHECK(id=1), revision INTEGER NOT NULL, body TEXT NOT NULL);
       CREATE TABLE IF NOT EXISTS dashboard(id INTEGER PRIMARY KEY CHECK(id=1), body TEXT NOT NULL);
       CREATE TABLE IF NOT EXISTS lease(id INTEGER PRIMARY KEY CHECK(id=1), token TEXT NOT NULL, expires INTEGER NOT NULL);
@@ -39,6 +40,17 @@ export class PaperStore {
     const row=this.db.prepare('SELECT token,expires FROM lease WHERE id=1').get();
     if (!row || row.token!==this.token || row.expires<=this.clock()) throw new Error('Paper writer lease lost');
     this.db.prepare('UPDATE lease SET expires=? WHERE id=1 AND token=?').run(this.clock()+this.leaseMs,this.token);
+  }
+  archiveObservation(source,payload,at=this.clock()) {
+    if(!Number.isFinite(at)||typeof source!=='string'||source.length>100)throw new Error('Invalid observation');
+    const body=JSON.stringify(payload);if(body.length>2000000)throw new Error('Oversize observation');
+    const id=createHash('sha256').update(source+':'+body).digest('hex');
+    this.atomic(()=>{this.assertLease();const count=this.db.prepare('SELECT COUNT(*) AS n FROM observations').get().n;
+      if(count>=1000000)throw new Error('Observation archive capacity reached');
+      this.db.prepare('INSERT OR IGNORE INTO observations VALUES(?,?,?,?)').run(id,at,source,body);});return id;
+  }
+  observationsAt(at,limit=100) {
+    return this.db.prepare('SELECT observed,source,body FROM observations WHERE observed<=? ORDER BY observed DESC LIMIT ?').all(at,Math.max(1,Math.min(1000,limit))).map(r=>({...r,body:JSON.parse(r.body)}));
   }
   load() {
     const row=this.db.prepare('SELECT revision,body FROM snapshot WHERE id=1').get();

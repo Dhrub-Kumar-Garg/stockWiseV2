@@ -915,6 +915,12 @@ function WorldTab({ world }: any) {
         </div>
       )}
 
+      <div className="card-quiet p-4 text-xs">
+        <p>News feed health</p>
+        {(w.newsHealth || []).map((h: any)=><p key={h.source}>{h.source}: {h.status} · {h.lastSuccess ? timeAgo(h.lastSuccess) : "never received"} · {h.count ?? "—"} parsed</p>)}
+        <p>News context is unvalidated for predictive trading value.</p>
+        {(w.news || []).map((n: any)=><p key={n.id}>{n.source} · {new Date(n.publishedAt).toISOString()} · {n.title}</p>)}
+      </div>
       {/* Headlines */}
       {(headlines.length > 0 || fedLines.length > 0) && (
         <div className="card p-5">
