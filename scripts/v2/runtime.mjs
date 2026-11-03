@@ -2,7 +2,7 @@
 import * as P from './perp.mjs';
 import * as A from './accounting.mjs';
 import {freshV2State} from './episode.mjs';
-import {evaluateRisk} from './risk.mjs';
+import {operatorPause,evaluateRisk} from './risk.mjs';
 import {budgetOrder, rankOrders} from './portfolio.mjs';
 import {sizeOrder} from './sizing.mjs';
 import {SEED_STRATEGIES, runStrategies} from './strategies.mjs';
@@ -17,10 +17,12 @@ export function createPaperState(cfg, at = Date.now()) {
 }
 export function paperTick(state, quotes, cfg, {at = Date.now(), evaluate = runStrategies, context = {}} = {}) {
   A.assertPaperAccount(state);
+  if (state.lastTickAt === at) return [];
+  state.lastTickAt = at;
   if (cfg.v2.execution?.mode !== 'paper') throw new Error('Paper execution mode required');
   const events = [], valid = Object.fromEntries(Object.entries(quotes).filter(([,q]) => q.currency === 'USD' && quoteUsable(q,at,cfg.v2.data?.maxQuoteAgeMs ?? 30000)));
   state.updatedAt = at; state.cycles = (state.cycles || 0)+1;
-  function close(symbol, reason) {
+  function close(symbol, reason, requestId) {
     const pos = state.positions[symbol], q = valid[symbol];
     if (!pos || !q) return false;
     const cost = (cfg.slippage[pos.market] ?? 0.001)+(cfg.v2.halfSpread?.[pos.market] ?? 0.0002);
@@ -30,6 +32,7 @@ export function paperTick(state, quotes, cfg, {at = Date.now(), evaluate = runSt
       entryPrice:pos.entryPrice, exitPrice:exit, margin:pos.initialMargin, leverage:pos.leverage, net_pnl:out.netPnl,
       realized_R:out.realizedR, roi_on_margin:out.roiOnMargin, fees:out.fees, funding:out.funding, borrow:out.borrow,
       isolationAdjustment:out.isolationAdjustment, accountingVersion:3, openedAt:pos.openedAt, closedAt:at, exit_reason:reason};
+    if (requestId) event.requestId = requestId;
     events.push(event); state.lastClosed ||= {}; state.lastClosed[symbol] = at;
     delete state.positions[symbol]; return true;
   }
@@ -52,12 +55,20 @@ export function paperTick(state, quotes, cfg, {at = Date.now(), evaluate = runSt
   let risk = evaluateRisk(state,cfg,at);
   if (risk.flatten) { for (const symbol of Object.keys(state.positions)) close(symbol,'risk-lock'); A.equityAt(state,valid); }
   const pending = state.intents || []; state.intents = [];
-  for (const intent of rankOrders(pending)) {
+  state.orderReservations ||= {};
+  for (const command of pending.filter(i=>['pause','resume'].includes(i.op))) {
+    operatorPause(state,command.op==='pause'); evaluateRisk(state,cfg,at);
+    events.push({type:'control',id:command.id,ts:at});
+  }
+  risk = evaluateRisk(state,cfg,at);
+  if (risk.flatten) {for (const symbol of Object.keys(state.positions)) close(symbol,'risk-lock'); A.equityAt(state,valid);}
+  for (const intent of rankOrders(pending.filter(i=>["open","close"].includes(i.op)))) {
     const q = valid[intent.symbol];
-    if (intent.expiresAt <= at) { events.push({type:'reject',id:intent.id,reason:'expired',ts:at}); continue; }
+    if (intent.op === 'open' && intent.expiresAt <= at) { delete state.orderReservations[intent.id]; events.push({type:'reject',id:intent.id,reason:'expired',ts:at}); continue; }
     if (!q || at <= intent.decisionAt || q.sourceTs <= intent.decisionSourceTs) { state.intents.push(intent); continue; }
-    if (intent.op === 'close') { if (!close(intent.symbol,intent.reason || 'strategy-exit')) state.intents.push(intent); continue; }
-    if (risk.blocked) { events.push({type:'reject',id:intent.id,reason:'risk_locked',ts:at}); continue; }
+    if (intent.op === 'close') { if (!close(intent.symbol,intent.reason || 'strategy-exit',intent.id)) state.intents.push(intent); continue; }
+    if (risk.blocked) { delete state.orderReservations[intent.id]; events.push({type:'reject',id:intent.id,reason:'risk_locked',ts:at}); continue; }
+    delete state.orderReservations[intent.id];
     const sized = sizeOrder(state,intent,valid,cfg,{now:at,ledger:state.strategies});
     const order = budgetOrder(state,sized,valid,cfg,at);
     if (!order.marginUsd) { events.push({type:'reject',id:intent.id,reason:order.rejected || sized.rejected,ts:at}); continue; }
@@ -75,9 +86,15 @@ export function paperTick(state, quotes, cfg, {at = Date.now(), evaluate = runSt
     const q = valid[order.symbol]; if (!q || (risk.blocked && order.op === 'open')) continue;
     if (state.intents.some(i => i.symbol === order.symbol && i.op === order.op)) continue;
     const id = order.trade_id || `${order.strategy_id || 'manual'}:${order.op}:${order.symbol}:${at}`;
+    if (order.op === 'open') {
+      const reserved = sizeOrder(state,order,valid,cfg,{now:at,ledger:state.strategies});
+      if (!reserved.marginUsd) {events.push({type:'reject',id,reason:reserved.rejected,ts:at}); continue;}
+      state.orderReservations[id] = {...reserved,id,status:'reserved'};
+    }
     state.intents.push({...order,id,decisionAt:at,decisionSourceTs:q.sourceTs,expiresAt:at+cfg.v2.execution.orderTtlMs});
   }
-  A.equityAt(state,valid); evaluateRisk(state,cfg,at);
+  A.equityAt(state,valid); risk=evaluateRisk(state,cfg,at);
+  if (risk.flatten) {for (const symbol of Object.keys(state.positions)) close(symbol,'risk-lock'); A.equityAt(state,valid); evaluateRisk(state,cfg,at);}
   state.fills = [...(state.fills || []),...events].slice(-1000);
   const external = state.cashflows.filter(f => f.id !== 'initial' && f.ts <= at).reduce((s,f)=>s+f.amount,0);
   state.equityHistory = [...(state.equityHistory || []),{ts:at,equity:state.equity,netEquity:state.equity-external,

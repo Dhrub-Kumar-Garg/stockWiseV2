@@ -1,6 +1,8 @@
 import fs from 'node:fs';
 import path from 'node:path';
 import {fileURLToPath} from 'node:url';
+import {PaperStore} from './paper_store.mjs';
+import {dashboardDTO} from './dashboard.mjs';
 import {validateConfig} from './config.mjs';
 import {createPaperState,paperTick,signalsFor} from './runtime.mjs';
 import {fetchQuote,fetchFxSnapshot,fetchHistoryBars,indicators} from '../lib.mjs';
@@ -25,19 +27,22 @@ export async function runCLI(args = process.argv.slice(2)) {
   const cfg = validateConfig(JSON.parse(fs.readFileSync(path.resolve(value('--config') || path.join(ROOT,'config.json')),'utf8')));
   const dir = path.resolve(value('--data-dir') || path.join(ROOT,'data','paper'));
   fs.mkdirSync(dir,{recursive:true});
-  const file = path.join(dir,'state.v3.json');
-  if (!fs.existsSync(file) && fs.existsSync(path.join(ROOT,'data','state.v2.json'))) throw new Error('Legacy state detected; explicit migration required');
-  const state = fs.existsSync(file) ? JSON.parse(fs.readFileSync(file,'utf8')) : createPaperState(cfg);
-  if (state.mode !== 'paper' || state.accountingVersion !== 3) throw new Error('Refusing legacy/nonpaper state');
-  const write = (name,body) => {const dest=path.join(dir,name), tmp=dest+`.${process.pid}.tmp`; fs.writeFileSync(tmp,JSON.stringify(body)+'\n'); fs.renameSync(tmp,dest);};
-  if (args.includes('--initialize')) { if (fs.existsSync(file)) throw new Error('State exists; initialization never overwrites it'); write('state.v3.json',state); return; }
-  do {
-    const began=Date.now(), quotes=await collectQuotes(cfg,began,args.includes('--mock'));
-    paperTick(state,quotes,cfg,{at:Date.now()});
-    write('state.v3.json',state); write('signals.v2.json',signalsFor(state,cfg)); write('strategies.json',state.strategies);
-    for (const [name,rows] of [['trades.v2.jsonl',state.fills],['equity.v2.jsonl',state.equityHistory]]) fs.writeFileSync(path.join(dir,name),rows.map(r=>JSON.stringify(r)).join('\n')+'\n');
-    console.log(JSON.stringify({mode:'paper',cycle:state.cycles,equity:state.equity,risk:state.riskState,health:state.health.status}));
-    if (args.includes('--once')) break;
-    await new Promise(resolve=>setTimeout(resolve,Math.max(0,cfg.v2.strategies.loopSeconds*1000-(Date.now()-began))));
-  } while (true);
+  const store = new PaperStore(dir,{leaseMs:Math.max(120000,cfg.v2.strategies.loopSeconds*3000)}).acquire();
+  const publish = state => dashboardDTO({signals:signalsFor(state,cfg),strategies:state.strategies,
+    trades:state.fills,equity:state.equityHistory,episodes:[],generations:[],memory:[]});
+  try {
+    if (!store.load()) {
+      if (fs.existsSync(path.join(ROOT,'data','state.v2.json')) || fs.existsSync(path.join(dir,'state.v3.json'))) throw new Error('Legacy snapshot detected; explicit reconciliation required');
+      store.initialize(createPaperState(cfg),publish(createPaperState(cfg)));
+    } else if (args.includes('--initialize')) throw new Error('Paper store exists; initialization never overwrites');
+    if (args.includes('--initialize')) return;
+    do {
+      const began=Date.now(), quotes=await collectQuotes(cfg,began,args.includes('--mock'));
+      const result=store.transact(state=>paperTick(state,quotes,cfg,{at:Date.now()}),publish);
+      const state=result.state;
+      console.log(JSON.stringify({mode:'paper',cycle:state.cycles,equity:state.equity,risk:state.riskState,health:state.health.status}));
+      if (args.includes('--once')) break;
+      await new Promise(resolve=>setTimeout(resolve,Math.max(0,cfg.v2.strategies.loopSeconds*1000-(Date.now()-began))));
+    } while (true);
+  } finally {store.close();}
 }

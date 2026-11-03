@@ -32,8 +32,8 @@ node scripts/v2/engine.mjs --paper --mock --once --config config.example.json --
 ```
 
 Legacy V2 state is refused rather than silently resetting money or rewriting
-history. An explicit migration/reconciliation plan is required. Engine state
-lives under data/paper; set STOCKWISE_DATA_DIR to that same absolute path for a
+history. An explicit migration/reconciliation plan is required. Engine state/orders/events are committed atomically in local SQLite under
+data/paper; set STOCKWISE_DATA_DIR to that same absolute path for a
 dashboard attached to a different working directory. Existing deployments have
 not been changed or restarted; deployment still requires separate approval.
 
@@ -48,3 +48,12 @@ Run npm test. Audit reports describe source revision5036099, not these fixes;
 IMPLEMENTATION_STATUS.md tracks each separately committed improvement. Original
 ARCHITECTURE.md, AUDIT_FINDINGS.md, IMPROVEMENTS.md, BACKTEST_RESULTS.md,
 STRATEGY_NEWS_REVIEW.md and FOLLOWUP_RESULTS.md retain the original evidence.
+
+SQLite uses Node22.16's built-in experimental node:sqlite API (no database package
+or server installation). It uses WAL/FULL synchronization and a renewable writer
+lease; a stale owner cannot commit after takeover. Dashboard reads one bounded,
+whitelisted snapshot, not whole JSONL files. Keep paper.sqlite and its WAL/SHM
+files together when taking a stopped-engine backup. No old data was migrated.
+Explicit paper commands can be appended with scripts/v2/paper_command.mjs using
+--paper, --data-dir and --command JSON_FILE. IDs are durable and cannot be reused;
+missing-price closes remain queued. Old destructive fix_loop is retired.

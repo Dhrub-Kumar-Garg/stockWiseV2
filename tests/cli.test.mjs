@@ -4,6 +4,7 @@ import fs from 'node:fs';
 import os from 'node:os';
 import path from 'node:path';
 import {fileURLToPath} from 'node:url';
+import {PaperStore} from '../scripts/v2/paper_store.mjs';
 import {execFileSync,spawnSync} from 'node:child_process';
 const root=path.resolve(path.dirname(fileURLToPath(import.meta.url)),'..');
 test('both CLI paths run the identical isolated mock paper cycle',t=>{
@@ -12,7 +13,7 @@ test('both CLI paths run the identical isolated mock paper cycle',t=>{
   for (const [i,entry] of ['scripts/v2/engine.mjs','scripts/daemon.mjs'].entries()) {
     const dir=path.join(temp,String(i));
     const stdout=execFileSync(process.execPath,[entry,'--paper','--mock','--once','--config','config.example.json','--data-dir',dir],{cwd:root,encoding:'utf8',timeout:10000});
-    const state=JSON.parse(fs.readFileSync(path.join(dir,'state.v3.json')));
+    const reader=new PaperStore(dir); const state=reader.load().state; reader.close();
     assert.equal(state.mode,'paper'); assert.equal(state.cycles,1); assert.equal(state.walletBalance,100);
     assert.equal(JSON.parse(stdout).mode,'paper');
   }

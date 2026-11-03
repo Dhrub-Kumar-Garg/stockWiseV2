@@ -19,7 +19,7 @@ export function evaluateRisk(state, cfg, at = Date.now()) {
     state.peakEquity = Math.max(state.peakEquity || 0, risk.lifetimePeak);
     state.maxDrawdownPct = Math.max(state.maxDrawdownPct || 0, risk.drawdown);
   }
-  risk.reasons = ['operatorPaused', 'drawdownLocked', 'dailyLossLocked', 'insolvent', 'dataError'].filter(k => risk[k]);
+  risk.reasons = ['operatorPaused', 'drawdownLocked', 'dailyLossLocked', 'insolvent', 'dataError', 'historyCapacityLocked'].filter(k => risk[k]);
   risk.blocked = risk.reasons.length > 0;
   risk.flatten = Boolean(risk.drawdownLocked || risk.dailyLossLocked || risk.insolvent || (risk.operatorPaused && limits.flattenOnPause));
   state.riskState = risk.blocked ? 'halt' : risk.drawdown >= maxDrawdown / 2 ? 'caution' : 'normal';
