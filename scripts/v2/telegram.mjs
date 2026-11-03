@@ -5,21 +5,26 @@
 import { V2, readJSON, writeJSON, now, round } from "./store.mjs";
 
 // ── Config ─────────────────────────────────────────────────────────────────
-const BOT_TOKEN = "8900210959:AAEuT4stCOPiAAOi71HAxyA5jD6wFR-UG-8";
-const CHAT_ID   = "7315608180";
-const API       = `https://api.telegram.org/bot${BOT_TOKEN}`;
+function settings() {
+  if (process.env.STOCKWISE_TELEGRAM_ENABLED !== 'true' || process.env.STOCKWISE_MOCK === 'true') return null;
+  const token = process.env.STOCKWISE_TELEGRAM_TOKEN;
+  const chat = process.env.STOCKWISE_TELEGRAM_CHAT_ID;
+  return token && chat ? {api: `https://api.telegram.org/bot${token}`, chat} : null;
+}
 
 let _lastUpdateId = 0;
 
 // ── Send a message ─────────────────────────────────────────────────────────
 
 export async function notify(text, opts = {}) {
+  const cfg = settings(); if (!cfg) return;
   try {
-    await fetch(`${API}/sendMessage`, {
+    await fetch(`${cfg.api}/sendMessage`, {
       method: "POST",
+      signal: AbortSignal.timeout(4000),
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({
-        chat_id: CHAT_ID,
+        chat_id: cfg.chat,
         text,
         parse_mode: "HTML",
         disable_web_page_preview: true,
@@ -27,7 +32,7 @@ export async function notify(text, opts = {}) {
       }),
     });
   } catch (err) {
-    console.error("[telegram] send failed:", err.message);
+    console.error("[telegram] delivery failed");
   }
 }
 
@@ -215,9 +220,10 @@ async function handleCommand(cmd, state) {
 // ── Poll for commands ──────────────────────────────────────────────────────
 
 export async function checkCommands(state) {
+  const cfg = settings(); if (!cfg) return;
   try {
-    const url = `${API}/getUpdates?offset=${_lastUpdateId + 1}&timeout=0&allowed_updates=["message"]`;
-    const res = await fetch(url);
+    const url = `${cfg.api}/getUpdates?offset=${_lastUpdateId + 1}&timeout=0&allowed_updates=["message"]`;
+    const res = await fetch(url, {signal: AbortSignal.timeout(4000)});
     if (!res.ok) return;
     const data = await res.json();
     if (!data.ok || !data.result?.length) return;
@@ -227,7 +233,7 @@ export async function checkCommands(state) {
       const msg = update.message;
       if (!msg || !msg.text) continue;
       // Only accept commands from the owner
-      if (String(msg.chat.id) !== CHAT_ID) continue;
+      if (String(msg.chat.id) !== cfg.chat) continue;
       if (msg.text.startsWith("/")) {
         await handleCommand(msg.text, state);
       }

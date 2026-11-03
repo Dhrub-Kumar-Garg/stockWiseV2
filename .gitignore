@@ -5,3 +5,10 @@ data/*
 !data/.gitkeep
 !data/strategies.json
 *.pem
+.env
+.env.*
+!.env.example
+*.key
+*.p12
+*.pfx
+*.tsbuildinfo

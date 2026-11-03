@@ -10,13 +10,21 @@ type Data = any;
 export default function Root() {
   const [data, setData] = useState<Data | null>(null);
   const [error, setError] = useState(false);
+  const [token, setToken] = useState("");
+  const [input, setInput] = useState("");
+  const [authError, setAuthError] = useState("");
 
   useEffect(() => {
+    if (!token) return;
     let mounted = true;
 
     async function poll() {
       try {
-        const res = await fetch("/api/state", { cache: "no-store" });
+        const res = await fetch("/api/state", { cache: "no-store", headers: {Authorization: `Bearer ${token}`} });
+        if (res.status === 401 || res.status === 503) {
+          if (mounted) { setAuthError(res.status === 503 ? "Dashboard access has not been configured on the server." : "Access token was rejected."); setToken(""); setData(null); }
+          return;
+        }
         if (!res.ok) throw new Error(`HTTP ${res.status}`);
         const json = await res.json();
         if (mounted) { setData(json); setError(false); }
@@ -28,7 +36,18 @@ export default function Root() {
     poll();
     const id = setInterval(poll, 6000);
     return () => { mounted = false; clearInterval(id); };
-  }, []);
+  }, [token]);
+
+  if (!token) return <main className="min-h-screen flex items-center justify-center p-6">
+    <form className="card p-6 space-y-4 max-w-sm" onSubmit={e => {e.preventDefault(); setAuthError(""); setToken(input); setInput("");}}>
+      <h1 className="font-display text-2xl">StockWise dashboard</h1>
+      <label className="block text-sm">Dashboard access token
+        <input type="password" autoComplete="off" required value={input} onChange={e => setInput(e.target.value)} className="block w-full border rounded p-2 mt-2" />
+      </label>
+      {authError && <p role="alert">{authError}</p>}
+      <button type="submit" className="pill px-4 py-2">Open dashboard</button>
+    </form>
+  </main>;
 
   // ── Loading / error state ──────────────────────────────────────────────
   if (!data) {

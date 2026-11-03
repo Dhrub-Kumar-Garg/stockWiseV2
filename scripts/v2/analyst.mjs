@@ -77,7 +77,7 @@ IMPORTANT: A bot that never trades never makes money. Sitting in SLEEP is the mo
 
     if (!res.ok) {
       const errText = await res.text();
-      log(`Analyst API error (${res.status}): ${errText.slice(0, 200)}`);
+      log(`Analyst API error (${res.status})`);
       return null;
     }
 
@@ -105,7 +105,7 @@ IMPORTANT: A bot that never trades never makes money. Sitting in SLEEP is the mo
 
     return parsed;
   } catch (err) {
-    log(`Analyst API exception: ${err.message}`);
+    log("Analyst API request failed");
     return null;
   }
 }
@@ -184,9 +184,9 @@ export function readAnalystDecision() {
  */
 export async function runAnalyst(state, worldDigest, cfg) {
   const analystCfg = cfg.v2?.analyst;
-  if (!analystCfg?.enabled) return readAnalystDecision();
+  if (!analystCfg?.enabled || process.env.STOCKWISE_ANALYST_ENABLED !== "true" || process.env.STOCKWISE_MOCK === "true") return readAnalystDecision();
 
-  const apiKey = analystCfg.groqApiKey;
+  const apiKey = process.env.STOCKWISE_GROQ_API_KEY;
   if (!apiKey) {
     log("Analyst: No Groq API key configured — skipping.");
     return readAnalystDecision();
