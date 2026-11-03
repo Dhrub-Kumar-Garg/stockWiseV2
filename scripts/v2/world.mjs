@@ -14,8 +14,8 @@ export function createWorldCollector({fetchText=url=>readPublic(url,{timeoutMs:5
    const prior=cache.get(source.id);
    if(prior&&at-prior.at<ttlMs){health.push({source:source.id,status:'cached',lastSuccess:prior.at,ageMs:at-prior.at});return;}
    try {
-    const xml=await fetchText(source.url),items=parseFeed(xml,{source:source.id,kind:source.kind,observedAt:at});
-    for(const item of items){if(!firstSeen.has(item.id))firstSeen.set(item.id,at);item.observedAt=firstSeen.get(item.id);}
+    const xml=await fetchText(source.url),items=parseFeed(xml,{source:source.id,kind:source.kind,observedAt:clock()});
+    for(const item of items){if(!firstSeen.has(item.id))firstSeen.set(item.id,item.observedAt);item.observedAt=firstSeen.get(item.id);}
     cache.set(source.id,{at,items});health.push({source:source.id,status:'ok',lastSuccess:at,ageMs:0,count:items.length});
    }catch{health.push({source:source.id,status:'error',lastSuccess:prior?.at??null,ageMs:prior?at-prior.at:null});}
   }));

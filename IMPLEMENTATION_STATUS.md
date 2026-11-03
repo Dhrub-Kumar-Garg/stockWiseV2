@@ -20,7 +20,7 @@ on positive cost-net evidence. Historical audit reports describe the old revisio
 | 10. Bounded asynchronous feeds | Complete | Single-flight background snapshots, 1s risk cadence, bounded HTTP body deadlines/retry, WS watchdog/parser and partial-fill research adapter |
 | 11. Decision traces | Complete | Every symbol/strategy has a reason; bounded traces, separate raw/veto/selection/primary-fill counters and UI |
 | 12. Structured news | Complete | Bounded RSS/Atom subset, event/observation timestamps, balanced dedup, Fed/equity, TTL/outage health and immutable SQLite archive |
-| 13. Calibration and expiring context | Pending | |
+| 13. Calibration and expiring context | Complete | Train/calibration/test artifacts, Brier/reliability, scope/cost/TTL checks, purged boundaries, no side/news heuristic veto; no real model qualifies yet |
 | 14. Shadow strategy books/netting | Pending | |
 | 15. Sub-minute feasibility tools | Pending | |
 

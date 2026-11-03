@@ -1,3 +1,4 @@
+import {calibratedDecision} from './calibration.mjs';
 // Synchronous paper cycle, with injectable signals/clock and no network or filesystem writes.
 import * as P from './perp.mjs';
 import * as A from './accounting.mjs';
@@ -69,7 +70,13 @@ export function paperTick(state, quotes, cfg, {at = Date.now(), evaluate = runSt
     if (intent.op === 'close') { if (!close(intent.symbol,intent.reason || 'strategy-exit',intent.id)) state.intents.push(intent); continue; }
     if (risk.blocked) { delete state.orderReservations[intent.id]; events.push({type:'reject',id:intent.id,reason:'risk_locked',ts:at}); continue; }
     delete state.orderReservations[intent.id];
-    const sized = sizeOrder(state,intent,valid,cfg,{now:at,ledger:state.strategies});
+    if(intent.edgeEvidence){
+      const model=(context.models||state.calibrationModels||[]).find(m=>m.artifactHash===intent.modelHash);
+      const check=calibratedDecision(model,intent,cfg,at);
+      if(!check.eligible){events.push({type:'reject',id:intent.id,reason:check.reason,ts:at});continue;}
+      intent.edgeEvidence=check.evidence;
+    }
+    const sized = sizeOrder(state,intent,valid,cfg,{now:at,ledger:state.strategies,...(intent.edgeEvidence?{observations:intent.edgeEvidence}:{})});
     const order = budgetOrder(state,sized,valid,cfg,at);
     if (!order.marginUsd) { events.push({type:'reject',id:intent.id,reason:order.rejected || sized.rejected,ts:at}); continue; }
     const market = order.market, cost = (cfg.slippage[market] ?? 0.001)+(cfg.v2.halfSpread?.[market] ?? 0.0002);
@@ -88,7 +95,7 @@ export function paperTick(state, quotes, cfg, {at = Date.now(), evaluate = runSt
     if (state.intents.some(i => i.symbol === order.symbol && i.op === order.op)) continue;
     const id = order.trade_id || `${order.strategy_id || 'manual'}:${order.op}:${order.symbol}:${at}`;
     if (order.op === 'open') {
-      const reserved = sizeOrder(state,order,valid,cfg,{now:at,ledger:state.strategies});
+      const reserved = sizeOrder(state,order,valid,cfg,{now:at,ledger:state.strategies,...(order.edgeEvidence?{observations:order.edgeEvidence}:{})});
       if (!reserved.marginUsd) {recordDecision(state,{ts:at,strategy_id:order.strategy_id,symbol:order.symbol,side:order.side,stage:'vetoed',reason:reserved.rejected});events.push({type:'reject',id,reason:reserved.rejected,ts:at}); continue;}
       state.orderReservations[id] = {...reserved,id,status:'reserved'};
     }

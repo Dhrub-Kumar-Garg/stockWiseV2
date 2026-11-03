@@ -1,3 +1,4 @@
+import {candidateFeatures,calibratedDecision,strategyFingerprint,scopeKey,expiringContext} from './calibration.mjs';
 import {quoteUsable, alignPair} from "./market_data.mjs";
 // scripts/v2/strategies.mjs — Deterministic strategy library
 // Reads enriched quotes, emits open/close orders with next-tick fills.
@@ -873,7 +874,7 @@ export function evaluateCandidates(state,eq,cfg,{strategies=state.strategies||SE
     else if(['orderflow','oi_diverge'].includes(strat.id)&&!q.flow)row.reason='flow_history_missing';
     else if(strat.id==='orb'&&!q.sessionStart)row.reason='session_open_missing';
     else {try {row.signal=SIGNAL_FN[strat.id]?.({...q,symbol:item.symbol,market:item.market,observedAt:at},strat,eq)||null;row.reason=row.signal?'raw_signal':'no_signal';}catch{row.reason='signal_error';}}
-    if(row.signal){row.side=row.signal.side;row.rawConfidence=row.signal.confidence;}
+    if(row.signal){row.side=row.signal.side;row.rawConfidence=row.signal.confidence;row.regime=state.regime||'unknown';row.strategyHash=strategyFingerprint(strat);row.features=candidateFeatures(q,state.world,item.symbol,at);}
     rows.push(row);
   }
   return rows;
@@ -893,35 +894,30 @@ export function runStrategies(state,eq,cfg,context={}) {
     const q=eq[symbol];if(!q?.closes?.length)continue;
     const exit=strategyExit(pos,q,eq,state.regime);if(exit)orders.push({op:'close',symbol,reason:exit.reason});
   }
-  const analyst=context.analyst||{mode:'SLEEP',direction_bias:'NEUTRAL'},mode=analyst.mode||'SLEEP';
-  const world=context.world||{},mood=world.newsMood?.mean_s??0,fg=world.fearGreedCrypto?.value??50;
+  const analyst=expiringContext(context.analyst||state.analyst,at);state.analyst=analyst;
   const rows=evaluateCandidates(state,eq,cfg,{strategies,now:at});
-  for(const row of rows) {
+  for(const row of rows){
     recordDecision(state,row);if(!row.signal)continue;
     let reason=null;
     if(state.positions[row.symbol])reason='symbol_occupied';
     else if((state.lastClosed?.[row.symbol]||0)+120000>at)reason='reentry_cooldown';
-    else if(mode==='SLEEP'&&row.strategy_id!=='pairs_trade')reason='analyst_sleep';
-    else if(mode!=='SLEEP'&&row.pool!=='both'&&row.pool!==(mode==='TREND'?'trend':'revert'))reason='inactive_pool';
-    else if(analyst.direction_bias==='LONG'&&row.side==='short'||analyst.direction_bias==='SHORT'&&row.side==='long')reason='analyst_side_veto';
-    if(reason){row.blocked=true;recordDecision(state,{...row,stage:'vetoed',reason});continue;}
-    let confidence=row.signal.confidence;
-    if(row.side==='long'){if(mood<-.3)confidence*=.7;if(mood>.3)confidence*=1.2;if(fg<25)confidence*=1.3;if(fg>80)confidence*=.5;}
-    else{if(mood>.3)confidence*=.7;if(mood<-.3)confidence*=1.2;if(fg>80)confidence*=1.3;if(fg<25)confidence*=.5;}
-    row.score=clamp(confidence,.05,1)*(mode==='SLEEP'?.5:1);
+    const model=(context.models||state.calibrationModels||[]).find(m=>m.scope===scopeKey(row));
+    row.calibration=calibratedDecision(model,row,cfg,at);
+    if(!reason&&!row.calibration.eligible)reason=row.calibration.reason;
+    if(reason){row.blocked=true;recordDecision(state,{...row,stage:'vetoed',reason});}
   }
   let available=cfg.v2.strategies.maxConcurrentPositions-Object.keys(state.positions).length;
-  for(const item of [...cfg.watchlist].sort((a,b)=>a.symbol.localeCompare(b.symbol))) {
-    const eligible=rows.filter(r=>r.symbol===item.symbol&&r.signal&&!r.blocked),long=eligible.filter(r=>r.side==='long'),short=eligible.filter(r=>r.side==='short');
-    let chosen=long.length>=2&&long.length>=short.length?long:short.length>=2?short:eligible.filter(r=>r.score>=.6).sort((a,b)=>b.score-a.score).slice(0,1);
-    if(!available)chosen=[];
-    for(const r of eligible)if(!chosen.includes(r))recordDecision(state,{...r,stage:'vetoed',reason:available?'confluence_or_score':'position_slots'});
-    if(!chosen.length)continue;
-    chosen.sort((a,b)=>b.score-a.score||a.strategy_id.localeCompare(b.strategy_id));const best=chosen[0],strat=strategies.find(s=>s.id===best.strategy_id),sig=best.signal;
+  for(const item of [...cfg.watchlist].sort((a,b)=>a.symbol.localeCompare(b.symbol))){
+    const eligible=rows.filter(r=>r.symbol===item.symbol&&r.signal&&!r.blocked).sort((a,b)=>b.calibration.expectedNetRLower-a.calibration.expectedNetRLower||a.strategy_id.localeCompare(b.strategy_id));
+    // Exact opposing EV ties abstain. Never break ties in favor of long or force equal sides.
+    const best=eligible[0],tie=best&&eligible.some(r=>r.side!==best.side&&Math.abs(r.calibration.expectedNetRLower-best.calibration.expectedNetRLower)<1e-12);
+    if(!best||!available||tie){for(const r of eligible)recordDecision(state,{...r,stage:'vetoed',reason:tie?'opposing_ev_tie':'position_slots'});continue;}
+    const chosen=eligible.filter(r=>r.side===best.side),strat=strategies.find(s=>s.id===best.strategy_id),sig=best.signal;
     orders.push({op:'open',symbol:item.symbol,market:item.market,side:sig.side,leverage:sig.baseLev||strat.baseLev,strategy_id:strat.id,
       confirming_ids:chosen.slice(1).map(r=>r.strategy_id),setup_tag:strat.setup_tag,stopPct:sig.stopPct,targetPct:sig.targetPct,
-      confidence:best.score,reason:sig.reason,trade_id:`${strat.id}:${item.symbol}:${at}`});
-    for(const r of chosen)recordDecision(state,{...r,stage:'selected',reason:r===best?'primary':'confirmation'});
+      features:best.features,strategyHash:best.strategyHash,regime:best.regime,probability:best.calibration.probability,expectedNetRLower:best.calibration.expectedNetRLower,edgeEvidence:best.calibration.evidence,modelHash:best.calibration.artifactHash,
+      reason:sig.reason,trade_id:`${strat.id}:${item.symbol}:${at}`});
+    for(const r of eligible)recordDecision(state,{...r,stage:chosen.includes(r)?'selected':'vetoed',reason:r===best?'primary':chosen.includes(r)?'confirmation':'lower_net_ev'});
     available--;
   }
   return orders;

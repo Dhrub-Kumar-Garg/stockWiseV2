@@ -34,6 +34,8 @@ export async function runCLI(args = process.argv.slice(2)) {
   if (!args.includes('--paper') || args.includes('--live') || args.includes('--force')) throw new Error('Explicit --paper required; live/force modes are unsupported');
   const value = flag => {const i=args.indexOf(flag); return i>=0?args[i+1]:null;};
   const cfg = validateConfig(JSON.parse(fs.readFileSync(path.resolve(value('--config') || path.join(ROOT,'config.json')),'utf8')));
+  const models=value('--models')?JSON.parse(fs.readFileSync(path.resolve(value('--models')),'utf8')):[];
+  if(!Array.isArray(models)||models.length>1000)throw new Error('Bounded reviewed model artifact array required');
   const dir = path.resolve(value('--data-dir') || path.join(ROOT,'data','paper'));
   fs.mkdirSync(dir,{recursive:true});
   const store = new PaperStore(dir,{leaseMs:Math.max(120000,cfg.v2.strategies.loopSeconds*3000)}).acquire();
@@ -55,7 +57,7 @@ export async function runCLI(args = process.argv.slice(2)) {
       if(!args.includes('--mock'))worldWorker.refresh();
       const worldSnapshot=worldWorker.snapshot();
       if(worldSnapshot.updatedAt>lastWorld){store.archiveObservation('world',worldSnapshot.value,worldSnapshot.updatedAt);lastWorld=worldSnapshot.updatedAt;}
-      const result=store.transact(state=>{state.world=worldSnapshot.value||{};return paperTick(state,quotes,cfg,{at:Date.now(),context:{world:state.world},...(began<nextDecision?{evaluate:()=>[]}:{})});},publish);
+      const result=store.transact(state=>{state.world=worldSnapshot.value||{};return paperTick(state,quotes,cfg,{at:Date.now(),context:{world:state.world,models},...(began<nextDecision?{evaluate:()=>[]}:{})});},publish);
       if(began>=nextDecision)nextDecision=began+cfg.v2.strategies.loopSeconds*1000;
       const state=result.state;
       console.log(JSON.stringify({mode:'paper',cycle:state.cycles,equity:state.equity,risk:state.riskState,health:state.health.status}));
