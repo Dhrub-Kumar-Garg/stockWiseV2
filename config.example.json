@@ -258,7 +258,17 @@
     "safety": {
       "maxDrawdown": 0.1,
       "maxDailyLoss": 0.02,
-      "flattenOnPause": false
+      "flattenOnPause": false,
+      "maxPositionLeverage": 2,
+      "maxGrossLeverage": 1.5,
+      "maxNetLeverage": 1,
+      "maxPositionMarginPct": 0.2,
+      "minCashPct": 0.1,
+      "maxRiskPerTrade": 0.005,
+      "maxPortfolioRisk": 0.02,
+      "maxClusterGross": 0.8,
+      "maxCorrelatedGross": 0.5,
+      "correlationThreshold": 0.75
     }
   }
 }

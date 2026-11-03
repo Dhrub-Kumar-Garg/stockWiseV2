@@ -29,6 +29,8 @@ import {recordEntry, settleFunding, settleClose, settleBorrow, assertPaperAccoun
 
 import {evaluateRisk, canOpen} from "./v2/risk.mjs";
 
+import {budgetOrder, rankOrders} from "./v2/portfolio.mjs";
+
 const ONCE = process.argv.includes("--once");
 
 // ── History cache ──────────────────────────────────────────────────────────
@@ -267,7 +269,7 @@ async function cycle(state, cfg) {
 
   // ── 9. Size & execute opens (skip if halted) ──────────────────────────
   if (state.riskState !== "halt") {
-    const openOrders = stratOrders.filter((o) => o.op === "open");
+    const openOrders = rankOrders(stratOrders.filter((o) => o.op === "open"));
 
     for (const o of openOrders) {
       // One position per symbol
@@ -338,6 +340,8 @@ async function cycle(state, cfg) {
 // ── Execution: Open ────────────────────────────────────────────────────────
 
 function executeOpen(state, order, q, cfg) {
+  order = budgetOrder(state, order, {[order.symbol]: q}, cfg, now());
+  if (!order.marginUsd) return;
   if (!canOpen(state, cfg, now())) return;
   const v2 = cfg.v2;
   const market = (cfg.watchlist.find((w) => w.symbol === order.symbol) || {}).market || "crypto";
@@ -354,7 +358,7 @@ function executeOpen(state, order, q, cfg) {
   // Ensure we don't exceed free cash
   const maxMargin = Math.max(0, state.walletBalance * 0.98);
   const margin    = Math.min(order.marginUsd, maxMargin);
-  if (margin < (v2.strategies.minNotionalUsd ?? 2)) return; // too small
+  if (margin * order.leverage < (v2.strategies.minNotionalUsd ?? 2)) return; // too small
 
   // Build position
   const pos = openPosition({
@@ -377,6 +381,7 @@ function executeOpen(state, order, q, cfg) {
   });
 
   // Entry fee (taker)
+  pos.riskBudgetUsd = order.riskBudgetUsd;
   const entryFee = recordEntry(state, pos, v2.perpFees?.taker ?? 0.0005, now());
 
   // Store
