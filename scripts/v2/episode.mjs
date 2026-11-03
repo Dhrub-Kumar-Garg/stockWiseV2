@@ -16,6 +16,8 @@ export function freshV2State(cfg) {
 
   return {
     version: 2,
+    mode: "paper",
+    accountingVersion: 3,
     episodeNum: 1,
     episodeId: `ep_${ts}_1`,
     startedAt: ts,

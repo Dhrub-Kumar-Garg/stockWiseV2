@@ -1,24 +1,24 @@
 // scripts/v2/perp.mjs — Perpetual-contract leverage & liquidation math
-// PURE functions, no file access. Mechanically correct to real exchanges.
-// Money and life-or-death run on MARK price (smoothed index), never last tick.
+// Paper-only approximations. Venue-specific liquidation requires actual marks/tiers.
 
-export const sideSign = (side) => (side === "short" ? -1 : 1);
+export const sideSign = (side) => { if (!['long', 'short'].includes(side)) throw new Error('Invalid side'); return side === 'short' ? -1 : 1; };
 export const imr = (leverage) => 1 / leverage;
 
 export function tierFor(notional, tiers) {
+  if (!Number.isFinite(notional) || !Array.isArray(tiers) || !tiers.length) throw new Error('Invalid notional/maintenance tiers');
   const n = Math.abs(notional);
   let t = tiers[0];
   for (const cand of tiers) { if (n >= cand.floor && n < cand.cap) { t = cand; break; } t = cand; }
   return t;
 }
 export function maintenanceMargin(notional, tier) {
-  return Math.abs(notional) * tier.mmr - (tier.deduction || 0);
+  return Math.max(0, Math.abs(notional) * tier.mmr - (tier.deduction || 0));
 }
 export function maxLeverageAt(notional, tiers) { return tierFor(notional, tiers).maxLev; }
 
 export function liqPrice(side, entry, leverage, mmr) {
   const s = sideSign(side);
-  return entry * (1 - s * (1 / leverage) + s * mmr);
+  return entry * (1 - s / leverage) / (1 - s * mmr);
 }
 export function bankruptcyPrice(side, entry, leverage) {
   const s = sideSign(side);
@@ -77,8 +77,11 @@ export function fillPrice(refPrice, side, halfSpreadFrac, slipFrac) {
  * entryMark is the mark price at entry (which becomes the fill price).
  */
 export function openPosition({ symbol, market, side, entryMark, margin, leverage, tiers, meta }) {
+  sideSign(side);
+  if (![entryMark, margin, leverage].every(v => Number.isFinite(v) && v > 0) || leverage < 1) throw new Error('Invalid paper position inputs');
   const { notional, qty } = sizeFromMargin(margin, leverage, entryMark);
   const tier = tierFor(notional, tiers);
+  if (leverage > tier.maxLev) throw new Error('Maintenance-tier leverage exceeded');
   const mmrVal = tier.mmr;
   const lq = liqPrice(side, entryMark, leverage, mmrVal);
   const bk = bankruptcyPrice(side, entryMark, leverage);
@@ -94,6 +97,7 @@ export function openPosition({ symbol, market, side, entryMark, margin, leverage
     leverage,
     isolatedMargin: margin,
     mmr: mmrVal,
+    maintenanceTiers: structuredClone(tiers),
     maintDeduction: tier.deduction || 0,
     liqPrice: lq,
     bankruptcyPrice: bk,
@@ -111,13 +115,12 @@ export function openPosition({ symbol, market, side, entryMark, margin, leverage
  * Mark-to-market a position. Returns current risk snapshot.
  */
 export function markPosition(pos, mark) {
+  if (!Number.isFinite(mark) || mark <= 0) throw new Error('Invalid mark');
   const uPnl = unrealizedPnl(pos.side, pos.entryPrice, mark, pos.qty);
   const equity = positionEquity(pos.isolatedMargin, uPnl);
-  const maintMargin = maintenanceMargin(pos.notional, {
-    mmr: pos.mmr,
-    deduction: pos.maintDeduction,
-  });
-  const liquidated = isLiquidated(pos.side, mark, pos.liqPrice);
+  const tier = pos.maintenanceTiers ? tierFor(pos.qty * mark, pos.maintenanceTiers) : {mmr: pos.mmr, deduction: pos.maintDeduction};
+  const maintMargin = maintenanceMargin(pos.qty * mark, tier);
+  const liquidated = equity <= maintMargin;
 
   return { mark, uPnl, equity, maintMargin, liquidated };
 }

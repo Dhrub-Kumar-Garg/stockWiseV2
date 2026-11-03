@@ -37,6 +37,8 @@ import {
 import { runAnalyst, readAnalystDecision } from "./analyst.mjs";
 import { CryptoFeed } from "./ws_feed.mjs";
 
+import {recordEntry, settleFunding, settleClose, settleBorrow, assertPaperAccount} from "./accounting.mjs";
+
 const ONCE = process.argv.includes("--once");
 
 // ── Caches (persist across cycles) ─────────────────────────────────────────
@@ -151,11 +153,12 @@ function markAndManage(state, eq, cfg) {
         pos.lastFundingTs, now(), v2.fundingHoursUTC
       );
       for (const ts of crossed) {
-        pos.fundingAccrued = (pos.fundingAccrued || 0) +
-          P.fundingPayment(pos.notional, rate, pos.side);
+        settleFunding(state, pos, rate, ts, mark);
         pos.lastFundingTs = ts;
       }
     }
+
+    if (pos.market !== "crypto") settleBorrow(state, pos, v2.leverage?.[pos.market]?.borrowAnnual || 0, now(), mark);
 
     // Snapshot at mark
     const snap = P.markPosition(pos, mark);
@@ -248,14 +251,8 @@ function doOpen(state, order, q, cfg) {
   });
 
   // Entry fee (taker)
-  const entryFee = P.tradeFee(pos.notional, v2.perpFees?.taker ?? 0.0005);
-  pos.feesPaid   = (pos.feesPaid || 0) + entryFee;
-
-  // EMA mark starts at entry
+  const entryFee = recordEntry(state, pos, v2.perpFees?.taker ?? 0.0005, now());
   pos.emaMark = pos.entryPrice;
-
-  // Deduct margin + fee from wallet
-  state.walletBalance -= (pos.isolatedMargin + entryFee);
 
   state.positions[order.symbol] = pos;
 
@@ -317,19 +314,8 @@ function doClose(state, symbol, markPrice, reasonTag, cfg) {
   // Honest exit fill: slippage is adverse
   const exitFill = markPrice * (1 - P.sideSign(pos.side) * slip);
 
-  const uPnl     = P.unrealizedPnl(pos.side, pos.entryPrice, exitFill, pos.qty);
-  const exitFee  = P.tradeFee(pos.notional, v2.perpFees?.taker ?? 0.0005);
-  const fees     = (pos.feesPaid || 0) + exitFee;
-  const funding  = pos.fundingAccrued || 0;
-  const netPnl   = uPnl - exitFee - funding;
-
-  // Return margin + raw PnL − exit fee
-  state.walletBalance += pos.isolatedMargin + uPnl - exitFee;
-
-  const realizedR   = pos.isolatedMargin > 0 ? netPnl / pos.isolatedMargin : 0;
-  const roiOnMargin = pos.isolatedMargin > 0 ? (uPnl - fees - funding) / pos.isolatedMargin : 0;
-
-  state.realizedPnlEpisode = (state.realizedPnlEpisode || 0) + netPnl;
+  const accounting = settleClose(state, pos, exitFill, v2.perpFees?.taker ?? 0.0005, reasonTag, now());
+  const {rawPnl: uPnl, exitFee, fees, funding, netPnl, realizedR, roiOnMargin} = accounting;
 
   // Track recent trade results for the circuit breaker
   if (!state.recentTradeResults) state.recentTradeResults = [];
@@ -364,6 +350,7 @@ function doClose(state, symbol, markPrice, reasonTag, cfg) {
     margin:       round(pos.isolatedMargin, 4),
     leverage:     pos.leverage,
     net_pnl:      round(netPnl, 6),
+    accountingVersion: 3, isolationAdjustment: accounting.isolationAdjustment, borrow: accounting.borrow,
     realized_R:   round(realizedR, 6),
     roi_on_margin: round(roiOnMargin, 6),
     exit_reason:  reasonTag,
@@ -535,6 +522,8 @@ async function main() {
 
   // Telegram startup notification
   try { await notifyStartup(state); } catch { /* non-fatal */ }
+
+  assertPaperAccount(state);
 
   const loopMs = (cfg.v2.strategies.loopSeconds || 30) * 1000;
 

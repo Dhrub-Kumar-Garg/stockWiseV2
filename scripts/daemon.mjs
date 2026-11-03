@@ -25,6 +25,8 @@ import {
 import { onEpisodeEnd, evolveTick, onClose } from "./v2/brain.mjs";
 import { collectWorld } from "./v2/world.mjs";
 
+import {recordEntry, settleFunding, settleClose, settleBorrow, assertPaperAccount} from "./v2/accounting.mjs";
+
 const ONCE = process.argv.includes("--once");
 
 // ── History cache ──────────────────────────────────────────────────────────
@@ -66,6 +68,8 @@ async function main() {
   log(`  Equity $${round(state.equity, 2)} | Kelly ${round(state.aggression.kellyFraction, 2)}`);
   log(`  Leverage cap ${state.aggression.leverageCap}x`);
   log("═══════════════════════════════════════════════");
+
+  assertPaperAccount(state);
 
   const loopMs = (cfg.v2.strategies.loopSeconds || 30) * 1000;
   let lastBrainTs = 0;
@@ -190,11 +194,12 @@ async function cycle(state, cfg) {
         pos.lastFundingTs, now(), v2.fundingHoursUTC
       );
       for (const ts of crossed) {
-        const payment = fundingPayment(pos.notional, rate, pos.side);
-        pos.fundingAccrued = (pos.fundingAccrued || 0) + payment;
+        settleFunding(state, pos, rate, ts, q.price);
         pos.lastFundingTs = ts;
       }
     }
+
+    if (pos.market !== "crypto") settleBorrow(state, pos, v2.leverage?.[pos.market]?.borrowAnnual || 0, now(), q.price);
 
     // ── Risk exits (priority order) ──
 
@@ -366,11 +371,7 @@ function executeOpen(state, order, q, cfg) {
   });
 
   // Entry fee (taker)
-  const entryFee = tradeFee(pos.notional, v2.perpFees?.taker ?? 0.0005);
-  pos.feesPaid = (pos.feesPaid || 0) + entryFee;
-
-  // Deduct margin + fee from wallet
-  state.walletBalance -= (pos.isolatedMargin + entryFee);
+  const entryFee = recordEntry(state, pos, v2.perpFees?.taker ?? 0.0005, now());
 
   // Store
   state.positions[order.symbol] = pos;
@@ -414,25 +415,8 @@ function closePosition(state, symbol, markPrice, reasonTag, cfg) {
   const slip     = cfg.slippage?.[market] ?? 0.001;
   const exitFill = markPrice * (1 - sideSign(pos.side) * slip);
 
-  // Unrealized PnL at fill price
-  const uPnl = unrealizedPnl(pos.side, pos.entryPrice, exitFill, pos.qty);
-
-  // Exit fee
-  const exitFee  = tradeFee(pos.notional, v2.perpFees?.taker ?? 0.0005);
-  const totalFee = (pos.feesPaid || 0) + exitFee;
-  const funding  = pos.fundingAccrued || 0;
-
-  // Net PnL = raw gain/loss - all costs
-  const netPnl = uPnl - exitFee - funding;
-
-  // Return margin + raw PnL - exit fee to wallet
-  state.walletBalance += pos.isolatedMargin + uPnl - exitFee;
-
-  // R-multiple (return on margin risked)
-  const realizedR   = pos.isolatedMargin > 0 ? netPnl / pos.isolatedMargin : 0;
-  const roiOnMargin = pos.isolatedMargin > 0 ? (uPnl - totalFee - funding) / pos.isolatedMargin : 0;
-
-  state.realizedPnlEpisode = (state.realizedPnlEpisode || 0) + netPnl;
+  const accounting = settleClose(state, pos, exitFill, v2.perpFees?.taker ?? 0.0005, reasonTag, now());
+  const {rawPnl: uPnl, exitFee, fees: totalFee, funding, netPnl, realizedR, roiOnMargin} = accounting;
 
   // Journal post-trade
   const tradeId = pos.openMeta?.trade_id || `${symbol}_${pos.openedAt}`;
@@ -443,6 +427,7 @@ function closePosition(state, symbol, markPrice, reasonTag, cfg) {
     exit_reason:  reasonTag,
     exitPrice:    round(exitFill, 6),
     net_pnl:      round(netPnl, 4),
+    accountingVersion: 3, isolationAdjustment: accounting.isolationAdjustment, borrow: accounting.borrow,
     realized_R:   round(realizedR, 4),
     roi_on_margin: round(roiOnMargin, 4),
     fees:         round(totalFee, 4),
@@ -464,6 +449,7 @@ function closePosition(state, symbol, markPrice, reasonTag, cfg) {
     margin:       round(pos.isolatedMargin, 4),
     leverage:     pos.leverage,
     net_pnl:      round(netPnl, 4),
+    accountingVersion: 3, isolationAdjustment: accounting.isolationAdjustment, borrow: accounting.borrow,
     realized_R:   round(realizedR, 4),
     roi_on_margin: round(roiOnMargin, 4),
     exit_reason:  reasonTag,
