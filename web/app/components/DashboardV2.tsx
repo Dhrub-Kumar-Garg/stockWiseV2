@@ -476,9 +476,9 @@ function OverviewTab({ sig, episodes, equity: eqCurve, world, connectionError }:
     <div className="space-y-5">
       {/* Still Improving Notice */}
       <div className="flex items-center justify-between">
-        <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-sakurasoft/70 border border-sakura/30 text-sakura text-xs font-semibold shadow-xs">
-          <span className="w-2 h-2 rounded-full bg-sakura animate-pulse" aria-hidden="true" />
-          <span>Still Improving this bot</span>
+        <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-sakurasoft/60 border border-black/15 text-black text-xs font-semibold shadow-xs">
+          <span className="w-2 h-2 rounded-full bg-black animate-pulse" aria-hidden="true" />
+          <span className="text-black">Still Improving this bot</span>
         </div>
       </div>
 

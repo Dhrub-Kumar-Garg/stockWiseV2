@@ -98,9 +98,9 @@ export default function Root() {
               ? "Engine offline — waiting for data…"
               : "Waking up the bot…"}
           </p>
-          <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-white/70 border border-sakurasoft/60 text-xs text-inksoft font-medium shadow-xs">
-            <span className="w-2 h-2 rounded-full bg-gold animate-pulse" />
-            <span>Still Improving this bot</span>
+          <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-white/80 border border-black/15 text-xs text-black font-semibold shadow-xs">
+            <span className="w-2 h-2 rounded-full bg-black animate-pulse" />
+            <span className="text-black">Still Improving this bot</span>
           </div>
           <div className="flex gap-2 mt-2">
             {[0, 1, 2].map((i) => (
