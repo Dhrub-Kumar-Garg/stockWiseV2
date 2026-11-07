@@ -11,6 +11,7 @@ export default function Root() {
   const [data, setData] = useState<Data | null>(null);
   const [error, setError] = useState(false);
   const [token, setToken] = useState("");
+  const [needsAuth, setNeedsAuth] = useState(false);
   const [input, setInput] = useState("");
   const [authError, setAuthError] = useState("");
 
@@ -22,7 +23,6 @@ export default function Root() {
   }, []);
 
   useEffect(() => {
-    if (!token) return;
     let mounted = true;
     let timer: ReturnType<typeof setTimeout>;
     let active: AbortController;
@@ -31,19 +31,24 @@ export default function Root() {
       active = new AbortController();
       const deadline = setTimeout(() => active.abort(), 5000);
       try {
-        const res = await fetch("/api/state", { cache: "no-store", signal: active.signal, headers: {Authorization: `Bearer ${token}`} });
+        const headers: HeadersInit = {};
+        if (token) headers.Authorization = `Bearer ${token}`;
+        const res = await fetch("/api/state", { cache: "no-store", signal: active.signal, headers });
         if (res.status === 401 || res.status === 503) {
           if (mounted) {
+            setNeedsAuth(true);
             setAuthError(res.status === 503 ? "Dashboard access has not been configured on the server." : "Access token was rejected.");
-            setToken("");
-            if (typeof window !== "undefined") localStorage.removeItem("stockwise_token");
             setData(null);
           }
           return;
         }
         if (!res.ok) throw new Error(`HTTP ${res.status}`);
         const json = await res.json();
-        if (mounted) { setData(json); setError(false); }
+        if (mounted) {
+          setData(json);
+          setError(false);
+          setNeedsAuth(false);
+        }
       } catch {
         if (mounted) setError(true);
       } finally {
@@ -56,7 +61,7 @@ export default function Root() {
     return () => { mounted = false; clearTimeout(timer); active?.abort(); };
   }, [token]);
 
-  if (!token) return <main className="min-h-screen flex items-center justify-center p-6">
+  if (needsAuth) return <main className="min-h-screen flex items-center justify-center p-6">
     <form className="card p-6 space-y-4 max-w-sm w-full" onSubmit={e => {
       e.preventDefault();
       setAuthError("");
