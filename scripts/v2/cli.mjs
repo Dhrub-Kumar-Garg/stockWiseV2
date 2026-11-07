@@ -40,6 +40,9 @@ export async function runCLI(args = process.argv.slice(2)) {
   const dir = path.resolve(value('--data-dir') || path.join(ROOT,'data','paper'));
   fs.mkdirSync(dir,{recursive:true});
   const store = new PaperStore(dir,{leaseMs:Math.max(120000,cfg.v2.strategies.loopSeconds*3000)}).acquire();
+  const cleanup = () => { try { store.close(); } catch {} process.exit(0); };
+  process.once('SIGINT', cleanup);
+  process.once('SIGTERM', cleanup);
   const publish = state => dashboardDTO({signals:signalsFor(state,cfg),strategies:state.strategies,
     trades:state.fills,equity:state.equityHistory,episodes:[],generations:[],memory:[]});
   try {
