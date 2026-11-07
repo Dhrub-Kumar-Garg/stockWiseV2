@@ -15,6 +15,13 @@ export default function Root() {
   const [authError, setAuthError] = useState("");
 
   useEffect(() => {
+    if (typeof window !== "undefined") {
+      const saved = localStorage.getItem("stockwise_token");
+      if (saved) setToken(saved);
+    }
+  }, []);
+
+  useEffect(() => {
     if (!token) return;
     let mounted = true;
     let timer: ReturnType<typeof setTimeout>;
@@ -26,7 +33,12 @@ export default function Root() {
       try {
         const res = await fetch("/api/state", { cache: "no-store", signal: active.signal, headers: {Authorization: `Bearer ${token}`} });
         if (res.status === 401 || res.status === 503) {
-          if (mounted) { setAuthError(res.status === 503 ? "Dashboard access has not been configured on the server." : "Access token was rejected."); setToken(""); setData(null); }
+          if (mounted) {
+            setAuthError(res.status === 503 ? "Dashboard access has not been configured on the server." : "Access token was rejected.");
+            setToken("");
+            if (typeof window !== "undefined") localStorage.removeItem("stockwise_token");
+            setData(null);
+          }
           return;
         }
         if (!res.ok) throw new Error(`HTTP ${res.status}`);
@@ -45,8 +57,19 @@ export default function Root() {
   }, [token]);
 
   if (!token) return <main className="min-h-screen flex items-center justify-center p-6">
-    <form className="card p-6 space-y-4 max-w-sm" onSubmit={e => {e.preventDefault(); setAuthError(""); setToken(input); setInput("");}}>
-      <h1 className="font-display text-2xl">StockWise dashboard</h1>
+    <form className="card p-6 space-y-4 max-w-sm w-full" onSubmit={e => {
+      e.preventDefault();
+      setAuthError("");
+      setToken(input);
+      if (typeof window !== "undefined") localStorage.setItem("stockwise_token", input);
+      setInput("");
+    }}>
+      <div className="flex items-center justify-between">
+        <h1 className="font-display text-2xl">StockWise dashboard</h1>
+        <span className="text-[11px] text-inksoft/80 bg-cream2 px-2.5 py-0.5 rounded-full border border-sakurasoft/50">
+          Still Improving this bot
+        </span>
+      </div>
       <label className="block text-sm">Dashboard access token
         <input type="password" autoComplete="off" required value={input} onChange={e => setInput(e.target.value)} className="block w-full border rounded p-2 mt-2" />
       </label>
@@ -60,7 +83,7 @@ export default function Root() {
     return (
       <>
         <Sakura />
-        <div className="flex flex-col items-center justify-center min-h-screen gap-6 px-4">
+        <div className="flex flex-col items-center justify-center min-h-screen gap-6 px-4 text-center">
           <Mascot size={140} mood="asleep" />
           <h1 className="font-display text-4xl text-ink font-semibold tracking-tight">
             FabInvests
@@ -70,6 +93,10 @@ export default function Root() {
               ? "Engine offline — waiting for data…"
               : "Waking up the bot…"}
           </p>
+          <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-white/70 border border-sakurasoft/60 text-xs text-inksoft font-medium shadow-xs">
+            <span className="w-2 h-2 rounded-full bg-gold animate-pulse" />
+            <span>Still Improving this bot</span>
+          </div>
           <div className="flex gap-2 mt-2">
             {[0, 1, 2].map((i) => (
               <span
