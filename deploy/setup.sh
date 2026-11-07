@@ -49,8 +49,8 @@ npm install
 npx next build
 cd ..
 
-# 5. Setup systemd services
-echo "Setting up systemd services..."
+# 5. Setup systemd services and environment
+echo "Setting up environment and systemd services..."
 
 # Get current absolute path of the fabinvest directory
 PROJECT_DIR=$(pwd)
@@ -60,6 +60,19 @@ if [ "$SUDO_USER" != "" ]; then
     USER=$SUDO_USER
 fi
 
+# Ensure .env file exists with a secure dashboard token
+if [ ! -f "${PROJECT_DIR}/.env" ]; then
+    echo "Creating .env configuration..."
+    RANDOM_TOKEN=$(openssl rand -hex 24)
+    cat > "${PROJECT_DIR}/.env" << EOL
+STOCKWISE_DASHBOARD_TOKEN=${RANDOM_TOKEN}
+STOCKWISE_TELEGRAM_ENABLED=false
+STOCKWISE_ANALYST_ENABLED=false
+EOL
+    chown ${USER}:${USER} "${PROJECT_DIR}/.env"
+    chmod 600 "${PROJECT_DIR}/.env"
+fi
+
 # Create Engine Service
 cat > /etc/systemd/system/stockwise-engine.service << EOL
 [Unit]
@@ -67,14 +80,15 @@ Description=StockWise V2 Engine
 After=network.target
 
 [Service]
-ExecStart=/usr/bin/node scripts/v2/engine.mjs
+ExecStart=/usr/bin/node scripts/v2/engine.mjs --paper
 WorkingDirectory=${PROJECT_DIR}
 StandardOutput=syslog
 StandardError=syslog
 Restart=always
-RestartSec=3
+RestartSec=5
 User=${USER}
 Environment=NODE_ENV=production
+EnvironmentFile=${PROJECT_DIR}/.env
 
 [Install]
 WantedBy=multi-user.target
@@ -92,9 +106,10 @@ WorkingDirectory=${PROJECT_DIR}/web
 StandardOutput=syslog
 StandardError=syslog
 Restart=always
-RestartSec=3
+RestartSec=5
 User=${USER}
 Environment=NODE_ENV=production
+EnvironmentFile=${PROJECT_DIR}/.env
 
 [Install]
 WantedBy=multi-user.target
@@ -108,10 +123,14 @@ systemctl enable stockwise-dashboard
 systemctl restart stockwise-engine
 systemctl restart stockwise-dashboard
 
+DASHBOARD_TOKEN=$(grep -E '^STOCKWISE_DASHBOARD_TOKEN=' "${PROJECT_DIR}/.env" | cut -d '=' -f2-)
+
 echo "========================================="
 echo "Setup Complete!"
 echo "Dashboard is running on port 3002."
-echo "Engine is running in the background."
+echo "Your Dashboard Access Token:"
+echo "  ${DASHBOARD_TOKEN}"
+echo "========================================="
 echo "Check engine logs with: sudo journalctl -u stockwise-engine -f"
 echo "Check dashboard logs with: sudo journalctl -u stockwise-dashboard -f"
 echo "========================================="
