@@ -42,8 +42,6 @@ function stripUSD(sym: string): string {
 function EquityChart({ data, startCap }: { data: any[]; startCap: number }) {
   const [range, setRange] = useState<"1D" | "3D" | "1W" | "1M" | "ALL">("1D");
 
-  if (!data || data.length < 2) return null;
-
   const start = startCap;
 
   // Filter data by time range
@@ -58,7 +56,7 @@ function EquityChart({ data, startCap }: { data: any[]; startCap: number }) {
   const cutoff = range === "ALL" ? 0 : nowMs - rangeMs[range];
 
   const points = data
-    .filter((d: any) => d.equity != null && isFinite(d.equity) && (d.ts || 0) >= cutoff)
+    .filter((d: any) => Number.isFinite(d.equity) && Number.isFinite(d.ts) && d.ts >= cutoff)
     .map((d: any) => ({
       ts: d.ts,
       equity: d.equity,
@@ -66,12 +64,15 @@ function EquityChart({ data, startCap }: { data: any[]; startCap: number }) {
       loss: d.equity < start ? d.equity : start,
     }));
 
-  if (points.length < 2) return null;
-
-  const minEq = Math.min(...points.map((p: any) => p.equity));
-  const maxEq = Math.max(...points.map((p: any) => p.equity));
-  const domainMin = Math.min(minEq, start) * 0.995;
-  const domainMax = Math.max(maxEq, start) * 1.005;
+  const firstTs = points[0]?.ts;
+  const lastTs = points.at(-1)?.ts;
+  const span = (lastTs ?? 0) - (firstTs ?? 0);
+  const minEq = Math.min(...points.map((p) => p.equity));
+  const maxEq = Math.max(...points.map((p) => p.equity));
+  const flat = minEq === maxEq;
+  const padding = Math.max(0.01, Math.abs(start) * 0.005);
+  const domainMin = Math.min(minEq, start) - padding;
+  const domainMax = Math.max(maxEq, start) + padding;
 
 
   const fmtTime = (ts: number) => {
@@ -88,14 +89,14 @@ function EquityChart({ data, startCap }: { data: any[]; startCap: number }) {
     return `${day}/${mon} ${fmtTime(ts)}`;
   };
 
-  // Show local clock time on X axis for 1D, date for ranges > 1D
   const fmtXAxis = (ts: number) => {
-    if (range === "1D") return fmtTime(ts);
     const d = new Date(ts);
+    if (span < 3600000) return d.toLocaleTimeString([], { hour: "2-digit", minute: "2-digit", second: "2-digit", hour12: false });
+    if (span < rangeMs["1D"]) return fmtTime(ts);
     return `${d.getDate()}/${d.getMonth() + 1}`;
   };
 
-  const lastEq = points[points.length - 1].equity;
+  const lastEq = points.at(-1)?.equity ?? start;
   const pnl = lastEq - start;
   const isUp = pnl >= 0;
 
@@ -129,7 +130,12 @@ function EquityChart({ data, startCap }: { data: any[]; startCap: number }) {
           ))}
         </span>
       </div>
-      <div
+      <p className="mb-2 text-[11px] text-inksoft">
+        {points.length === 0 ? "No equity samples in this range." : points.length === 1
+          ? `One sample recorded at ${fmtDate(firstTs)}.`
+          : `Recorded equity from ${fmtDate(firstTs)} to ${fmtDate(lastTs)}.`}
+      </p>
+      {span > 0 && <div
         style={{ width: "100%", height: 140 }}
         role="img"
         aria-label={`Cashflow-adjusted account equity chart. Current equity ${usd(points[points.length - 1]?.equity)}, ${isUp ? "up" : "down"} ${pct(Math.abs(pnl / start))} from starting capital.`}
@@ -148,6 +154,10 @@ function EquityChart({ data, startCap }: { data: any[]; startCap: number }) {
             </defs>
             <XAxis
               dataKey="ts"
+              type="number"
+              domain={["dataMin", "dataMax"]}
+              scale="time"
+              tickCount={5}
               tickFormatter={fmtXAxis}
               tick={{ fontSize: 9, fill: "var(--color-inksoft)" }}
               axisLine={false}
@@ -156,11 +166,12 @@ function EquityChart({ data, startCap }: { data: any[]; startCap: number }) {
             />
             <YAxis
               domain={[domainMin, domainMax]}
+              ticks={flat ? [minEq] : undefined}
               tick={{ fontSize: 9, fill: "var(--color-inksoft)" }}
               axisLine={false}
               tickLine={false}
-              tickFormatter={(v: number) => `$${v.toFixed(0)}`}
-              width={38}
+              tickFormatter={(v: number) => usd(v, domainMax - domainMin < 10 ? 2 : 0)}
+              width={53}
             />
             <ReferenceLine
               y={start}
@@ -213,7 +224,7 @@ function EquityChart({ data, startCap }: { data: any[]; startCap: number }) {
             />
           </AreaChart>
         </ResponsiveContainer>
-      </div>
+      </div>}
     </div>
   );
 }
@@ -352,18 +363,20 @@ function PnLChart({ data, startCap }: { data: any[]; startCap: number }) {
 }
 
 function GoalBar({ goal, equity, startCap }: { goal: any; equity: number; startCap: number }) {
-  if (!goal) return null;
-  const target = goal.target || 500;
+  if (!Number.isFinite(goal?.target) || goal.target <= 0) return null;
+  const target = goal.target;
   const start = goal.startEquity || startCap;
   const prog = target > start ? Math.max(0, Math.min(1, (equity - start) / (target - start))) : 0;
   const longDeadline = (goal.deadlineHours || 0) >= 1000;
-  const hoursLeft = Math.max(0, (goal.deadlineHours || 0) - ((Date.now() - (goal.startedAt || 0)) / 3.6e6));
+  const hoursLeft = Number.isFinite(goal.startedAt) && Number.isFinite(goal.deadlineHours)
+    ? Math.max(0, goal.deadlineHours - (Date.now() - goal.startedAt) / 3.6e6)
+    : null;
 
   return (
     <div className="mt-4">
       <div className="flex justify-between text-xs text-inksoft mb-1.5">
         <span>Goal · {usd(target, 0)}</span>
-        <span>{longDeadline ? "no deadline, fast as it can" : `${Math.floor(hoursLeft)}h left`}</span>
+        {hoursLeft != null && !longDeadline && <span>{Math.floor(hoursLeft)}h left</span>}
       </div>
       <div className="w-full h-3 rounded-full bg-cream2 overflow-hidden">
         <div
@@ -471,12 +484,47 @@ function EmptyNote({ text }: { text: string }) {
 
 function OverviewTab({ sig, episodes, equity: eqCurve, world, connectionError }: any) {
   const lastEp = episodes?.length ? episodes[episodes.length - 1] : null;
+  const lastTick = sig.health?.lastTick ?? (sig.version === 3 ? undefined : sig.ts);
+  const currentHeartbeat = !connectionError && lastTick > 0 && Date.now() - lastTick < 60000;
+  let engineStatus = "Paper engine active";
+  if (connectionError) engineStatus = "Dashboard connection lost";
+  else if (!lastTick) engineStatus = "Waiting for the first engine tick";
+  else if (!currentHeartbeat) engineStatus = "Engine snapshot is stale";
+  else if (sig.health?.status === "waiting_data") engineStatus = "Waiting for fresh market quotes";
+  else if (sig.riskState === "halt") engineStatus = "Entries paused by risk controls";
+
+  const portfolioFills = (sig.decisionCounters || []).reduce((sum: number, row: any) => sum + (row.filled ?? 0), 0);
+  const shadowCloses = (sig.shadowBooks || []).reduce((sum: number, book: any) => sum + (book.tradeCount ?? 0), 0);
+  const lastBlock = (sig.decisionTraces || []).filter((row: any) => row.stage === "vetoed").at(-1);
+  const blockLabels: Record<string, string> = {
+    calibration_missing: "A validated model is required for this signal",
+    calibration_invalid_or_expired: "The model is invalid or expired",
+    net_edge_uncertain: "Expected return after costs is too uncertain",
+  };
 
   return (
     <div className="space-y-5">
+      <div className="card-quiet p-4 text-sm space-y-1" role="status">
+        <p className="font-medium">{engineStatus}</p>
+        {lastTick > 0 && <p className="text-xs text-inksoft">Last engine tick {timeAgo(lastTick)} · {new Date(lastTick).toLocaleString()}</p>}
+        {sig.health && Number.isFinite(sig.health.totalQuotes) && (
+          <p className="text-xs text-inksoft">Fresh quotes {sig.health.validQuotes} of {sig.health.totalQuotes}</p>
+        )}
+        {sig.version === 3 && (
+          <p className="text-xs text-inksoft">{portfolioFills} portfolio fills · {shadowCloses} closed shadow trades</p>
+        )}
+        {lastBlock?.reason && (
+          <p className="text-xs text-inksoft">
+            Latest blocked entry · {lastBlock.symbol} · {blockLabels[lastBlock.reason] ?? lastBlock.reason.replace(/_/g, " ")} · {timeAgo(lastBlock.ts)}
+          </p>
+        )}
+        {currentHeartbeat && sig.version === 3 && portfolioFills === 0 && !lastBlock?.reason && (
+          <p className="text-xs text-inksoft">Portfolio entries require a validated model.</p>
+        )}
+      </div>
       {/* While you were away */}
-      <div className="card-quiet p-4">
-        {lastEp ? (
+      {lastEp && (
+        <div className="card-quiet p-4">
           <div className="flex flex-wrap items-center gap-2 text-sm">
             <span className="text-lg" aria-hidden="true">{lastEp.blownUp ? "💀" : lastEp.endReason === "goal" ? "🎯" : "✨"}</span>
             <span className="sr-only">{lastEp.blownUp ? "Blown up:" : lastEp.endReason === "goal" ? "Goal reached:" : "Completed:"}</span>
@@ -490,13 +538,8 @@ function OverviewTab({ sig, episodes, equity: eqCurve, world, connectionError }:
               Gen {lastEp.generation ?? "?"} · {sig.aggression?.leverageCap}x · Kelly {((sig.aggression?.kellyFraction ?? 0) * 100).toFixed(0)}%
             </span>
           </div>
-        ) : (
-          <div className="flex items-center gap-2 text-sm text-inksoft">
-            <span className="text-lg" aria-hidden="true">🌱</span>
-            <span>Run 1 in progress — the bot is learning from scratch.</span>
-          </div>
-        )}
-      </div>
+        </div>
+      )}
 
       {/* Equity Card */}
       <div className="card p-6">
@@ -505,8 +548,9 @@ function OverviewTab({ sig, episodes, equity: eqCurve, world, connectionError }:
             <p className="text-xs text-inksoft mb-1" id="equity-label">Account Equity · Episode {sig.episodeNum ?? "?"}</p>
             <p className="font-display text-5xl font-bold tnum" aria-labelledby="equity-label">{usd(sig.equity)}</p>
             {(() => {
-              const initCap = sig.lifetime?.initialCapital || 100;
-              const allTimePnl = sig.totalNetPnl ?? ((sig.equity ?? initCap) - initCap);
+              const initCap = sig.lifetime?.initialCapital ?? sig.startingCapital;
+              if (!Number.isFinite(initCap) || !Number.isFinite(sig.equity)) return null;
+              const allTimePnl = sig.totalNetPnl ?? sig.equity - initCap;
               const allTimePnlPct = initCap > 0 ? allTimePnl / initCap : 0;
               return (
                 <p className="mt-1 text-sm flex flex-wrap items-center gap-x-2">
@@ -576,9 +620,8 @@ function OverviewTab({ sig, episodes, equity: eqCurve, world, connectionError }:
         <div className="card p-5 space-y-3">
           <div className="flex items-center gap-2 mb-1">
             <span
-              className={`w-2.5 h-2.5 rounded-full ${!connectionError && sig.ts && Date.now()-sig.ts < 60000 ? "bg-up live-dot" : "bg-down"}`}
-              role="status"
-              aria-label={!connectionError && sig.ts && Date.now()-sig.ts < 60000 ? "Paper engine heartbeat is current" : "Paper engine data is stale or unavailable"}
+              className={`w-2.5 h-2.5 rounded-full ${currentHeartbeat ? "bg-up live-dot" : "bg-down"}`}
+              aria-hidden="true"
             />
             <span className="text-xs font-medium">The Bot</span>
           </div>
@@ -588,7 +631,7 @@ function OverviewTab({ sig, episodes, equity: eqCurve, world, connectionError }:
               <p>Generation <span className="font-medium text-ink">{sig.generation ?? 1}</span></p>
               <p>{sig.lifetime?.episodes ?? 1} runs · {sig.lifetime?.totalBlowups ?? 0} blow-ups</p>
               <p>Best run <span className={tone(sig.lifetime?.bestEpisodeReturnPct)}>{pct(sig.lifetime?.bestEpisodeReturnPct)}</span></p>
-              <p>Last tick {timeAgo(sig.ts)}</p>
+              <p>Last tick {timeAgo(lastTick)}</p>
             </div>
           </div>
           {/* Aggression dial */}
@@ -635,11 +678,13 @@ function OverviewTab({ sig, episodes, equity: eqCurve, world, connectionError }:
           <p className="text-xs font-medium mb-3">World</p>
           <div className="space-y-2 text-xs">
             <div className="flex justify-between"><span className="text-inksoft">Regime</span><span className="font-medium capitalize">{sig.regime || "—"}</span></div>
-            <div className="flex justify-between"><span className="text-inksoft">Crypto F&G</span>
-              <span className={`font-medium ${bandColor(world?.fearGreedCrypto?.band)}`}>
-                {world?.fearGreedCrypto?.value ?? "—"} · {bandLabel(world?.fearGreedCrypto?.band || "unknown")}
-              </span>
-            </div>
+            {Number.isFinite(world?.fearGreedCrypto?.value) && (
+              <div className="flex justify-between"><span className="text-inksoft">Crypto F&G</span>
+                <span className={`font-medium ${bandColor(world.fearGreedCrypto.band)}`}>
+                  {world.fearGreedCrypto.value} · {bandLabel(world.fearGreedCrypto.band)}
+                </span>
+              </div>
+            )}
             <div className="flex justify-between"><span className="text-inksoft">Risk</span><span className={`font-medium capitalize ${sig.riskState === "halt" ? "text-down" : sig.riskState === "caution" ? "text-gold" : "text-up"}`}>{sig.riskState || "normal"}</span></div>
           </div>
           {world?.thesis && (
@@ -878,33 +923,81 @@ function StrategiesTab({ strategies, counters = [], traces = [], shadow = [] }: 
 function WorldTab({ world }: any) {
   const w = world || {};
   const macro = w.macro || {};
-  const mood = w.newsMood || {};
+  const news: { id: string; source: string; title: string; publishedAt: number }[] = Array.isArray(w.news) ? w.news : [];
+  const newsHealth: { source: string; status: string; lastSuccess?: number; count?: number }[] = Array.isArray(w.newsHealth) ? w.newsHealth : [];
   const headlines = Array.isArray(w.headlines) ? w.headlines : [];
   const fedLines = Array.isArray(w.fed) ? w.fed : [];
+  const gauges = [
+    { label: "Crypto Fear & Greed", data: w.fearGreedCrypto },
+    { label: "Stock Fear & Greed", data: w.fearGreedStocks },
+  ].filter(({ data }) => Number.isFinite(data?.value));
+  const regime = macro.label || w.regime;
+  const metrics = [
+    ["Regime", regime === "unknown" ? undefined : regime],
+    ["Funding 8h", Number.isFinite(w.fundingRate) ? `${w.fundingRate}%` : undefined],
+    ["Crypto OI", Number.isFinite(w.oiUsd) ? compactNum(w.oiUsd) : undefined],
+    ["Whales", typeof w.whaleCrowd === "string" ? w.whaleCrowd.replace(/_/g, " ") : undefined],
+    ["News mood", w.newsMood?.impact],
+    ["Put/Call", w.putCall?.ratio],
+  ].filter(([, value]) => value != null && value !== "—" && value !== "");
 
   return (
     <Section title="World">
-      {/* Fear & Greed gauges */}
-      <div className="flex gap-4 mb-5">
-        <FnGGauge data={w.fearGreedCrypto} label="Crypto Fear & Greed" />
-        <FnGGauge data={w.fearGreedStocks} label="Stock Fear & Greed" />
-      </div>
-
-      {/* Macro & Flow */}
-      <div className="card p-5 mb-5">
-        <p className="text-xs font-medium mb-3">Macro & Flow</p>
-        <div className="grid grid-cols-2 sm:grid-cols-3 gap-3 text-xs">
-          <div className="card-quiet p-3"><p className="text-inksoft">Regime</p><p className="font-medium capitalize">{macro.label || w.regime || "—"}</p></div>
-          <div className="card-quiet p-3"><p className="text-inksoft">Funding 8h</p><p className="tnum font-medium">{w.fundingRate != null && w.fundingRate !== "—" ? `${w.fundingRate}%` : "—"}</p></div>
-          <div className="card-quiet p-3"><p className="text-inksoft">Crypto OI</p><p className="tnum font-medium">{w.oiUsd && w.oiUsd !== "—" ? compactNum(w.oiUsd) : "—"}</p></div>
-          <div className="card-quiet p-3"><p className="text-inksoft">Whales</p><p className="font-medium capitalize">{w.whaleCrowd && w.whaleCrowd !== "—" ? w.whaleCrowd.replace(/_/g, " ") : "—"}</p></div>
-          <div className="card-quiet p-3"><p className="text-inksoft">News mood</p><p className="font-medium capitalize">{mood.impact || "—"}</p></div>
-          <div className="card-quiet p-3"><p className="text-inksoft">Put/Call</p><p className="tnum font-medium">{typeof w.putCall === "object" && w.putCall?.ratio ? w.putCall.ratio : "—"}</p></div>
+      <div className="card p-5 mb-5 space-y-3">
+        <div className="flex flex-wrap items-center justify-between gap-2 text-xs">
+          <p className="font-medium">News feeds</p>
+          {w.deep_due > 0 && <p className="text-inksoft">Last refresh {timeAgo(w.deep_due)}</p>}
         </div>
-        {macro.drivers?.length > 0 && (
-          <p className="text-xs text-inksoft mt-3">{macro.drivers.join(" · ")}</p>
+        {newsHealth.length === 0 && <p className="text-xs text-inksoft">No news feed snapshot received.</p>}
+        {newsHealth.length > 0 && (
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 text-xs">
+            {newsHealth.map((feed) => (
+              <div className="card-quiet p-3" key={feed.source}>
+                <p className="font-medium">{feed.source}</p>
+                <p className="text-inksoft">
+                  {feed.status === "error" ? "Fetch failed" : feed.status === "cached" ? "Cached" : "Received"}
+                  {feed.lastSuccess != null && feed.lastSuccess > 0 && ` · last success ${timeAgo(feed.lastSuccess)}`}
+                  {Number.isFinite(feed.count) && ` · ${feed.count} articles`}
+                </p>
+              </div>
+            ))}
+          </div>
+        )}
+        {news.length === 0 && newsHealth.length > 0 && headlines.length === 0 && fedLines.length === 0 && (
+          <p className="text-xs text-inksoft">No recent headlines in this snapshot.</p>
+        )}
+        {news.length > 0 && (
+          <ul className="space-y-2 text-xs max-h-64 overflow-y-auto">
+            {news.map((item) => (
+              <li key={item.id}>
+                <span className="text-inksoft">{item.source} · {timeAgo(item.publishedAt)} · </span>{item.title}
+              </li>
+            ))}
+          </ul>
         )}
       </div>
+
+      {gauges.length > 0 && (
+        <div className="flex gap-4 mb-5">
+          {gauges.map(({ data, label }) => <FnGGauge key={label} data={data} label={label} />)}
+        </div>
+      )}
+      {metrics.length > 0 && (
+        <div className="card p-5 mb-5">
+          <p className="text-xs font-medium mb-3">Macro & Flow</p>
+          <div className="grid grid-cols-2 sm:grid-cols-3 gap-3 text-xs">
+            {metrics.map(([label, value]) => (
+              <div key={label} className="card-quiet p-3">
+                <p className="text-inksoft">{label}</p>
+                <p className="tnum font-medium capitalize">{value}</p>
+              </div>
+            ))}
+          </div>
+          {macro.drivers?.length > 0 && (
+            <p className="text-xs text-inksoft mt-3">{macro.drivers.join(" · ")}</p>
+          )}
+        </div>
+      )}
 
       {/* Thesis */}
       {w.thesis && (
@@ -916,14 +1009,8 @@ function WorldTab({ world }: any) {
         </div>
       )}
 
-      <div className="card-quiet p-4 text-xs">
-        <p>News feed health</p>
-        {(w.newsHealth || []).map((h: any)=><p key={h.source}>{h.source}: {h.status} · {h.lastSuccess ? timeAgo(h.lastSuccess) : "never received"} · {h.count ?? "—"} parsed</p>)}
-        <p>News context is unvalidated for predictive trading value.</p>
-        {(w.news || []).map((n: any)=><p key={n.id}>{n.source} · {new Date(n.publishedAt).toISOString()} · {n.title}</p>)}
-      </div>
       {/* Headlines */}
-      {(headlines.length > 0 || fedLines.length > 0) && (
+      {news.length === 0 && (headlines.length > 0 || fedLines.length > 0) && (
         <div className="card p-5">
           <p className="text-xs font-medium mb-3">Headlines</p>
           <div className="space-y-1.5 max-h-64 overflow-y-auto">

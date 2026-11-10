@@ -25,3 +25,21 @@ test('outage is explicit and old cache cannot gain a fresh observation time',asy
  fail=true;now+=20;const outage=await collect();assert.equal(outage.newsHealth[0].status,'error');now+=86400000;assert.equal((await collect()).news.length,0);
  assert.match(buildPrompt({},first),/Federal Reserve Releases/);assert.match(buildPrompt({},first),/Fed rates/);
 });
+
+test('the first refresh includes news received after the fetch began', async () => {
+  let now = at;
+  const collect = createWorldCollector({
+    clock: () => now,
+    sources: [{ id: 'crypto', kind: 'crypto', url: 'https://example.com' }],
+    fetchText: async () => {
+      now += 500;
+      return rss();
+    },
+  });
+
+  const digest = await collect();
+  assert.equal(digest.ts, at + 500);
+  assert.equal(digest.newsHealth[0].lastSuccess, at + 500);
+  assert.equal(digest.news.length, 1);
+  assert.equal(digest.news[0].observedAt, at + 500);
+});
